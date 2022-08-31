@@ -1,0 +1,9 @@
+K:\Explorus-K\Explorus K\bin\Debug\Explorus K.exe.config
+K:\Explorus-K\Explorus K\bin\Debug\Explorus K.exe
+K:\Explorus-K\Explorus K\bin\Debug\Explorus K.pdb
+K:\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.AssemblyReference.cache
+K:\Explorus-K\Explorus K\obj\Debug\Explorus_K.Properties.Resources.resources
+K:\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.GenerateResource.cache
+K:\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.CoreCompileInputs.cache
+K:\Explorus-K\Explorus K\obj\Debug\Explorus K.exe
+K:\Explorus-K\Explorus K\obj\Debug\Explorus K.pdb
