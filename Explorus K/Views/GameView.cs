@@ -11,6 +11,8 @@ namespace Explorus_K.Views
     class GameView
     {
         public GameForm oGameForm;
+        int i = 0;
+        string gameTitle;
 
         public GameView()
         {
@@ -39,11 +41,24 @@ namespace Explorus_K.Views
                 });
         }
 
+        public void Update(double elapsed)
+        {
+            i += (int) elapsed;
+            double FPS = Math.Round(1000 / elapsed, 1);
+            setWindowTitle("Explorus-K - FPS " + FPS.ToString());
+        }
+
         private void GameRenderer(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             g.Clear(Color.Black);
-            g.FillRectangle(new SolidBrush(Color.Yellow), 20, 20, 20, 20);
+            g.FillRectangle(new SolidBrush(Color.Yellow), i, 20, 20, 20);
+            oGameForm.Text = gameTitle;
+        }
+
+        public void setWindowTitle(string title)
+        {
+            gameTitle = title;
         }
     }
 }
