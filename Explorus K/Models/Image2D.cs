@@ -11,13 +11,27 @@ namespace Explorus_K.Models
     {
         private int id;
         private ImageType type;
-        private Image image;
+        private int x;
+        private int y;
+        private Bitmap image;
 
-        public Image2D(int id, ImageType type, Image image)
+        public int Y { get => y; set => y = value; }
+        public int X { get => x; set => x = value; }
+
+        public Image2D(int id, ImageType type, Bitmap image)
         {
             this.id = id;
             this.type = type;
             this.image = image;
+        }
+
+        public Image2D(int id, ImageType type, Bitmap image, int x, int y)
+        {
+            this.id = id;
+            this.type = type;
+            this.image = image;
+            this.x = x;
+            this.y = y;
         }
 
         public int getId()
@@ -52,17 +66,17 @@ namespace Explorus_K.Models
             return this;
         }
 
-        public Image getImage()
+        public Bitmap getImage()
         {
             return image;
         }
 
-        public void setImage(Image image)
+        public void setImage(Bitmap image)
         {
             this.image = image;
         }
 
-        public Image2D withImage(Image image)
+        public Image2D withImage(Bitmap image)
         {
             setImage(image);
             return this;

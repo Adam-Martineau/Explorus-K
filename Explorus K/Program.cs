@@ -16,6 +16,7 @@ namespace Explorus_K
         static void Main()
         {
             GameEngine ge = new GameEngine();
+            System.Environment.Exit(0);
         }
     }
 }
