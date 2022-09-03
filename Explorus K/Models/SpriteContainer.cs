@@ -47,8 +47,23 @@ namespace Explorus_K.Models
             return imageComplete.Clone(cropArea, imageComplete.PixelFormat);
         }
 
-         
+        private List<Bitmap> extractSquareSpriteFromTileSheetRow(int startPointX, int startPointY, int numberToExtract, int spriteSquareSize)
+        {
+            List<Bitmap> bitmaps = new List<Bitmap>();
 
+            for(int i = 0; i < numberToExtract; i++)
+            {
+                bitmaps.Add(cropImage(new Rectangle(startPointX, startPointY, spriteSquareSize, spriteSquareSize)));
+                startPointX += spriteSquareSize;
+            }
+
+            return bitmaps;
+        }
+
+        private void fillSpriteListWithSmallSquare()
+        {
+
+        }
 
     }
 }
