@@ -17,3 +17,4 @@ C:\Users\Mathieu\Documents\S8\APP1\Labo1\Explorus-K\Explorus K\obj\Debug\Exploru
 C:\Users\Mathieu\Documents\S8\APP1\Labo1\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.CoreCompileInputs.cache
 C:\Users\Mathieu\Documents\S8\APP1\Labo1\Explorus-K\Explorus K\obj\Debug\Explorus K.exe
 C:\Users\Mathieu\Documents\S8\APP1\Labo1\Explorus-K\Explorus K\obj\Debug\Explorus K.pdb
+C:\Users\Mathieu\Documents\S8\APP1\Labo1\Explorus-K\Explorus K\obj\Debug\Explorus_K.GameForm.resources

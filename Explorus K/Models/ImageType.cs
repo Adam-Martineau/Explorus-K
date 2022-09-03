@@ -9,7 +9,7 @@ namespace Explorus_K.Models
     internal enum ImageType
     {
         MUR,
-        SLIMUS,
+        SLIMUS_TITLE,
         COEUR,
         BUBBLE_BIG,
         BUBBLE_SMALL,

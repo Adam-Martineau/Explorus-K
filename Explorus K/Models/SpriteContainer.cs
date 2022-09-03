@@ -9,22 +9,21 @@ using System.Windows.Forms;
 
 namespace Explorus_K.Models
 {
-    internal class ImageContainer
+    internal class SpriteContainer
     {
-        private static ImageContainer instance = new ImageContainer();
+        private static SpriteContainer instance = new SpriteContainer();
 
-        private int IMAGE_DIMENSION = 48;
-        private int IMAGE_SEPARATOR = 16;
+        private const int IMAGE_DIMENSION = 48;
 
         private List<Image2D> image2DList;
 
-        private ImageContainer()
+        private SpriteContainer()
         {
             image2DList = new List<Image2D>();
             generateList();
         }
 
-        public static ImageContainer getInstance()
+        public static SpriteContainer getInstance()
         {
             return instance;
         }
@@ -37,17 +36,18 @@ namespace Explorus_K.Models
         private void generateList()
         {
             image2DList.Add(new Image2D(1, ImageType.MUR, cropImage(new Rectangle(0, 0, IMAGE_DIMENSION * 2, IMAGE_DIMENSION * 2))));
+            image2DList.Add(new Image2D(6, ImageType.SLIMUS_TITLE, cropImage(new Rectangle(IMAGE_DIMENSION * 2, 0, IMAGE_DIMENSION * 4, IMAGE_DIMENSION))));
 
         }
 
 
-        private static Bitmap cropImage(Rectangle cropArea)
+        private Bitmap cropImage(Rectangle cropArea)
         {
             Bitmap imageComplete = Explorus_K.Properties.Resources.TilesSheet;
             return imageComplete.Clone(cropArea, imageComplete.PixelFormat);
         }
 
-
+         
 
 
     }

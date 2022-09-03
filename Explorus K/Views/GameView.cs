@@ -53,7 +53,7 @@ namespace Explorus_K.Views
         {
             Graphics g = e.Graphics;
             g.Clear(Color.Black);
-            g.DrawImage(ImageContainer.getInstance().getImage2DList()[0].getImage(), 20, 20);
+            g.DrawImage(SpriteContainer.getInstance().getImage2DList()[1].getImage(), 20, 20);
             oGameForm.Text = gameTitle;
         }
 
