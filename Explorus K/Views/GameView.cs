@@ -192,23 +192,5 @@ namespace Explorus_K.Views
                 this.gemBar = bar;
             }
         }
-
-        public static void GameForm_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch(e.KeyValue)
-            {
-                case (char)Keys.Right:
-                    //do something;
-                case (char)Keys.Left:
-                    //do something;
-                case (char)Keys.Up:
-                    //do something;
-                case (char)Keys.Down:
-                //do something;
-                default:
-                    //do nothing
-                    break;
-            }
-        }
     }
 }
