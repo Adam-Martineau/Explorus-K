@@ -75,9 +75,14 @@ namespace Explorus_K.Controllers
             {
                 if(binding.Key == e.KeyCode)
                 {
-                    MessageBox.Show(binding.Key.ToString());
+                    actionHandler(binding.Action);
                 }
             }
+        }
+
+        public void actionHandler(Actions action)
+        {
+            MessageBox.Show(action.ToString());
         }
     }
 }
