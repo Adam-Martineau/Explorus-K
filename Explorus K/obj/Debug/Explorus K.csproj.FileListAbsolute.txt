@@ -43,3 +43,6 @@ C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explor
 C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.CopyComplete
 C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explorus K.exe
 C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explorus K.pdb
+C:\Users\matsh\Documents\S8\APP1\Explorus-K\Explorus K\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\matsh\Documents\S8\APP1\Explorus-K\Explorus K\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\matsh\Documents\S8\APP1\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.CopyComplete
