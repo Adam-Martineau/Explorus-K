@@ -1,4 +1,5 @@
-﻿using Explorus_K.Views;
+﻿using Explorus_K.Models;
+using Explorus_K.Views;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -13,6 +14,10 @@ namespace Explorus_K.Controllers
         private List<Binding> bindings;
         private Actions game_state = Actions.none;
 
+        private int lifeCount = 3;
+        private int bubbleCount = 3;
+        private int gemCount = 3;
+
         public GameEngine()
         {
             //The game engine get passed from contructor to constructor until it reach GameForm.cs
@@ -25,7 +30,9 @@ namespace Explorus_K.Controllers
 
         private void GameLoop()
         {
-            //Thread.Sleep(5000);
+            oView.InitializeHeaderBar(new HealthBarCreator(), lifeCount);
+            oView.InitializeHeaderBar(new BubbleBarCreator(), bubbleCount);
+            oView.InitializeHeaderBar(new GemBarCreator(), gemCount);
 
             oView.OnLoad();
 
