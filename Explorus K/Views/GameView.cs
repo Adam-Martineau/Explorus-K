@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Forms;
 using Size = System.Drawing.Size;
 
@@ -16,7 +15,17 @@ namespace Explorus_K.Views
         public GameForm oGameForm;
         string gameTitle;
 
-        private Vector ScreenSize = new Vector(1080, 864);
+        private const double headerRatio = 0.125;
+        private Point headerPosition = new Point();
+        private Point labyrinthPosition = new Point();
+        private double headerHeight = 0;
+        private int bigSpriteDimension = 52;
+        private int smallSpriteDimension = 26;
+        private double labyrinthHeight = 48 * 9;
+        private double labyrinthWidth = 48 * 11;
+
+        private int screenWidth = 600;
+        private int screenHeight = 600;
 
         public static List<Image2D> AllSprites = new List<Image2D>();
 
@@ -25,11 +34,11 @@ namespace Explorus_K.Views
             {"w","w","w","w","w","w","w","w","w","w","w"},
             {"w",".",".","g",".",".",".",".",".",".","w"},
             {"w",".","w","w","w",".","w","w","w",".","w"},
-            {"w",".",".",".",".",".","w",".","w",".","w"},
+            {"w",".",".",".",".",".","w","m","w",".","w"},
             {"w",".","w",".","w","w","w","w","w",".","w"},
             {"w",".","w",".","w","g",".",".",".",".","w"},
             {"w",".","w",".","w","w",".","w","w",".","w"},
-            {"w",".",".",".","s","w",".",".",".",".","w"},
+            {"w",".",".",".","s","w",".",".","g",".","w"},
             {"w","w","w","w","w","w","w","w","w","w","w"}
         };
 
@@ -40,8 +49,12 @@ namespace Explorus_K.Views
         {
             oGameForm = new GameForm();
             oGameForm.Paint += new PaintEventHandler(this.GameRenderer);
-            oGameForm.Size = new Size((int)this.ScreenSize.X, (int)this.ScreenSize.Y);
+            oGameForm.Size = new Size(screenWidth, screenHeight);
             oGameForm.MinimumSize = new Size(600, 600);
+            headerHeight = screenHeight * headerRatio;
+            headerPosition = new Point(0, 0);
+            labyrinthPosition = new Point((int)((screenWidth-labyrinthWidth)/2), (int)headerHeight);
+            Console.WriteLine(labyrinthPosition);
         }
 
         public void Show() 
@@ -76,18 +89,21 @@ namespace Explorus_K.Views
         {
             Graphics g = e.Graphics;
             g.Clear(Color.Black);
-
-            //g.DrawImage(SpriteContainer.getInstance().getImage2DList()[0].getImage(), 20, 20);
-
-            //g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_LEFT_ANIMATION_1), 20, 20);
-            //g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_LEFT_ANIMATION_2), 20, 120);
-            //g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_LEFT_ANIMATION_3), 20, 220);
-
             oGameForm.Text = gameTitle;
 
             foreach (Image2D sp in AllSprites)
             {
-                g.DrawImage(sp.getImage(), sp.X, sp.Y);
+                ImageType type = sp.getType();
+                if (type == ImageType.SMALL_SLIMUS || type == ImageType.GEM)
+                {
+                    float pos = (bigSpriteDimension - smallSpriteDimension)/ 2;
+                    g.DrawImage(sp.getImage(), (float)(sp.X + pos), (float)(sp.Y + labyrinthPosition.Y + pos), smallSpriteDimension, smallSpriteDimension);
+                }
+                else
+                {
+                    g.DrawImage(sp.getImage(), (float)(sp.X), (float)(sp.Y + labyrinthPosition.Y), bigSpriteDimension, bigSpriteDimension);
+                }
+                
             }
 
             //Console.WriteLine("Render");
@@ -108,27 +124,13 @@ namespace Explorus_K.Views
                 for (int j = 0; j < Map.GetLength(1); j++)
                 {
                     if (Map[i, j] == "w")
-                        AllSprites.Add(new Image2D(0, ImageType.WALL, SpriteContainer.getInstance().getBitmapByImageType(ImageType.WALL), j * 96, i * 96));
-                    
-                    /*else if (Map[i, j] == "b")
-                        new Sprite2D(new Vector2(j * 64, i * 64), new Vector2(64, 64), SemSolidBlocks_Ref, "SemiSolidBlock");
-                    else if (Map[i, j] == "P")
+                        AllSprites.Add(new Image2D(0, ImageType.WALL, SpriteContainer.getInstance().getBitmapByImageType(ImageType.WALL), j * bigSpriteDimension, i * bigSpriteDimension));
+                    else if (Map[i, j] == "g")
+                        AllSprites.Add(new Image2D(0, ImageType.GEM, SpriteContainer.getInstance().getBitmapByImageType(ImageType.GEM), j * bigSpriteDimension, i * bigSpriteDimension));
+                    else if (Map[i, j] == "m")
                     {
-                        PlayerPostion = new Vector2(j * 64, i * 64);
-                        new Sprite2D(new Vector2(j * 64, i * 64), new Vector2(64, 64), Ground_Ref, "Ground");
+                        AllSprites.Add(new Image2D(0, ImageType.SMALL_SLIMUS, SpriteContainer.getInstance().getBitmapByImageType(ImageType.SMALL_SLIMUS), j * bigSpriteDimension, i * bigSpriteDimension));
                     }
-                    else if (Map[i, j] == "E")
-                    {
-                        new Sprite2D(new Vector2(j * 64, i * 64), new Vector2(64, 64), Ground_Ref, "Ground");
-                        new Sprite2D(new Vector2(j * 64 + 64 / 4, i * 64 + 64 / 4), new Vector2(64 / 2, 64 / 2), EnemyBomb_Ref, "EnemyBomb");
-                    }
-                    else if (Map[i, j] == ".")
-                        new Sprite2D(new Vector2(j * 64, i * 64), new Vector2(64, 64), Ground_Ref, "Ground");
-                    else if (Map[i, j] == "c")
-                    {
-                        new Sprite2D(new Vector2(j * 64, i * 64), new Vector2(64, 64), Ground_Ref, "Ground");
-                        new Sprite2D(new Vector2(j * 64, i * 64), new Vector2(64, 64), CoinGold_Ref, "CoinGold");
-                    }*/
 
                 }
             }

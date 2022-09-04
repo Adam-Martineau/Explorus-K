@@ -29,3 +29,17 @@ C:\Users\matsh\Documents\S8\APP1\Explorus-K\Explorus K\obj\Debug\Explorus K.cspr
 C:\Users\matsh\Documents\S8\APP1\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.CoreCompileInputs.cache
 C:\Users\matsh\Documents\S8\APP1\Explorus-K\Explorus K\obj\Debug\Explorus K.exe
 C:\Users\matsh\Documents\S8\APP1\Explorus-K\Explorus K\obj\Debug\Explorus K.pdb
+C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.AssemblyReference.cache
+C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.SuggestedBindingRedirects.cache
+C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\obj\Debug\Explorus_K.GameForm.resources
+C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\obj\Debug\Explorus_K.Properties.Resources.resources
+C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.GenerateResource.cache
+C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.CoreCompileInputs.cache
+C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\obj\Debug\Explorus K.exe
+C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\obj\Debug\Explorus K.pdb
+C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\bin\Debug\Explorus K.exe.config
+C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\bin\Debug\Explorus K.exe
+C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\bin\Debug\Explorus K.pdb
+C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.CopyComplete
