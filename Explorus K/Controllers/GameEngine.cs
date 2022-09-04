@@ -66,11 +66,26 @@ namespace Explorus_K.Controllers
         {
             //Actions state machine
             if (currentAction == Actions.none) { }
-            else if (currentAction == Actions.move_left) { MessageBox.Show(Actions.move_left.ToString()); }
-            else if (currentAction == Actions.move_right) { MessageBox.Show(Actions.move_right.ToString()); }
-            else if (currentAction == Actions.move_up) { MessageBox.Show(Actions.move_up.ToString()); }
-            else if (currentAction == Actions.move_down) { MessageBox.Show(Actions.move_down.ToString()); }
-            else if (currentAction == Actions.pause) { MessageBox.Show(Actions.pause.ToString()); }
+            else if (currentAction == Actions.move_left) { 
+                MessageBox.Show(Actions.move_left.ToString());
+                currentAction = Actions.none;
+            }
+            else if (currentAction == Actions.move_right) { 
+                MessageBox.Show(Actions.move_right.ToString());
+                currentAction = Actions.none;
+            }
+            else if (currentAction == Actions.move_up) { 
+                MessageBox.Show(Actions.move_up.ToString());
+                currentAction = Actions.none;
+            }
+            else if (currentAction == Actions.move_down) { 
+                MessageBox.Show(Actions.move_down.ToString());
+                currentAction = Actions.none;
+            }
+            else if (currentAction == Actions.pause) { 
+                MessageBox.Show(Actions.pause.ToString());
+                currentAction = Actions.none;
+            }
         }
 
         private long getCurrentTime()
