@@ -18,3 +18,14 @@ C:\Users\Mathieu\Documents\S8\APP1\Labo1\Explorus-K\Explorus K\obj\Debug\Exploru
 C:\Users\Mathieu\Documents\S8\APP1\Labo1\Explorus-K\Explorus K\obj\Debug\Explorus K.exe
 C:\Users\Mathieu\Documents\S8\APP1\Labo1\Explorus-K\Explorus K\obj\Debug\Explorus K.pdb
 C:\Users\Mathieu\Documents\S8\APP1\Labo1\Explorus-K\Explorus K\obj\Debug\Explorus_K.GameForm.resources
+C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\bin\Debug\Explorus K.exe.config
+C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\bin\Debug\Explorus K.exe
+C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\bin\Debug\Explorus K.pdb
+C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.AssemblyReference.cache
+C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.SuggestedBindingRedirects.cache
+C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explorus_K.GameForm.resources
+C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explorus_K.Properties.Resources.resources
+C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.GenerateResource.cache
+C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.CoreCompileInputs.cache
+C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explorus K.exe
+C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explorus K.pdb

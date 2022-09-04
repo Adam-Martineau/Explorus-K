@@ -42,15 +42,6 @@ namespace Explorus_K.Controllers
                 }
 
                 //Key input management
-                //Ceci est de la merde, il faut que l'event de la key est lieu dans le GameForm.cs
-                //Je sais pas comment l'apporter ici
-                foreach(Binding binding in Bindings)
-                {
-                    if() //check the key of the Binding
-                    {
-                        //Do something
-                    }
-                }
 
                 //double FPS = 1000 / elapsed;
                 //oView.setWindowTitle("Explorus-K FPS " + FPS.ToString());
