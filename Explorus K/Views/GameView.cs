@@ -87,7 +87,7 @@ namespace Explorus_K.Views
 
             foreach (Image2D sp in AllSprites)
             {
-                g.DrawImage(sp.getImage(), sp.X, sp.Y);
+                g.DrawImage(sp.getBitmapFromContainer(), sp.X, sp.Y);
             }
 
             //Console.WriteLine("Render");
@@ -108,7 +108,13 @@ namespace Explorus_K.Views
                 for (int j = 0; j < Map.GetLength(1); j++)
                 {
                     if (Map[i, j] == "w")
-                        AllSprites.Add(new Image2D(0, ImageType.WALL, SpriteContainer.getInstance().getBitmapByImageType(ImageType.WALL), j * 96, i * 96));
+                    {
+                        AllSprites.Add(new Image2D(0, ImageType.WALL, j * 96, i * 96));
+                    }
+                    else if (Map[i, j] == "s")
+                    {
+                        AllSprites.Add(new Image2D(1, ImageType.SLIMUS_UP_ANIMATION_1, j * 96, i * 96));
+                    }
                     
                     /*else if (Map[i, j] == "b")
                         new Sprite2D(new Vector2(j * 64, i * 64), new Vector2(64, 64), SemSolidBlocks_Ref, "SemiSolidBlock");
@@ -133,6 +139,23 @@ namespace Explorus_K.Views
                 }
             }
             //Player = new Sprite2D(PlayerPostion, new Vector2(64 - StepSize, 64 - StepSize), Player_Ref, "Player");
+        }
+        public static void GameForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch(e.KeyValue)
+            {
+                case (char)Keys.Right:
+                    //do something;
+                case (char)Keys.Left:
+                    //do something;
+                case (char)Keys.Up:
+                    //do something;
+                case (char)Keys.Down:
+                //do something;
+                default:
+                    //do nothing
+                    break;
+            }
         }
     }
 }

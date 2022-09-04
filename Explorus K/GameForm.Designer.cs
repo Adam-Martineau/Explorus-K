@@ -1,4 +1,6 @@
-﻿namespace Explorus_K
+﻿using Explorus_K.Views;
+
+namespace Explorus_K
 {
     partial class GameForm
     {
@@ -39,7 +41,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "GameForm";
             this.Text = "Form1";
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GameForm_KeyDown);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(GameView.GameForm_KeyDown);
             this.ResumeLayout(false);
 
         }
