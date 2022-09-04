@@ -1,4 +1,6 @@
-﻿namespace Explorus_K
+﻿using Explorus_K.Views;
+
+namespace Explorus_K
 {
     partial class GameForm
     {

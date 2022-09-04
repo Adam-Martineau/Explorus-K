@@ -17,6 +17,7 @@ namespace Explorus_K
         public GameForm(GameEngine gameEngine)
         {
             InitializeComponent();
+            this.DoubleBuffered = true;
             this.gameEngine = gameEngine;
         }
 

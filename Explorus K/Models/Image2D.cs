@@ -11,13 +11,24 @@ namespace Explorus_K.Models
     {
         private int id;
         private ImageType type;
-        private Image image;
+        private int x;
+        private int y;
 
-        public Image2D(int id, ImageType type, Image image)
+        public int Y { get => y; set => y = value; }
+        public int X { get => x; set => x = value; }
+
+        public Image2D(int id, ImageType type)
         {
             this.id = id;
             this.type = type;
-            this.image = image;
+        }
+
+        public Image2D(int id, ImageType type, int x, int y)
+        {
+            this.id = id;
+            this.type = type;
+            this.x = x;
+            this.y = y;
         }
 
         public int getId()
@@ -51,21 +62,10 @@ namespace Explorus_K.Models
             setType(type);
             return this;
         }
-
-        public Image getImage()
+        
+        public Bitmap getBitmapFromContainer()
         {
-            return image;
-        }
-
-        public void setImage(Image image)
-        {
-            this.image = image;
-        }
-
-        public Image2D withImage(Image image)
-        {
-            setImage(image);
-            return this;
+            return SpriteContainer.getInstance().getBitmapByImageType(type);
         }
     }
 }

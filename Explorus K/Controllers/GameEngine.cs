@@ -27,6 +27,8 @@ namespace Explorus_K.Controllers
         {
             //Thread.Sleep(5000);
 
+            oView.OnLoad();
+
             double previous = getCurrentTime();
             double lag = 0.0;
             while (true)
