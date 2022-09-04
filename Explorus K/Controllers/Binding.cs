@@ -9,6 +9,7 @@ namespace Explorus_K.Controllers
 {
     enum Actions
     {
+        none,
         move_up,
         move_down,
         move_left,
@@ -16,12 +17,12 @@ namespace Explorus_K.Controllers
         pause
     }
 
-    internal class Bindings
+    internal class Binding
     {
         private Keys key;
         private Actions action;
         
-        public Bindings(Keys key, Actions action)
+        public Binding(Keys key, Actions action)
         {
             this.key = key;
             this.action = action;
