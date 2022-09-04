@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Explorus_K.Models;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -52,7 +53,9 @@ namespace Explorus_K.Views
         {
             Graphics g = e.Graphics;
             g.Clear(Color.Black);
-            g.FillRectangle(new SolidBrush(Color.Yellow), i, 20, 20, 20);
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_LEFT_ANIMATION_1), 20, 20);
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_LEFT_ANIMATION_2), 20, 120);
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_LEFT_ANIMATION_3), 20, 220);
             oGameForm.Text = gameTitle;
         }
 

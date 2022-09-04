@@ -16,5 +16,10 @@ namespace Explorus_K
         {
             InitializeComponent();
         }
+
+        private void GameForm_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
     }
 }
