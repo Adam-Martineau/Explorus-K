@@ -97,11 +97,11 @@ namespace Explorus_K.Views
                 if (type == ImageType.SMALL_SLIMUS || type == ImageType.GEM)
                 {
                     float pos = (bigSpriteDimension - smallSpriteDimension)/ 2;
-                    g.DrawImage(sp.getImage(), (float)(sp.X + pos), (float)(sp.Y + labyrinthPosition.Y + pos), smallSpriteDimension, smallSpriteDimension);
+                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(type), (float)(sp.X + pos), (float)(sp.Y + labyrinthPosition.Y + pos), smallSpriteDimension, smallSpriteDimension);
                 }
                 else
                 {
-                    g.DrawImage(sp.getImage(), (float)(sp.X), (float)(sp.Y + labyrinthPosition.Y), bigSpriteDimension, bigSpriteDimension);
+                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(type), (float)(sp.X), (float)(sp.Y + labyrinthPosition.Y), bigSpriteDimension, bigSpriteDimension);
                 }
                 
             }
@@ -124,17 +124,34 @@ namespace Explorus_K.Views
                 for (int j = 0; j < Map.GetLength(1); j++)
                 {
                     if (Map[i, j] == "w")
-                        AllSprites.Add(new Image2D(0, ImageType.WALL, SpriteContainer.getInstance().getBitmapByImageType(ImageType.WALL), j * bigSpriteDimension, i * bigSpriteDimension));
+                        AllSprites.Add(new Image2D(0, ImageType.WALL, j * bigSpriteDimension, i * bigSpriteDimension));
                     else if (Map[i, j] == "g")
-                        AllSprites.Add(new Image2D(0, ImageType.GEM, SpriteContainer.getInstance().getBitmapByImageType(ImageType.GEM), j * bigSpriteDimension, i * bigSpriteDimension));
+                        AllSprites.Add(new Image2D(0, ImageType.GEM, j * bigSpriteDimension, i * bigSpriteDimension));
                     else if (Map[i, j] == "m")
                     {
-                        AllSprites.Add(new Image2D(0, ImageType.SMALL_SLIMUS, SpriteContainer.getInstance().getBitmapByImageType(ImageType.SMALL_SLIMUS), j * bigSpriteDimension, i * bigSpriteDimension));
+                        AllSprites.Add(new Image2D(0, ImageType.SMALL_SLIMUS, j * bigSpriteDimension, i * bigSpriteDimension));
                     }
 
                 }
             }
             //Player = new Sprite2D(PlayerPostion, new Vector2(64 - StepSize, 64 - StepSize), Player_Ref, "Player");
+        }
+        public static void GameForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch(e.KeyValue)
+            {
+                case (char)Keys.Right:
+                    //do something;
+                case (char)Keys.Left:
+                    //do something;
+                case (char)Keys.Up:
+                    //do something;
+                case (char)Keys.Down:
+                //do something;
+                default:
+                    //do nothing
+                    break;
+            }
         }
     }
 }
