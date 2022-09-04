@@ -79,9 +79,9 @@ namespace Explorus_K.Views
 
             //g.DrawImage(SpriteContainer.getInstance().getImage2DList()[0].getImage(), 20, 20);
 
-            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_LEFT_ANIMATION_1), 20, 20);
-            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_LEFT_ANIMATION_2), 20, 120);
-            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_LEFT_ANIMATION_3), 20, 220);
+            //g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_LEFT_ANIMATION_1), 20, 20);
+            //g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_LEFT_ANIMATION_2), 20, 120);
+            //g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_LEFT_ANIMATION_3), 20, 220);
 
             oGameForm.Text = gameTitle;
 
@@ -108,7 +108,7 @@ namespace Explorus_K.Views
                 for (int j = 0; j < Map.GetLength(1); j++)
                 {
                     if (Map[i, j] == "w")
-                        AllSprites.Add(new Image2D(0, ImageType.MUR, SpriteContainer.getInstance().getImage2DList()[0].getImage(), j * 96, i * 96));
+                        AllSprites.Add(new Image2D(0, ImageType.WALL, SpriteContainer.getInstance().getBitmapByImageType(ImageType.WALL), j * 96, i * 96));
                     
                     /*else if (Map[i, j] == "b")
                         new Sprite2D(new Vector2(j * 64, i * 64), new Vector2(64, 64), SemSolidBlocks_Ref, "SemiSolidBlock");
