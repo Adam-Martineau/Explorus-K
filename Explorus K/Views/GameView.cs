@@ -76,7 +76,13 @@ namespace Explorus_K.Views
         {
             Graphics g = e.Graphics;
             g.Clear(Color.Black);
+
             //g.DrawImage(SpriteContainer.getInstance().getImage2DList()[0].getImage(), 20, 20);
+
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_LEFT_ANIMATION_1), 20, 20);
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_LEFT_ANIMATION_2), 20, 120);
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_LEFT_ANIMATION_3), 20, 220);
+
             oGameForm.Text = gameTitle;
 
             foreach (Image2D sp in AllSprites)

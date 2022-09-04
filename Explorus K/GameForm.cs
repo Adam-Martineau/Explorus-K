@@ -17,5 +17,10 @@ namespace Explorus_K
             InitializeComponent();
             this.DoubleBuffered = true;
         }
+
+        private void GameForm_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
     }
 }

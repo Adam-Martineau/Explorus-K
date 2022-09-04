@@ -13,13 +13,18 @@ namespace Explorus_K.Models
     {
         private static SpriteContainer instance = new SpriteContainer();
 
-        private const int IMAGE_DIMENSION = 48;
+        private const int SMALL_SQUARE_DIM = 48;
+        private const int BIG_SQUARE_DIM = 96;
+        private const int TILESHEET_FIRST_ROW_FIRST_HALF = 0;
+        private const int TILESHEET_FIRST_ROW_SECOND_HALF = 48;
+        private const int TILESHEET_SECOND_ROW = 96;
+        private const int TILESHEET_THIRD_ROW = 192;
 
-        private List<Image2D> image2DList;
+        private Dictionary<ImageType, Bitmap> bitmapsDictionary;
 
         private SpriteContainer()
         {
-            image2DList = new List<Image2D>();
+            bitmapsDictionary = new Dictionary<ImageType, Bitmap>();
             generateList();
         }
 
@@ -28,42 +33,58 @@ namespace Explorus_K.Models
             return instance;
         }
 
-        public List<Image2D> getImage2DList()
+        public Bitmap getBitmapByImageType(ImageType imageType)
         {
-            return image2DList;
+            if(!bitmapsDictionary.ContainsKey(imageType))
+            {
+                return new Bitmap(0, 0);
+            }
+
+            return bitmapsDictionary[imageType];
         }
 
         private void generateList()
         {
-            image2DList.Add(new Image2D(1, ImageType.MUR, cropImage(new Rectangle(0, 0, IMAGE_DIMENSION * 2, IMAGE_DIMENSION * 2))));
-            image2DList.Add(new Image2D(6, ImageType.SLIMUS_TITLE, cropImage(new Rectangle(IMAGE_DIMENSION * 2, 0, IMAGE_DIMENSION * 4, IMAGE_DIMENSION))));
+            bitmapsDictionary.Add(ImageType.WALL, cropImage(new Rectangle(0, TILESHEET_FIRST_ROW_FIRST_HALF, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.SLIMUS_TITLE, cropImage(new Rectangle(BIG_SQUARE_DIM, TILESHEET_FIRST_ROW_FIRST_HALF, SMALL_SQUARE_DIM * 4, SMALL_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.HEARTH, cropImage(new Rectangle(SMALL_SQUARE_DIM * 6, TILESHEET_FIRST_ROW_FIRST_HALF, SMALL_SQUARE_DIM, SMALL_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.BUBBLE_BIG, cropImage(new Rectangle(SMALL_SQUARE_DIM * 7, TILESHEET_FIRST_ROW_FIRST_HALF, SMALL_SQUARE_DIM, SMALL_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.BUBBLE_SMALL, cropImage(new Rectangle(SMALL_SQUARE_DIM * 8, TILESHEET_FIRST_ROW_FIRST_HALF, SMALL_SQUARE_DIM, SMALL_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.BUBBLE_EXPLODED, cropImage(new Rectangle(SMALL_SQUARE_DIM * 9, TILESHEET_FIRST_ROW_FIRST_HALF, SMALL_SQUARE_DIM, SMALL_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.GEM, cropImage(new Rectangle(SMALL_SQUARE_DIM * 10, TILESHEET_FIRST_ROW_FIRST_HALF, SMALL_SQUARE_DIM, SMALL_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.KEY, cropImage(new Rectangle(SMALL_SQUARE_DIM * 11, TILESHEET_FIRST_ROW_FIRST_HALF, SMALL_SQUARE_DIM, SMALL_SQUARE_DIM)));
+
+            bitmapsDictionary.Add(ImageType.LEFT_SIDE_BAR, cropImage(new Rectangle(BIG_SQUARE_DIM, TILESHEET_FIRST_ROW_SECOND_HALF, SMALL_SQUARE_DIM, SMALL_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.HEALTH_BAR_FULL, cropImage(new Rectangle(SMALL_SQUARE_DIM * 3, TILESHEET_FIRST_ROW_SECOND_HALF, SMALL_SQUARE_DIM, SMALL_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.HEALTH_BAR_HALF, cropImage(new Rectangle(SMALL_SQUARE_DIM * 4, TILESHEET_FIRST_ROW_SECOND_HALF, SMALL_SQUARE_DIM, SMALL_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.BUBBLE_BAR_FULL, cropImage(new Rectangle(SMALL_SQUARE_DIM * 5, TILESHEET_FIRST_ROW_SECOND_HALF, SMALL_SQUARE_DIM, SMALL_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.BUBBLE_BAR_HALF, cropImage(new Rectangle(SMALL_SQUARE_DIM * 6, TILESHEET_FIRST_ROW_SECOND_HALF, SMALL_SQUARE_DIM, SMALL_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.GEM_BAR_FULL, cropImage(new Rectangle(SMALL_SQUARE_DIM * 7, TILESHEET_FIRST_ROW_SECOND_HALF, SMALL_SQUARE_DIM, SMALL_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.GEM_BAR_HALF, cropImage(new Rectangle(SMALL_SQUARE_DIM * 8, TILESHEET_FIRST_ROW_SECOND_HALF, SMALL_SQUARE_DIM, SMALL_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.EMPTY_BAR, cropImage(new Rectangle(SMALL_SQUARE_DIM * 9, TILESHEET_FIRST_ROW_SECOND_HALF, SMALL_SQUARE_DIM, SMALL_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.RIGHT_SIDE_BAR, cropImage(new Rectangle(SMALL_SQUARE_DIM * 10, TILESHEET_FIRST_ROW_SECOND_HALF, SMALL_SQUARE_DIM, SMALL_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.SMALL_SLIMUS, cropImage(new Rectangle(SMALL_SQUARE_DIM * 11, TILESHEET_FIRST_ROW_SECOND_HALF, SMALL_SQUARE_DIM, SMALL_SQUARE_DIM)));
+
+            bitmapsDictionary.Add(ImageType.SLIMUS_DOWN_ANIMATION_1, cropImage(new Rectangle(0, TILESHEET_SECOND_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.SLIMUS_DOWN_ANIMATION_2, cropImage(new Rectangle(BIG_SQUARE_DIM, TILESHEET_SECOND_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.SLIMUS_DOWN_ANIMATION_3, cropImage(new Rectangle(BIG_SQUARE_DIM * 2, TILESHEET_SECOND_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.SLIMUS_RIGHT_ANIMATION_1, cropImage(new Rectangle(BIG_SQUARE_DIM * 3, TILESHEET_SECOND_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.SLIMUS_RIGHT_ANIMATION_2, cropImage(new Rectangle(BIG_SQUARE_DIM * 4, TILESHEET_SECOND_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.SLIMUS_RIGHT_ANIMATION_3, cropImage(new Rectangle(BIG_SQUARE_DIM * 5, TILESHEET_SECOND_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+
+            bitmapsDictionary.Add(ImageType.SLIMUS_UP_ANIMATION_1, cropImage(new Rectangle(0, TILESHEET_THIRD_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.SLIMUS_UP_ANIMATION_2, cropImage(new Rectangle(BIG_SQUARE_DIM, TILESHEET_THIRD_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.SLIMUS_UP_ANIMATION_3, cropImage(new Rectangle(BIG_SQUARE_DIM * 2, TILESHEET_THIRD_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.SLIMUS_LEFT_ANIMATION_1, cropImage(new Rectangle(BIG_SQUARE_DIM * 3, TILESHEET_THIRD_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.SLIMUS_LEFT_ANIMATION_2, cropImage(new Rectangle(BIG_SQUARE_DIM * 4, TILESHEET_THIRD_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.SLIMUS_LEFT_ANIMATION_3, cropImage(new Rectangle(BIG_SQUARE_DIM * 5, TILESHEET_THIRD_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
 
         }
-
 
         private Bitmap cropImage(Rectangle cropArea)
         {
             Bitmap imageComplete = Explorus_K.Properties.Resources.TilesSheet;
             return imageComplete.Clone(cropArea, imageComplete.PixelFormat);
         }
-
-        private List<Bitmap> extractSquareSpriteFromTileSheetRow(int startPointX, int startPointY, int numberToExtract, int spriteSquareSize)
-        {
-            List<Bitmap> bitmaps = new List<Bitmap>();
-
-            for(int i = 0; i < numberToExtract; i++)
-            {
-                bitmaps.Add(cropImage(new Rectangle(startPointX, startPointY, spriteSquareSize, spriteSquareSize)));
-                startPointX += spriteSquareSize;
-            }
-
-            return bitmaps;
-        }
-
-        private void fillSpriteListWithSmallSquare()
-        {
-
-        }
-
     }
 }
