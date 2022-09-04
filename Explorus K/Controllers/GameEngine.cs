@@ -52,6 +52,30 @@ namespace Explorus_K.Controllers
         {
             return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
         }
+    
+        private void goUp()
+        {
 
+        }
+
+        private void goDown()
+        {
+
+        }
+
+        private void goLeft()
+        {
+
+        }
+
+        private void goRight()
+        {
+
+        }
+
+        private void pauseGame()
+        {
+
+        }
     }
 }
