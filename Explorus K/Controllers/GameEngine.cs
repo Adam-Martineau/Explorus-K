@@ -8,6 +8,7 @@ namespace Explorus_K.Controllers
 {
     public class GameEngine
     {
+        private Actions currentAction = Actions.none;
         private GameView oView;
         private int MS_PER_FRAME = 16;
         private List<Binding> bindings;
@@ -23,10 +24,19 @@ namespace Explorus_K.Controllers
             oView.Show();
         }
 
+        private List<Binding> initiate_bindings()
+        {
+            List<Binding> bindings = new List<Binding>();
+            bindings.Add(new Binding(Keys.Up, Actions.move_up));
+            bindings.Add(new Binding(Keys.Down, Actions.move_down));
+            bindings.Add(new Binding(Keys.Left, Actions.move_left));
+            bindings.Add(new Binding(Keys.Right, Actions.move_right));
+            bindings.Add(new Binding(Keys.Escape, Actions.pause));
+            return bindings;
+        }
+
         private void GameLoop()
         {
-            //Thread.Sleep(5000);
-
             oView.OnLoad();
 
             double previous = getCurrentTime();
@@ -44,29 +54,28 @@ namespace Explorus_K.Controllers
                     lag -= MS_PER_FRAME;
                 }
 
-                //Key input management
+                //Actions state machine
+                actionManagement();
 
-                //double FPS = 1000 / elapsed;
-                //oView.setWindowTitle("Explorus-K FPS " + FPS.ToString());
                 oView.Render();
                 Thread.Sleep(1);
             }
         }
 
+        public void actionManagement()
+        {
+            //Actions state machine
+            if (currentAction == Actions.none) { }
+            else if (currentAction == Actions.move_left) { MessageBox.Show(Actions.move_left.ToString()); }
+            else if (currentAction == Actions.move_right) { MessageBox.Show(Actions.move_right.ToString()); }
+            else if (currentAction == Actions.move_up) { MessageBox.Show(Actions.move_up.ToString()); }
+            else if (currentAction == Actions.move_down) { MessageBox.Show(Actions.move_down.ToString()); }
+            else if (currentAction == Actions.pause) { MessageBox.Show(Actions.pause.ToString()); }
+        }
+
         private long getCurrentTime()
         {
             return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-        }
-    
-        private List<Binding> initiate_bindings()
-        {
-            List<Binding> bindings = new List<Binding>();
-            bindings.Add(new Binding(Keys.Up, Actions.move_up));
-            bindings.Add(new Binding(Keys.Down, Actions.move_down));
-            bindings.Add(new Binding(Keys.Left, Actions.move_left));
-            bindings.Add(new Binding(Keys.Right, Actions.move_right));
-            bindings.Add(new Binding(Keys.Escape, Actions.pause));
-            return bindings;
         }
 
         public void KeyEventHandler(KeyEventArgs e)
@@ -82,7 +91,7 @@ namespace Explorus_K.Controllers
 
         public void actionHandler(Actions action)
         {
-            MessageBox.Show(action.ToString());
+            currentAction = action;
         }
     }
 }

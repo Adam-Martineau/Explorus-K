@@ -136,22 +136,5 @@ namespace Explorus_K.Views
             }
             //Player = new Sprite2D(PlayerPostion, new Vector2(64 - StepSize, 64 - StepSize), Player_Ref, "Player");
         }
-        public static void GameForm_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch(e.KeyValue)
-            {
-                case (char)Keys.Right:
-                    //do something;
-                case (char)Keys.Left:
-                    //do something;
-                case (char)Keys.Up:
-                    //do something;
-                case (char)Keys.Down:
-                //do something;
-                default:
-                    //do nothing
-                    break;
-            }
-        }
     }
 }
