@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Explorus_K.Controllers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,14 +13,21 @@ namespace Explorus_K
 {
     public partial class GameForm : Form
     {
-        public GameForm()
+        private GameEngine gameEngine;
+        public GameForm(GameEngine gameEngine)
         {
             InitializeComponent();
+            this.gameEngine = gameEngine;
         }
 
         private void GameForm_KeyDown(object sender, KeyEventArgs e)
         {
+            gameEngine.KeyEventHandler(e);
+        }
 
+        private void GameForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            //ToDo: find a way to stop all processes
         }
     }
 }

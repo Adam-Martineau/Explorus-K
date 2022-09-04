@@ -1,4 +1,5 @@
-﻿using Explorus_K.Models;
+﻿using Explorus_K.Controllers;
+using Explorus_K.Models;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -15,9 +16,9 @@ namespace Explorus_K.Views
         int i = 0;
         string gameTitle;
 
-        public GameView()
+        public GameView(GameEngine gameEngine)
         {
-            oGameForm = new GameForm();
+            oGameForm = new GameForm(gameEngine);
             oGameForm.Paint += new PaintEventHandler(this.GameRenderer);
         }
 

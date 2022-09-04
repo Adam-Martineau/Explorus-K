@@ -6,20 +6,21 @@ using System.Windows.Forms;
 
 namespace Explorus_K.Controllers
 {
-    class GameEngine
+    public class GameEngine
     {
         private GameView oView;
         private int MS_PER_FRAME = 16;
-        private List<Binding> Bindings;
+        private List<Binding> bindings;
         private Actions game_state = Actions.none;
 
         public GameEngine()
         {
-            oView = new GameView();
+            //The game engine get passed from contructor to constructor until it reach GameForm.cs
+            oView = new GameView(this);
+            bindings = initiate_bindings();
             Thread thread = new Thread(new ThreadStart(GameLoop));
             thread.Start();
             oView.Show();
-            Bindings = initiate_bindings();
         }
 
         private void GameLoop()
@@ -64,6 +65,17 @@ namespace Explorus_K.Controllers
             bindings.Add(new Binding(Keys.Right, Actions.move_right));
             bindings.Add(new Binding(Keys.Escape, Actions.pause));
             return bindings;
+        }
+
+        public void KeyEventHandler(KeyEventArgs e)
+        {
+            foreach(Binding binding in bindings)
+            {
+                if(binding.Key == e.KeyCode)
+                {
+                    MessageBox.Show(binding.Key.ToString());
+                }
+            }
         }
     }
 }
