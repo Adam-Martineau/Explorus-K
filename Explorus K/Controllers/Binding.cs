@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Explorus_K.Controllers
 {
-    enum Actions
+    public enum Actions
     {
         none,
         move_up,
