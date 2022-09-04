@@ -16,7 +16,7 @@ namespace Explorus_K.Views
         public GameForm oGameForm;
         string gameTitle;
 
-        private Vector ScreenSize = new Vector(800, 800);
+        private Vector ScreenSize = new Vector(1080, 864);
 
         public static List<Image2D> AllSprites = new List<Image2D>();
 
@@ -41,7 +41,7 @@ namespace Explorus_K.Views
             oGameForm = new GameForm();
             oGameForm.Paint += new PaintEventHandler(this.GameRenderer);
             oGameForm.Size = new Size((int)this.ScreenSize.X, (int)this.ScreenSize.Y);
-            oGameForm.WindowState = FormWindowState.Maximized;
+            oGameForm.MinimumSize = new Size(600, 600);
         }
 
         public void Show() 
@@ -84,7 +84,7 @@ namespace Explorus_K.Views
                 g.DrawImage(sp.getImage(), sp.X, sp.Y);
             }
 
-            Console.WriteLine("Render");
+            //Console.WriteLine("Render");
         }
 
         public void setWindowTitle(string title)
