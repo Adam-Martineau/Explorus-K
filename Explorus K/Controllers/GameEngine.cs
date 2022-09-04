@@ -78,9 +78,9 @@ namespace Explorus_K.Controllers
             }
         }
 
-        public void actionHandler(Actions actions)
+        public void actionHandler(Actions action)
         {
-            MessageBox.Show(actions.ToString());
+            MessageBox.Show(action.ToString());
         }
     }
 }
