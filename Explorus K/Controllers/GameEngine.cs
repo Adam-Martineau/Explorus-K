@@ -1,11 +1,8 @@
 ﻿using Explorus_K.Views;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Explorus_K.Controllers
 {
@@ -13,6 +10,8 @@ namespace Explorus_K.Controllers
     {
         private GameView oView;
         private int MS_PER_FRAME = 16;
+        private List<Binding> Bindings;
+        private Actions game_state = Actions.none;
 
         public GameEngine()
         {
@@ -20,6 +19,7 @@ namespace Explorus_K.Controllers
             Thread thread = new Thread(new ThreadStart(GameLoop));
             thread.Start();
             oView.Show();
+            Bindings = initiate_bindings();
         }
 
         private void GameLoop()
@@ -41,6 +41,8 @@ namespace Explorus_K.Controllers
                     lag -= MS_PER_FRAME;
                 }
 
+                //Key input management
+
                 //double FPS = 1000 / elapsed;
                 //oView.setWindowTitle("Explorus-K FPS " + FPS.ToString());
                 oView.Render();
@@ -52,6 +54,16 @@ namespace Explorus_K.Controllers
         {
             return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
         }
-
+    
+        private List<Binding> initiate_bindings()
+        {
+            List<Binding> bindings = new List<Binding>();
+            bindings.Add(new Binding(Keys.Up, Actions.move_up));
+            bindings.Add(new Binding(Keys.Down, Actions.move_down));
+            bindings.Add(new Binding(Keys.Left, Actions.move_left));
+            bindings.Add(new Binding(Keys.Right, Actions.move_right));
+            bindings.Add(new Binding(Keys.Escape, Actions.pause));
+            return bindings;
+        }
     }
 }
