@@ -8,9 +8,9 @@ namespace Explorus_K.Models
 {
     internal enum ImageType
     {
-        MUR,
+        WALL,
         SLIMUS_TITLE,
-        COEUR,
+        HEARTH,
         BUBBLE_BIG,
         BUBBLE_SMALL,
         BUBBLE_EXPLODED,
