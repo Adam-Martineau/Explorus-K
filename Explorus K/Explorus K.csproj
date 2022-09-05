@@ -62,6 +62,7 @@
       <DependentUpon>GameForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Image2D.cs" />
+    <Compile Include="Models\ProgressionBarCreator.cs" />
     <Compile Include="Models\SpriteContainer.cs" />
     <Compile Include="Models\ImageType.cs" />
     <Compile Include="Program.cs" />

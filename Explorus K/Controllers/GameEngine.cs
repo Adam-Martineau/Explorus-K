@@ -1,4 +1,5 @@
-﻿using Explorus_K.Views;
+﻿using Explorus_K.Models;
+using Explorus_K.Views;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -13,6 +14,10 @@ namespace Explorus_K.Controllers
         private int MS_PER_FRAME = 16;
         private List<Binding> bindings;
         private Actions game_state = Actions.none;
+
+        private int lifeCount = 3;
+        private int bubbleCount = 3;
+        private int gemCount = 3;
 
         public GameEngine()
         {
@@ -37,6 +42,9 @@ namespace Explorus_K.Controllers
 
         private void GameLoop()
         {
+            oView.InitializeHeaderBar(new HealthBarCreator(), lifeCount);
+            oView.InitializeHeaderBar(new BubbleBarCreator(), bubbleCount);
+            oView.InitializeHeaderBar(new GemBarCreator(), gemCount);
             oView.OnLoad();
 
             double previous = getCurrentTime();
