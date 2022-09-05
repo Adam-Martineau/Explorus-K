@@ -19,11 +19,14 @@ namespace Explorus_K.Controllers
 		private int BUBBLE_COUNT = 3;
 		private int GEM_COUNT = 3;
 
+		//Time space continum related global variables
+		private double start_time = 0;
 		private int count = 0;
+		int next_expected_pos = 0;
 
-        private MapCollection MAP = new MapCollection(new string[,]{
-            {"w", "w", "w", "w", "w", "w", "w", "w", "w"},
-            {"w", "." ,".", ".", ".", ".", ".", ".", "w"},
+		private MapCollection MAP = new MapCollection(new string[,]{
+            { "w", "w", "w", "w", "w", "w", "w", "w", "w"},
+            { "w", "." ,".", ".", ".", ".", ".", ".", "w"},
             { "w", ".", "w", ".", "w", "w", "w", ".", "w"},
             { "w", "g", "w", ".", ".", ".", ".", ".", "w"},
             { "w", ".", "w", ".", "w", "w", "w", "s", "w"},
@@ -68,7 +71,7 @@ namespace Explorus_K.Controllers
 			GAME_VIEW.InitializeHeaderBar(new GemBarCreator(), GEM_COUNT);
 			GAME_VIEW.OnLoad(MAP);
 
-			double previous = getCurrentTime();
+			double previous_time = getCurrentTime();
 			double lag = 0.0;
 
 			while (!EXIT)
@@ -76,18 +79,18 @@ namespace Explorus_K.Controllers
 				//Actions state machine
 				systemActionsManagement();
 
-				double current = getCurrentTime();
-				double elapsed = current - previous;
-				previous = current;
-				lag += elapsed;
+				double current_time = getCurrentTime();
+				double elapsed_time = current_time - previous_time;
+				previous_time = current_time;
+				lag += elapsed_time;
 
 				if (!PAUSED)
 				{
-					characterActionsManagement();
+					characterActionsManagement(elapsed_time);
 
 					while (lag >= MS_PER_FRAME)
 					{
-						GAME_VIEW.Update(elapsed);
+						GAME_VIEW.Update(elapsed_time);
 						lag -= MS_PER_FRAME;
 					}
 
@@ -102,19 +105,6 @@ namespace Explorus_K.Controllers
 			}
 
 			Application.Exit();
-		}
-
-		public void systemActionsManagement()
-		{
-			//Actions state machine
-			if (CURRENT_ACTION == Actions.none) { }
-			else if (CURRENT_ACTION == Actions.pause) {
-				PAUSED = !PAUSED;
-				CURRENT_ACTION = Actions.none;
-			}
-			else if (CURRENT_ACTION == Actions.exit) {
-				EXIT = true;
-			}
 		}
 
 		//Receving the event from a keypress and checking if we have a action bind to that key
@@ -135,7 +125,11 @@ namespace Explorus_K.Controllers
 			if (action == Actions.pause || action == Actions.exit)
 				CURRENT_ACTION = action;
 			else if (action == Actions.move_left && MAP_ITERATOR.MoveLeft() && CURRENT_ACTION == Actions.none)
+			{
 				CURRENT_ACTION = action;
+				next_expected_pos = (MAP_ITERATOR.Current()[0] * 52) - 52;
+				start_time = getCurrentTime();
+			}
 			else if (action == Actions.move_right && MAP_ITERATOR.MoveRight() && CURRENT_ACTION == Actions.none)
 				CURRENT_ACTION = action;
 			else if (action == Actions.move_up && MAP_ITERATOR.MoveUp() && CURRENT_ACTION == Actions.none)
@@ -145,7 +139,7 @@ namespace Explorus_K.Controllers
 		}
 
 		//If the action can be done, we use a state machine to wait until the action is over
-		public void characterActionsManagement()
+		public void characterActionsManagement(double elapsed_time)
 		{
 			//Actions state machine
 			if (CURRENT_ACTION == Actions.none) { }
@@ -153,8 +147,8 @@ namespace Explorus_K.Controllers
 			{
 				if (count < 52)
 				{
-					count += 4;
-					GAME_VIEW.getSlimusObject().moveLeft(4);
+					count++;
+					GAME_VIEW.getSlimusObject().moveLeft(1);
 				}
 				else
 				{
@@ -180,6 +174,22 @@ namespace Explorus_K.Controllers
 			}
 		}
 
+		public void systemActionsManagement()
+		{
+			//Actions state machine
+			if (CURRENT_ACTION == Actions.none) { }
+			else if (CURRENT_ACTION == Actions.pause)
+			{
+				PAUSED = !PAUSED;
+				CURRENT_ACTION = Actions.none;
+			}
+			else if (CURRENT_ACTION == Actions.exit)
+			{
+				EXIT = true;
+			}
+		}
+
+		//Return the time in ms
 		private long getCurrentTime()
 		{
 			return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;

@@ -91,7 +91,6 @@ namespace Explorus_K.Views
             if (IsColliding(SpriteId.GEM))
             {
                 IncreaseGemBar();
-                Console.WriteLine("yoooooo");
             }
         }
 
