@@ -21,12 +21,30 @@ namespace Explorus_K.Controllers
 
 		private int count = 0;
 
-		public GameEngine()
+        private MapCollection MAP = new MapCollection(new string[,]{
+            {"w", "w", "w", "w", "w", "w", "w", "w", "w"},
+            {"w", "." ,".", ".", ".", ".", ".", ".", "w"},
+            { "w", ".", "w", ".", "w", "w", "w", ".", "w"},
+            { "w", "g", "w", ".", ".", ".", ".", ".", "w"},
+            { "w", ".", "w", ".", "w", "w", "w", "s", "w"},
+            { "w", ".", ".", ".", "w", "g", "w", "w", "w"},
+            { "w", ".", "w", "w", "w", ".", ".", ".", "w"},
+            { "w", ".", "w", "m", "w", ".", "w", ".", "w"},
+            { "w", ".", "w", "w", "w", ".", "w", "g", "w"},
+            { "w", ".", ".", ".", ".", ".", ".", ".", "w"},
+            { "w", "w", "w", "w", "w", "w", "w", "w", "w"}
+        });
+
+        private Iterator MAP_ITERATOR = null;
+
+        public GameEngine()
+
 		{
 			//The game engine get passed from contructor to constructor until it reach GameForm.cs
 			GAME_VIEW = new GameView(this);
 			BINDINGS = initiate_bindings();
-			Thread thread = new Thread(new ThreadStart(GameLoop));
+            MAP_ITERATOR = MAP.CreateIterator();
+            Thread thread = new Thread(new ThreadStart(GameLoop));
 			thread.Start();
 			GAME_VIEW.Show();
 		}
@@ -48,7 +66,7 @@ namespace Explorus_K.Controllers
 			GAME_VIEW.InitializeHeaderBar(new HealthBarCreator(), LIFE_COUNT);
 			GAME_VIEW.InitializeHeaderBar(new BubbleBarCreator(), BUBBLE_COUNT);
 			GAME_VIEW.InitializeHeaderBar(new GemBarCreator(), GEM_COUNT);
-			GAME_VIEW.OnLoad();
+			GAME_VIEW.OnLoad(MAP);
 
 			double previous = getCurrentTime();
 			double lag = 0.0;
@@ -148,6 +166,7 @@ namespace Explorus_K.Controllers
 			{
 				GAME_VIEW.getSlimusObject().moveRight(52);
 				CURRENT_ACTION = Actions.none;
+
 			}
 			else if (CURRENT_ACTION == Actions.move_up) 
 			{
