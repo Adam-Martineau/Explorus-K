@@ -187,6 +187,7 @@ namespace Explorus_K.Controllers
 				{
 					count = 0;
 					CURRENT_ACTION = Actions.none;
+					MAP_ITERATOR.MoveRight();
 				}
 
 			}
@@ -212,7 +213,8 @@ namespace Explorus_K.Controllers
 				{
 					count = 0;
 					CURRENT_ACTION = Actions.none;
-				}
+                    MAP_ITERATOR.MoveUp();
+                }
 			}
 			else if (CURRENT_ACTION == Actions.move_down) 
 			{
@@ -236,7 +238,8 @@ namespace Explorus_K.Controllers
 				{
 					count = 0;
 					CURRENT_ACTION = Actions.none;
-				}
+                    MAP_ITERATOR.MoveDown();
+                }
 			}
 		}
 
