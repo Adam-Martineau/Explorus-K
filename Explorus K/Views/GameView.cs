@@ -4,11 +4,9 @@ using Explorus_K.NewFolder1;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Size = System.Drawing.Size;
+using System.Drawing.Imaging;
 
 namespace Explorus_K.Views
 {
@@ -127,6 +125,8 @@ namespace Explorus_K.Views
             Graphics g = e.Graphics;
             g.Clear(Color.Black);
 
+            
+
             foreach (Image2D sp in ALL_SPRITE)
             {
                 SpriteId spriteId = sp.getId();
@@ -135,9 +135,18 @@ namespace Explorus_K.Views
                     float pos = (LARGE_SPRITE_DIMENSION - SMALL_SPRITE_DIMENSION)/ 2;
                     g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()), (float)(sp.X + pos), (float)(sp.Y + LABYRINTH_POSITION.Y + pos), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
                 }
-                else if(spriteId == SpriteId.SLIMUS)
+                else if (spriteId == SpriteId.SLIMUS)
                 {
                     g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(SLIMUS.getImageType()), SLIMUS.getPosX(), SLIMUS.getPosY() + LABYRINTH_POSITION.Y, LARGE_SPRITE_DIMENSION, LARGE_SPRITE_DIMENSION);
+                }
+                else if (spriteId == SpriteId.DOOR)
+                {
+                    Graphics graphics = Graphics.FromImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()));
+                    ColorMatrix colormatrix = new ColorMatrix();
+                    colormatrix.Matrix33 = 50;
+                    ImageAttributes imgAttribute = new ImageAttributes();
+                    imgAttribute.SetColorMatrix(colormatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()), new Rectangle(new Point(sp.X, sp.Y + LABYRINTH_POSITION.Y)), (float)(sp.X), (float)(sp.Y + LABYRINTH_POSITION.Y), LARGE_SPRITE_DIMENSION, LARGE_SPRITE_DIMENSION, GraphicsUnit.Pixel, imgAttribute);
                 }
                 else
                 {
@@ -174,6 +183,8 @@ namespace Explorus_K.Views
                     {
                         ALL_SPRITE.Add(new Image2D(0, ImageType.SLIMUS_DOWN_ANIMATION_1, i * LARGE_SPRITE_DIMENSION, j * LARGE_SPRITE_DIMENSION));
                     }
+                    else if (Map.getMap()[i, j] == "p")
+                        ALL_SPRITE.Add(new Image2D(SpriteId.DOOR, ImageType.WALL, i * LARGE_SPRITE_DIMENSION, j * LARGE_SPRITE_DIMENSION));
                 }
             }
         }
