@@ -87,6 +87,11 @@ namespace Explorus_K.Views
             i += (int) elapsed;
             double FPS = Math.Round(1000 / elapsed, 1);
             setWindowTitle("Explorus-K - FPS " + FPS.ToString());
+
+            if (IsColliding(SpriteId.GEM))
+            {
+                IncreaseGemBar();
+            }
         }
 
         private void HeaderRenderer(object sender, PaintEventArgs e)
@@ -232,6 +237,41 @@ namespace Explorus_K.Views
         {
             GEM_BAR.Increase();
             return GEM_BAR.getCurrent();
+        }
+
+        public bool IsColliding(SpriteId sprite)
+        {
+            float pos = (LARGE_SPRITE_DIMENSION - SMALL_SPRITE_DIMENSION) / 2;
+
+            float slimusX = SLIMUS.getPosX();
+            float slimusY = SLIMUS.getPosY() + LABYRINTH_POSITION.Y;
+
+            //foreach (Image2D sp in ALL_SPRITE.FindAll(im => im.getId() == sprite))
+            for (int i = 0; i < ALL_SPRITE.Count; i++)
+            {
+                Image2D sp = ALL_SPRITE[i];
+                if(sp.getId() == sprite)
+                {
+                    float objectX = sp.X + pos;
+                    float objectY = sp.Y + LABYRINTH_POSITION.Y + pos;
+
+                    if (slimusX < objectX + SMALL_SPRITE_DIMENSION &&
+                    slimusX + LARGE_SPRITE_DIMENSION > objectX &&
+                    slimusY < objectY + SMALL_SPRITE_DIMENSION &&
+                    slimusY + LARGE_SPRITE_DIMENSION > objectY)
+                    {
+                        ALL_SPRITE.RemoveAt(i);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public void removeSpriteAt(SpriteId sprite, int x, int y)
+        {
+            ALL_SPRITE.RemoveAt(x);
         }
     }
 }
