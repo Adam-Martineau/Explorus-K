@@ -157,7 +157,7 @@ namespace Explorus_K.Views
                     colormatrix.Matrix33 = 50;
                     ImageAttributes imgAttribute = new ImageAttributes();
                     imgAttribute.SetColorMatrix(colormatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()), new Rectangle(new Point(sp.X, sp.Y + LABYRINTH_POSITION.Y)), (float)(sp.X), (float)(sp.Y + LABYRINTH_POSITION.Y), LARGE_SPRITE_DIMENSION, LARGE_SPRITE_DIMENSION, GraphicsUnit.Pixel, imgAttribute);
+                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()), new Rectangle(), (float)(sp.X), (float)(sp.Y + LABYRINTH_POSITION.Y), LARGE_SPRITE_DIMENSION, LARGE_SPRITE_DIMENSION, GraphicsUnit.Pixel, imgAttribute);
                 }
                 else
                 {
