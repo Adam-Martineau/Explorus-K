@@ -10,7 +10,7 @@ namespace Explorus_K.Models
     {
         public abstract IBar FactoryMethod();
 
-        public List<Image2D> InitializeBar(int length)
+        public IBar InitializeBar(int length)
         {
             // Call the factory method to create a Product object.
             var bar = FactoryMethod();
@@ -45,62 +45,112 @@ namespace Explorus_K.Models
 
     interface IBar
     {
-        List<Image2D> Initialize(int length);
+        int getCurrent();
+        IBar Initialize(int length);
+        void Decrease();
+        void Increase();
     }
 
     class HealthBar : IBar
     {
-        public static List<Image2D> healthBar = new List<Image2D>();
+        public List<Image2D> healthBar = new List<Image2D>();
         private int current;
         private int length;
 
-        public List<Image2D> Initialize(int length)
+        public IBar Initialize(int length)
         {
-            this.current = 0;
+            this.current = length;
             this.length = length;
 
             healthBar.Add(new Image2D(0, ImageType.LEFT_SIDE_BAR));
             for (int i = 1; i < length + 1; i++)
             {
-                healthBar.Add(new Image2D(i, ImageType.EMPTY_BAR));
+                healthBar.Add(new Image2D(i, ImageType.HEALTH_BAR_FULL));
             }
             healthBar.Add(new Image2D(length + 1, ImageType.RIGHT_SIDE_BAR));
 
-            return healthBar;
+            return this;
+        }
+
+        public void Decrease()
+        {
+            if (current > 0)
+            {
+                healthBar[current].setType(ImageType.EMPTY_BAR);
+                current--;
+                //gemBar[current].setType(ImageType.GEM_BAR_HALF);
+            }
+        }
+        public void Increase()
+        {
+            if (current <= length)
+            {
+                healthBar[current].setType(ImageType.HEALTH_BAR_FULL);
+                current++;
+                //gemBar[current].setType(ImageType.GEM_BAR_HALF);
+            }
+        }
+
+
+        public int getCurrent()
+        {
+            return this.current;
         }
     }
 
     class BubbleBar : IBar
     {
-        public static List<Image2D> bubbleBar = new List<Image2D>();
+        public List<Image2D> bubbleBar = new List<Image2D>();
         private int current;
         private int length;
 
-        public List<Image2D> Initialize(int length)
+        public IBar Initialize(int length)
         {
-            this.current = 0;
+            this.current = length;
             this.length = length;
 
             bubbleBar.Add(new Image2D(0, ImageType.LEFT_SIDE_BAR));
             for (int i = 1; i < length + 1; i++)
             {
-                bubbleBar.Add(new Image2D(i, ImageType.EMPTY_BAR));
+                bubbleBar.Add(new Image2D(i, ImageType.BUBBLE_BAR_FULL));
             }
             bubbleBar.Add(new Image2D(length + 1, ImageType.RIGHT_SIDE_BAR));
 
-            return bubbleBar;
+            return this;
+        }
+        public void Decrease()
+        {
+            if (current > 0)
+            {
+                bubbleBar[current].setType(ImageType.EMPTY_BAR);
+                current--;
+                //gemBar[current].setType(ImageType.GEM_BAR_HALF);
+            }
+        }
+        public void Increase()
+        {
+            if (current <= length)
+            {
+                bubbleBar[current].setType(ImageType.BUBBLE_BAR_FULL);
+                current++;
+                //gemBar[current].setType(ImageType.GEM_BAR_HALF);
+            }
+        }
+        public int getCurrent()
+        {
+            return this.current;
         }
     }
 
     class GemBar : IBar
     {
-        public static List<Image2D> gemBar = new List<Image2D>();
+        public List<Image2D> gemBar = new List<Image2D>();
         private int current;
         private int length;
 
-        public List<Image2D> Initialize(int length)
+        public IBar Initialize(int length)
         {
-            this.current = 0;
+            this.current = 1;
             this.length = length;
 
             gemBar.Add(new Image2D(0, ImageType.LEFT_SIDE_BAR));
@@ -110,7 +160,30 @@ namespace Explorus_K.Models
             }
             gemBar.Add(new Image2D(length+1, ImageType.RIGHT_SIDE_BAR));
 
-            return gemBar;
+            return this;
+        }
+
+        public void Decrease()
+        {
+            if(current > 0)
+            {
+                gemBar[current].setType(ImageType.EMPTY_BAR);
+                current--;
+                //gemBar[current].setType(ImageType.GEM_BAR_HALF);
+            }
+        }
+        public void Increase()
+        {
+            if (current <= length)
+            {
+                gemBar[current].setType(ImageType.GEM_BAR_FULL);
+                current++;
+                //gemBar[current].setType(ImageType.GEM_BAR_HALF);
+            }
+        }
+        public int getCurrent()
+        {
+            return this.current;
         }
     }
 }
