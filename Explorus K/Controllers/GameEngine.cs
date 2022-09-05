@@ -12,7 +12,7 @@ namespace Explorus_K.Controllers
 		private GameView GAME_VIEW;
 		private List<Binding> BINDINGS;
 		private Actions CURRENT_ACTION = Actions.none;
-		private int MS_PER_FRAME = 16;
+		private int MS_PER_FRAME = 200;
 		private bool EXIT = false;
 		private bool PAUSED = false;
 		private int LIFE_COUNT = 3;
@@ -134,13 +134,13 @@ namespace Explorus_K.Controllers
         {
 			if (action == Actions.pause || action == Actions.exit)
 				CURRENT_ACTION = action;
-			else if (action == Actions.move_left && GAME_VIEW.MoveToLeft() && CURRENT_ACTION == Actions.none)
+			else if (action == Actions.move_left && MAP_ITERATOR.MoveLeft() && CURRENT_ACTION == Actions.none)
 				CURRENT_ACTION = action;
-			else if (action == Actions.move_right && GAME_VIEW.MoveToRight() && CURRENT_ACTION == Actions.none)
+			else if (action == Actions.move_right && MAP_ITERATOR.MoveRight() && CURRENT_ACTION == Actions.none)
 				CURRENT_ACTION = action;
-			else if (action == Actions.move_up && GAME_VIEW.MoveToUp() && CURRENT_ACTION == Actions.none)
+			else if (action == Actions.move_up && MAP_ITERATOR.MoveUp() && CURRENT_ACTION == Actions.none)
 				CURRENT_ACTION = action;
-			else if (action == Actions.move_down && GAME_VIEW.MoveToDown() && CURRENT_ACTION == Actions.none)
+			else if (action == Actions.move_down && MAP_ITERATOR.MoveDown() && CURRENT_ACTION == Actions.none)
 				CURRENT_ACTION = action;
 		}
 
