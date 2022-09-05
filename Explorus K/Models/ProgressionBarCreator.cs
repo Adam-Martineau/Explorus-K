@@ -50,6 +50,7 @@ namespace Explorus_K.Models
         IBar Initialize(int length);
         void Decrease();
         void Increase();
+        int getLength();
     }
 
     class HealthBar : IBar
@@ -92,10 +93,14 @@ namespace Explorus_K.Models
             }
         }
 
-
         public int getCurrent()
         {
             return this.current;
+        }
+
+        public int getLength()
+        {
+            return this.length;
         }
     }
 
@@ -141,6 +146,11 @@ namespace Explorus_K.Models
         {
             return this.current;
         }
+
+        public int getLength()
+        {
+            return this.length;
+        }
     }
 
     class GemBar : IBar
@@ -151,7 +161,7 @@ namespace Explorus_K.Models
 
         public IBar Initialize(int length)
         {
-            this.current = 1;
+            this.current = 0;
             this.length = length;
 
             gemBar.Add(new Image2D(0, ImageType.LEFT_SIDE_BAR, 0, 1));
@@ -177,7 +187,7 @@ namespace Explorus_K.Models
         {
             if (current <= length)
             {
-                gemBar[current].setType(ImageType.GEM_BAR_FULL);
+                gemBar[current+1].setType(ImageType.GEM_BAR_FULL);
                 current++;
                 //gemBar[current].setType(ImageType.GEM_BAR_HALF);
             }
@@ -185,6 +195,11 @@ namespace Explorus_K.Models
         public int getCurrent()
         {
             return this.current;
+        }
+
+        public int getLength()
+        {
+            return this.length;
         }
     }
 }
