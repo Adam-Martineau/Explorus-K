@@ -14,6 +14,7 @@ namespace Explorus_K.Models
         public abstract bool MoveRight();
         public abstract bool MoveUp();
         public abstract bool MoveDown();
+        public abstract int[] findPosition(string key);
     }
 
     /// <summary>
@@ -37,7 +38,7 @@ namespace Explorus_K.Models
              _position = findPosition("s");
         }
 
-        public int[] findPosition(string key)
+        public override int[] findPosition(string key)
         {
             // initialising result array to -1 in case keyString
             // is not found
