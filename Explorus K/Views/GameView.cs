@@ -95,7 +95,10 @@ namespace Explorus_K.Views
                 IncreaseGemBar();
             }
 
-            //if(IsColliding(SpriteId))
+            if (KEY_STATE.CurrentState() == "WithKeyState")
+            {
+                IsColliding(SpriteId.DOOR);
+            }
         }
 
         private void HeaderRenderer(object sender, PaintEventArgs e)
@@ -281,11 +284,6 @@ namespace Explorus_K.Views
             }
 
             return false;
-        }
-
-        public void removeSpriteAt(SpriteId sprite, int x, int y)
-        {
-            ALL_SPRITE.RemoveAt(x);
         }
     }
 }
