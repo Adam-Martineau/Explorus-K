@@ -32,9 +32,9 @@ namespace Explorus_K.Views
         private int screenHeight = 600;
 
         public static List<Image2D> AllSprites = new List<Image2D>();
-        public List<Image2D> healthBar = new List<Image2D>();
-        public List<Image2D> bubbleBar = new List<Image2D>();
-        public List<Image2D> gemBar = new List<Image2D>();
+        public HealthBar healthBar = new HealthBar();
+        public BubbleBar bubbleBar = new BubbleBar();
+        public GemBar gemBar = new GemBar();
 
         readonly string[,] Map =
         {
@@ -45,7 +45,7 @@ namespace Explorus_K.Views
             {"w",".","w",".","w","w","w","w","w",".","w"},
             {"w",".","w",".","w","g",".",".",".",".","w"},
             {"w",".","w",".","w","w",".","w","w",".","w"},
-            {"w",".","w",".","s","w",".",".","g",".","w"},
+            {"w",".",".",".","s","w",".",".","g",".","w"},
             {"w","w","w","w","w","w","w","w","w","w","w"}
         };
 
@@ -108,19 +108,19 @@ namespace Explorus_K.Views
 
             g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.HEARTH), (int)((screenWidth/4)*0.95), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
             
-            foreach (Image2D image in healthBar)
+            foreach (Image2D image in healthBar.healthBar)
             {
                 g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 4) * 1)+(image.getId()* smallSpriteDimension), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
             }
 
             g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.BUBBLE_BIG), (int)((screenWidth / 4) * 1.95), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
-            foreach (Image2D image in bubbleBar)
+            foreach (Image2D image in bubbleBar.bubbleBar)
             {
                 g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 4) * 2) + (image.getId() * smallSpriteDimension), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
             }
 
             g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.GEM), (int)((screenWidth / 4) * 2.95), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
-            foreach (Image2D image in gemBar)
+            foreach (Image2D image in gemBar.gemBar)
             {
                 g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 4) * 3) + (image.getId() * smallSpriteDimension), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
             }
@@ -177,20 +177,56 @@ namespace Explorus_K.Views
 
         public void InitializeHeaderBar(ProgressionBarCreator creator, int count)
         {
-            List<Image2D> bar = creator.InitializeBar(count);
+            IBar bar = creator.InitializeBar(count);
 
             if(creator.GetType() == typeof(HealthBarCreator))
             {
-                this.healthBar = bar;
+                this.healthBar = (HealthBar)bar;
             }
             else if (creator.GetType() == typeof(BubbleBarCreator))
             {
-                this.bubbleBar = bar;
+                this.bubbleBar = (BubbleBar)bar;
             }
             else if (creator.GetType() == typeof(GemBarCreator))
             {
-                this.gemBar = bar;
+                this.gemBar = (GemBar)bar;
             }
+        }
+
+        public int DecreaseHealthBar()
+        {
+            healthBar.Decrease();
+            return healthBar.getCurrent();
+        }
+
+        public int DecreaseBubbleBar()
+        {
+            bubbleBar.Decrease();
+            return bubbleBar.getCurrent();
+        }
+
+        public int DecreaseGemBar()
+        {
+            gemBar.Decrease();
+            return gemBar.getCurrent();
+        }
+
+        public int IncreaseHealthBar()
+        {
+            healthBar.Increase();
+            return healthBar.getCurrent();
+        }
+
+        public int IncreaseBubbleBar()
+        {
+            bubbleBar.Increase();
+            return bubbleBar.getCurrent();
+        }
+
+        public int IncreaseGemBar()
+        {
+            gemBar.Increase();
+            return gemBar.getCurrent();
         }
     }
 }

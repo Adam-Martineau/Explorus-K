@@ -66,6 +66,11 @@ namespace Explorus_K.Controllers
                 //Actions state machine
                 actionManagement();
 
+                Thread.Sleep(1000);
+                gemCount = oView.IncreaseGemBar();
+                //bubbleCount = oView.DecreaseBubbleBar();
+                //lifeCount = oView.DecreaseHealthBar();
+
                 oView.Render();
                 Thread.Sleep(1);
             }
