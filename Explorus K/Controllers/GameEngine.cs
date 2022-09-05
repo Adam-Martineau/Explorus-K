@@ -19,6 +19,8 @@ namespace Explorus_K.Controllers
 		private int BUBBLE_COUNT = 3;
 		private int GEM_COUNT = 3;
 
+		private int count = 0;
+
 		public GameEngine()
 		{
 			//The game engine get passed from contructor to constructor until it reach GameForm.cs
@@ -103,8 +105,16 @@ namespace Explorus_K.Controllers
 			if (CURRENT_ACTION == Actions.none) { }
 			else if (CURRENT_ACTION == Actions.move_left)
 			{
-				GAME_VIEW.getSlimusObject().moveLeft(52);
-				CURRENT_ACTION = Actions.none;
+				if (count < 52)
+				{
+					count += 2;
+					GAME_VIEW.getSlimusObject().moveLeft(2);
+				}
+				else
+				{
+					count = 0;
+					CURRENT_ACTION = Actions.none;
+				}
 			}
 			else if (CURRENT_ACTION == Actions.move_right)
 			{
