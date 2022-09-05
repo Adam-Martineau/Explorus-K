@@ -75,24 +75,23 @@ namespace Explorus_K.Controllers
         {
             //Actions state machine
             if (currentAction == Actions.none) { }
-            else if (currentAction == Actions.move_left) { 
-                MessageBox.Show(Actions.move_left.ToString());
+            else if (currentAction == Actions.move_left) {
+                oView.getSlimusObject().moveLeft(52);
                 currentAction = Actions.none;
             }
-            else if (currentAction == Actions.move_right) { 
-                MessageBox.Show(Actions.move_right.ToString());
+            else if (currentAction == Actions.move_right) {
+                oView.getSlimusObject().moveRight(52);
                 currentAction = Actions.none;
             }
-            else if (currentAction == Actions.move_up) { 
-                MessageBox.Show(Actions.move_up.ToString());
+            else if (currentAction == Actions.move_up) {
+                oView.getSlimusObject().moveUp(52);
                 currentAction = Actions.none;
             }
-            else if (currentAction == Actions.move_down) { 
-                MessageBox.Show(Actions.move_down.ToString());
+            else if (currentAction == Actions.move_down) {
+                oView.getSlimusObject().moveDown(52);
                 currentAction = Actions.none;
             }
             else if (currentAction == Actions.pause) { 
-                MessageBox.Show(Actions.pause.ToString());
                 currentAction = Actions.none;
             }
         }

@@ -1,5 +1,6 @@
 ﻿using Explorus_K.Controllers;
 using Explorus_K.Models;
+using Explorus_K.NewFolder1;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -31,10 +32,13 @@ namespace Explorus_K.Views
         private int screenWidth = 600;
         private int screenHeight = 600;
 
-        public static List<Image2D> AllSprites = new List<Image2D>();
         public List<Image2D> healthBar = new List<Image2D>();
         public List<Image2D> bubbleBar = new List<Image2D>();
         public List<Image2D> gemBar = new List<Image2D>();
+        
+        private List<Image2D> AllSprites = new List<Image2D>();
+
+        private Slimus slimus;
 
         readonly string[,] Map =
         {
@@ -133,15 +137,19 @@ namespace Explorus_K.Views
 
             foreach (Image2D sp in AllSprites)
             {
-                ImageType type = sp.getType();
-                if (type == ImageType.SMALL_SLIMUS || type == ImageType.GEM)
+                SpriteId spriteId = sp.getId();
+                if (spriteId == SpriteId.MINI_SLIMUS || spriteId == SpriteId.GEM)
                 {
                     float pos = (bigSpriteDimension - smallSpriteDimension)/ 2;
-                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(type), (float)(sp.X + pos), (float)(sp.Y + labyrinthPosition.Y + pos), smallSpriteDimension, smallSpriteDimension);
+                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()), (float)(sp.X + pos), (float)(sp.Y + labyrinthPosition.Y + pos), smallSpriteDimension, smallSpriteDimension);
+                }
+                else if(spriteId == SpriteId.SLIMUS)
+                {
+                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(slimus.getImageType()), slimus.getPosX(), slimus.getPosY() + labyrinthPosition.Y, bigSpriteDimension, bigSpriteDimension);
                 }
                 else
                 {
-                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(type), (float)(sp.X), (float)(sp.Y + labyrinthPosition.Y), bigSpriteDimension, bigSpriteDimension);
+                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()), (float)(sp.X), (float)(sp.Y + labyrinthPosition.Y), bigSpriteDimension, bigSpriteDimension);
                 }
             }
         }
@@ -159,12 +167,17 @@ namespace Explorus_K.Views
                 for (int j = 0; j < Map.GetLength(1); j++)
                 {
                     if (Map[i, j] == "w")
-                        AllSprites.Add(new Image2D(0, ImageType.WALL, j * bigSpriteDimension, i * bigSpriteDimension));
+                        AllSprites.Add(new Image2D(SpriteId.WALL, ImageType.WALL, j * bigSpriteDimension, i * bigSpriteDimension));
                     else if (Map[i, j] == "g")
-                        AllSprites.Add(new Image2D(0, ImageType.GEM, j * bigSpriteDimension, i * bigSpriteDimension));
+                        AllSprites.Add(new Image2D(SpriteId.GEM, ImageType.GEM, j * bigSpriteDimension, i * bigSpriteDimension));
                     else if (Map[i, j] == "m")
                     {
-                        AllSprites.Add(new Image2D(0, ImageType.SMALL_SLIMUS, j * bigSpriteDimension, i * bigSpriteDimension));
+                        AllSprites.Add(new Image2D(SpriteId.MINI_SLIMUS, ImageType.SMALL_SLIMUS, j * bigSpriteDimension, i * bigSpriteDimension));
+                    }
+                    else if(Map[i, j] == "s")
+                    {
+                        slimus = new Slimus(j * bigSpriteDimension, i * bigSpriteDimension);
+                        AllSprites.Add(new Image2D(SpriteId.SLIMUS, slimus.getImageType(), slimus.getPosX(), slimus.getPosY()));
                     }
                     else if (Map[i, j] == "s")
                     {
@@ -172,7 +185,13 @@ namespace Explorus_K.Views
                     }
                 }
             }
-            //Player = new Sprite2D(PlayerPostion, new Vector2(64 - StepSize, 64 - StepSize), Player_Ref, "Player");
+        }
+
+        //public void refreshSingleSprite(SpriteId spriteId, )
+
+        public Slimus getSlimusObject()
+        {
+            return slimus;
         }
 
         public void InitializeHeaderBar(ProgressionBarCreator creator, int count)

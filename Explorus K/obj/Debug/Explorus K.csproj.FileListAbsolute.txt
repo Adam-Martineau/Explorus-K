@@ -59,4 +59,10 @@ C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explor
 C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.CopyComplete
 C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explorus K.exe
 C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explorus K.pdb
+<<<<<<< HEAD
 >>>>>>> dafa052e5c229d479c2c6040aac8b03c72671a9b
+=======
+C:\Users\matsh\Documents\S8\APP1\Explorus-K\Explorus K\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\matsh\Documents\S8\APP1\Explorus-K\Explorus K\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\matsh\Documents\S8\APP1\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.CopyComplete
+>>>>>>> MakeSlimusMove
