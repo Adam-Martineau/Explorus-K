@@ -12,6 +12,7 @@ namespace Explorus_K.NewFolder1
         GEM,
         SLIMUS,
         MINI_SLIMUS,
-        DOOR
+        DOOR,
+        BAR
     }
 }

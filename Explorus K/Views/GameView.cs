@@ -32,10 +32,10 @@ namespace Explorus_K.Views
         private int screenWidth = 600;
         private int screenHeight = 600;
 
-        public List<Image2D> healthBar = new List<Image2D>();
-        public List<Image2D> bubbleBar = new List<Image2D>();
-        public List<Image2D> gemBar = new List<Image2D>();
-        
+        public HealthBar healthBar = new HealthBar();
+        public BubbleBar bubbleBar = new BubbleBar();
+        public GemBar gemBar = new GemBar();
+
         private Slimus slimus;
 
         public static List<Image2D> AllSprites = new List<Image2D>();
@@ -114,19 +114,19 @@ namespace Explorus_K.Views
             
             foreach (Image2D image in healthBar.healthBar)
             {
-                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 4) * 1)+(image.getId()* smallSpriteDimension), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
+                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 4) * 1)+(image.X* smallSpriteDimension), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
             }
 
             g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.BUBBLE_BIG), (int)((screenWidth / 4) * 1.95), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
             foreach (Image2D image in bubbleBar.bubbleBar)
             {
-                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 4) * 2) + (image.getId() * smallSpriteDimension), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
+                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 4) * 2) + (image.X * smallSpriteDimension), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
             }
 
             g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.GEM), (int)((screenWidth / 4) * 2.95), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
             foreach (Image2D image in gemBar.gemBar)
             {
-                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 4) * 3) + (image.getId() * smallSpriteDimension), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
+                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 4) * 3) + (image.X * smallSpriteDimension), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
             }
         }
 

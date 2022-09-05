@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Explorus_K.NewFolder1;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -62,12 +63,12 @@ namespace Explorus_K.Models
             this.current = length;
             this.length = length;
 
-            healthBar.Add(new Image2D(0, ImageType.LEFT_SIDE_BAR));
+            healthBar.Add(new Image2D(SpriteId.BAR, ImageType.LEFT_SIDE_BAR, 0, 1));
             for (int i = 1; i < length + 1; i++)
             {
-                healthBar.Add(new Image2D(i, ImageType.HEALTH_BAR_FULL));
+                healthBar.Add(new Image2D(SpriteId.BAR, ImageType.HEALTH_BAR_FULL, i, 1));
             }
-            healthBar.Add(new Image2D(length + 1, ImageType.RIGHT_SIDE_BAR));
+            healthBar.Add(new Image2D(SpriteId.BAR, ImageType.RIGHT_SIDE_BAR, length + 1, 1));
 
             return this;
         }
@@ -109,12 +110,12 @@ namespace Explorus_K.Models
             this.current = length;
             this.length = length;
 
-            bubbleBar.Add(new Image2D(0, ImageType.LEFT_SIDE_BAR));
+            bubbleBar.Add(new Image2D(0, ImageType.LEFT_SIDE_BAR, 0, 1));
             for (int i = 1; i < length + 1; i++)
             {
-                bubbleBar.Add(new Image2D(i, ImageType.BUBBLE_BAR_FULL));
+                bubbleBar.Add(new Image2D(SpriteId.BAR, ImageType.BUBBLE_BAR_FULL, i, 1));
             }
-            bubbleBar.Add(new Image2D(length + 1, ImageType.RIGHT_SIDE_BAR));
+            bubbleBar.Add(new Image2D(SpriteId.BAR, ImageType.RIGHT_SIDE_BAR, length + 1, 1));
 
             return this;
         }
@@ -153,12 +154,12 @@ namespace Explorus_K.Models
             this.current = 1;
             this.length = length;
 
-            gemBar.Add(new Image2D(0, ImageType.LEFT_SIDE_BAR));
+            gemBar.Add(new Image2D(0, ImageType.LEFT_SIDE_BAR, 0, 1));
             for (int i = 1; i < length+1; i++)
             {
-                gemBar.Add(new Image2D(i, ImageType.EMPTY_BAR));
+                gemBar.Add(new Image2D(SpriteId.BAR, ImageType.EMPTY_BAR, i, 1));
             }
-            gemBar.Add(new Image2D(length+1, ImageType.RIGHT_SIDE_BAR));
+            gemBar.Add(new Image2D(SpriteId.BAR, ImageType.RIGHT_SIDE_BAR, length+1, 1));
 
             return this;
         }
