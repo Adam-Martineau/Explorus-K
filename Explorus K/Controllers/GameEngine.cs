@@ -94,14 +94,10 @@ namespace Explorus_K.Controllers
 						lag -= MS_PER_FRAME;
 					}
 
-					//gemCount = oView.IncreaseGemBar();
-					//bubbleCount = oView.DecreaseBubbleBar();
-					//lifeCount = oView.DecreaseHealthBar();
-
 					GAME_VIEW.Render();
 				}
 
-				Thread.Sleep(1);
+				Thread.Sleep(199);
 			}
 
 			Application.Exit();
