@@ -40,18 +40,21 @@ namespace Explorus_K.Views
 
         public static List<Image2D> ALL_SPRITE = new List<Image2D>();
 
-        readonly string[,] Map =
-        {
-            {"w","w","w","w","w","w","w","w","w","w","w"},
-            {"w",".",".","g",".",".",".",".",".",".","w"},
-            {"w",".","w","w","w",".","w","w","w",".","w"},
-            {"w",".",".",".",".",".","w","m","w",".","w"},
-            {"w",".","w",".","w","w","w","w","w",".","w"},
-            {"w",".","w",".","w","g",".",".",".",".","w"},
-            {"w",".","w",".","w","w",".","w","w",".","w"},
-            {"w",".",".",".","s","w",".",".","g",".","w"},
-            {"w","w","w","w","w","w","w","w","w","w","w"}
-        };
+        private MapCollection Map = new MapCollection(new string[,]{
+            {"w", "w", "w", "w", "w", "w", "w", "w", "w"},
+            {"w", "." ,".", ".", ".", ".", ".", ".", "w"},
+            { "w", ".", "w", ".", "w", "w", "w", ".", "w"},
+            { "w", "g", "w", ".", ".", ".", ".", ".", "w"},
+            { "w", ".", "w", ".", "w", "w", "w", "s", "w"},
+            { "w", ".", ".", ".", "w", "g", "w", "w", "w"},
+            { "w", ".", "w", "w", "w", ".", ".", ".", "w"},
+            { "w", ".", "w", "m", "w", ".", "w", ".", "w"},
+            { "w", ".", "w", "w", "w", ".", "w", "g", "w"},
+            { "w", ".", ".", ".", ".", ".", ".", ".", "w"},
+            { "w", "w", "w", "w", "w", "w", "w", "w", "w"}
+        });
+
+        private Iterator mapIterator = null;
 
         int i = 0;
 
@@ -64,6 +67,8 @@ namespace Explorus_K.Views
             HEADER_POSITION = new Point(0, 0);
             LABYRINTH_POSITION = new Point((int)((SCREEN_WIDTH-LABYRINTH_WIDTH)/2), (int)HEADER_HIGHT);
 
+
+            mapIterator = Map.CreateIterator();
             GAME_HEADER.Dock = DockStyle.Top;
             GAME_LABYRINTH.Dock = DockStyle.Fill;
 
@@ -161,27 +166,26 @@ namespace Explorus_K.Views
 
         public void OnLoad()
         {
-            for (int i = 0; i < Map.GetLength(0); i++)
-
+            for (int i = 0; i < Map.getLengthX(); i++)
             {
-                for (int j = 0; j < Map.GetLength(1); j++)
+                for (int j = 0; j < Map.getLengthY(); j++)
                 {
-                    if (Map[i, j] == "w")
-                        ALL_SPRITE.Add(new Image2D(SpriteId.WALL, ImageType.WALL, j * LARGE_SPRITE_DIMENSION, i * LARGE_SPRITE_DIMENSION));
-                    else if (Map[i, j] == "g")
-                        ALL_SPRITE.Add(new Image2D(SpriteId.GEM, ImageType.GEM, j * LARGE_SPRITE_DIMENSION, i * LARGE_SPRITE_DIMENSION));
-                    else if (Map[i, j] == "m")
+                    if (Map.getMap()[i, j] == "w")
+                        ALL_SPRITE.Add(new Image2D(SpriteId.WALL, ImageType.WALL, i * LARGE_SPRITE_DIMENSION, j * LARGE_SPRITE_DIMENSION));
+                    else if (Map.getMap()[i, j] == "g")
+                        ALL_SPRITE.Add(new Image2D(SpriteId.GEM, ImageType.GEM, i * LARGE_SPRITE_DIMENSION, j * LARGE_SPRITE_DIMENSION));
+                    else if (Map.getMap()[i, j] == "m")
                     {
-                        ALL_SPRITE.Add(new Image2D(SpriteId.MINI_SLIMUS, ImageType.SMALL_SLIMUS, j * LARGE_SPRITE_DIMENSION, i * LARGE_SPRITE_DIMENSION));
+                        ALL_SPRITE.Add(new Image2D(SpriteId.MINI_SLIMUS, ImageType.SMALL_SLIMUS, i * LARGE_SPRITE_DIMENSION, j * LARGE_SPRITE_DIMENSION));
                     }
-                    else if(Map[i, j] == "s")
+                    else if(Map.getMap()[i, j] == "s")
                     {
-                        SLIMUS = new Slimus(j * LARGE_SPRITE_DIMENSION, i * LARGE_SPRITE_DIMENSION);
+                        SLIMUS = new Slimus(i * LARGE_SPRITE_DIMENSION, j * LARGE_SPRITE_DIMENSION);
                         ALL_SPRITE.Add(new Image2D(SpriteId.SLIMUS, SLIMUS.getImageType(), SLIMUS.getPosX(), SLIMUS.getPosY()));
                     }
-                    else if (Map[i, j] == "s")
+                    else if (Map.getMap()[i, j] == "s")
                     {
-                        ALL_SPRITE.Add(new Image2D(0, ImageType.SLIMUS_DOWN_ANIMATION_1, j * LARGE_SPRITE_DIMENSION, i * LARGE_SPRITE_DIMENSION));
+                        ALL_SPRITE.Add(new Image2D(0, ImageType.SLIMUS_DOWN_ANIMATION_1, i * LARGE_SPRITE_DIMENSION, j * LARGE_SPRITE_DIMENSION));
                     }
                 }
             }
@@ -247,5 +251,25 @@ namespace Explorus_K.Views
             GEM_BAR.Increase();
             return GEM_BAR.getCurrent();
         }
+
+        public bool MoveToLeft()
+        {
+            return mapIterator.MoveLeft();
+        }
+
+        public bool MoveToRight()
+        {
+            return mapIterator.MoveRight();
+        }
+
+        public bool MoveToUp()
+        {
+            return mapIterator.MoveUp();
+        }
+        public bool MoveToDown()
+        {
+            return mapIterator.MoveDown();
+        }
+
     }
 }

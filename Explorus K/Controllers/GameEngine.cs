@@ -105,31 +105,44 @@ namespace Explorus_K.Controllers
 			if (CURRENT_ACTION == Actions.none) { }
 			else if (CURRENT_ACTION == Actions.move_left)
 			{
-				if (count < 52)
-				{
-					count += 2;
-					GAME_VIEW.getSlimusObject().moveLeft(2);
-				}
-				else
-				{
-					count = 0;
-					CURRENT_ACTION = Actions.none;
-				}
+                if (GAME_VIEW.MoveToLeft())
+                {
+                    if (count < 52)
+					{
+						count += 2;
+						GAME_VIEW.getSlimusObject().moveLeft(2);
+					}
+					else
+					{
+						count = 0;
+						CURRENT_ACTION = Actions.none;
+					}
+                }
+
 			}
 			else if (CURRENT_ACTION == Actions.move_right)
 			{
-				GAME_VIEW.getSlimusObject().moveRight(52);
-				CURRENT_ACTION = Actions.none;
+                if (GAME_VIEW.MoveToRight())
+                {
+                    GAME_VIEW.getSlimusObject().moveRight(52);
+                }
+                CURRENT_ACTION = Actions.none;
 			}
 			else if (CURRENT_ACTION == Actions.move_up)
 			{
-				GAME_VIEW.getSlimusObject().moveUp(52);
-				CURRENT_ACTION = Actions.none;
+                if (GAME_VIEW.MoveToUp())
+                {
+                    GAME_VIEW.getSlimusObject().moveUp(52);
+                }
+                CURRENT_ACTION = Actions.none;
 			}
 			else if (CURRENT_ACTION == Actions.move_down)
 			{
-				GAME_VIEW.getSlimusObject().moveDown(52);
-				CURRENT_ACTION = Actions.none;
+                if (GAME_VIEW.MoveToDown())
+                {
+                    GAME_VIEW.getSlimusObject().moveDown(52);
+                }
+                CURRENT_ACTION = Actions.none;
 			}
 		}
 
