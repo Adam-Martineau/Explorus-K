@@ -9,26 +9,24 @@ namespace Explorus_K.Controllers
 {
 	public class GameEngine
 	{
-		private Actions currentAction = Actions.none;
-		private GameView oView;
+		private GameView GAME_VIEW;
+		private List<Binding> BINDINGS;
+		private Actions CURRENT_ACTION = Actions.none;
 		private int MS_PER_FRAME = 16;
-		private List<Binding> bindings;
-		private Actions game_state = Actions.none;
-		private bool exit = false;
-		private bool paused = false;
-
-		private int lifeCount = 3;
-		private int bubbleCount = 3;
-		private int gemCount = 3;
+		private bool EXIT = false;
+		private bool PAUSED = false;
+		private int LIFE_COUNT = 3;
+		private int BUBBLE_COUNT = 3;
+		private int GEM_COUNT = 3;
 
 		public GameEngine()
 		{
 			//The game engine get passed from contructor to constructor until it reach GameForm.cs
-			oView = new GameView(this);
-			bindings = initiate_bindings();
+			GAME_VIEW = new GameView(this);
+			BINDINGS = initiate_bindings();
 			Thread thread = new Thread(new ThreadStart(GameLoop));
 			thread.Start();
-			oView.Show();
+			GAME_VIEW.Show();
 		}
 
 		private List<Binding> initiate_bindings()
@@ -45,15 +43,15 @@ namespace Explorus_K.Controllers
 
 		private void GameLoop()
 		{
-			oView.InitializeHeaderBar(new HealthBarCreator(), lifeCount);
-			oView.InitializeHeaderBar(new BubbleBarCreator(), bubbleCount);
-			oView.InitializeHeaderBar(new GemBarCreator(), gemCount);
-			oView.OnLoad();
+			GAME_VIEW.InitializeHeaderBar(new HealthBarCreator(), LIFE_COUNT);
+			GAME_VIEW.InitializeHeaderBar(new BubbleBarCreator(), BUBBLE_COUNT);
+			GAME_VIEW.InitializeHeaderBar(new GemBarCreator(), GEM_COUNT);
+			GAME_VIEW.OnLoad();
 
 			double previous = getCurrentTime();
 			double lag = 0.0;
 
-			while (!exit)
+			while (!EXIT)
 			{
 				//Actions state machine
 				systemActionsManagement();
@@ -63,13 +61,13 @@ namespace Explorus_K.Controllers
 				previous = current;
 				lag += elapsed;
 
-				if (!paused)
+				if (!PAUSED)
 				{
 					characterActionsManagement();
 
 					while (lag >= MS_PER_FRAME)
 					{
-						oView.Update(elapsed);
+						GAME_VIEW.Update(elapsed);
 						lag -= MS_PER_FRAME;
 					}
 
@@ -77,7 +75,7 @@ namespace Explorus_K.Controllers
 					//bubbleCount = oView.DecreaseBubbleBar();
 					//lifeCount = oView.DecreaseHealthBar();
 
-					oView.Render();
+					GAME_VIEW.Render();
 				}
 
 				Thread.Sleep(1);
@@ -89,39 +87,39 @@ namespace Explorus_K.Controllers
 		public void systemActionsManagement()
 		{
 			//Actions state machine
-			if (currentAction == Actions.none) { }
-			else if (currentAction == Actions.pause) {
-				paused = !paused;
-				currentAction = Actions.none;
+			if (CURRENT_ACTION == Actions.none) { }
+			else if (CURRENT_ACTION == Actions.pause) {
+				PAUSED = !PAUSED;
+				CURRENT_ACTION = Actions.none;
 			}
-			else if (currentAction == Actions.exit) {
-				exit = true;
+			else if (CURRENT_ACTION == Actions.exit) {
+				EXIT = true;
 			}
 		}
 
 		public void characterActionsManagement()
 		{
 			//Actions state machine
-			if (currentAction == Actions.none) { }
-			else if (currentAction == Actions.move_left)
+			if (CURRENT_ACTION == Actions.none) { }
+			else if (CURRENT_ACTION == Actions.move_left)
 			{
-				oView.getSlimusObject().moveLeft(52);
-				currentAction = Actions.none;
+				GAME_VIEW.getSlimusObject().moveLeft(52);
+				CURRENT_ACTION = Actions.none;
 			}
-			else if (currentAction == Actions.move_right)
+			else if (CURRENT_ACTION == Actions.move_right)
 			{
-				oView.getSlimusObject().moveRight(52);
-				currentAction = Actions.none;
+				GAME_VIEW.getSlimusObject().moveRight(52);
+				CURRENT_ACTION = Actions.none;
 			}
-			else if (currentAction == Actions.move_up)
+			else if (CURRENT_ACTION == Actions.move_up)
 			{
-				oView.getSlimusObject().moveUp(52);
-				currentAction = Actions.none;
+				GAME_VIEW.getSlimusObject().moveUp(52);
+				CURRENT_ACTION = Actions.none;
 			}
-			else if (currentAction == Actions.move_down)
+			else if (CURRENT_ACTION == Actions.move_down)
 			{
-				oView.getSlimusObject().moveDown(52);
-				currentAction = Actions.none;
+				GAME_VIEW.getSlimusObject().moveDown(52);
+				CURRENT_ACTION = Actions.none;
 			}
 		}
 
@@ -132,11 +130,11 @@ namespace Explorus_K.Controllers
 
 		public void KeyEventHandler(KeyEventArgs e)
 		{
-			foreach(Binding binding in bindings)
+			foreach(Binding binding in BINDINGS)
 			{
 				if(binding.Key == e.KeyCode)
 				{
-					currentAction = binding.Action;
+					CURRENT_ACTION = binding.Action;
 				}
 			}
 		}

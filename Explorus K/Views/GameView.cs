@@ -14,31 +14,31 @@ namespace Explorus_K.Views
 {
     class GameView
     {
-        public GameForm oGameForm;
-        string gameTitle;
+        public GameForm GAME_FORM;
+        string GAME_TITLE;
 
-        private const double headerRatio = 0.125;
-        private Point headerPosition = new Point();
-        private Point labyrinthPosition = new Point();
-        private double headerHeight = 0;
-        private int bigSpriteDimension = 52;
-        private int smallSpriteDimension = 26;
-        private double labyrinthHeight = 48 * 9;
-        private double labyrinthWidth = 48 * 11;
+        private const double HEADER_RATIO = 0.125;
+        private Point HEADER_POSITION = new Point();
+        private Point LABYRINTH_POSITION = new Point();
+        private double HEADER_HIGHT = 0;
+        private int LARGE_SPRITE_DIMENSION = 52;
+        private int SMALL_SPRITE_DIMENSION = 26;
+        private double LABYRINTH_HEIGHT = 48 * 9;
+        private double LABYRINTH_WIDTH = 48 * 11;
 
-        private PictureBox gameHeader = new PictureBox();
-        private PictureBox gameLabyrinth = new PictureBox();
+        private PictureBox GAME_HEADER = new PictureBox();
+        private PictureBox GAME_LABYRINTH = new PictureBox();
 
-        private int screenWidth = 600;
-        private int screenHeight = 600;
+        private int SCREEN_WIDTH = 600;
+        private int SREEN_HEIGHT = 600;
 
-        public HealthBar healthBar = new HealthBar();
-        public BubbleBar bubbleBar = new BubbleBar();
-        public GemBar gemBar = new GemBar();
+        public HealthBar HEALTH_BAR = new HealthBar();
+        public BubbleBar BUBBLE_BAR = new BubbleBar();
+        public GemBar GEM_BAR = new GemBar();
 
-        private Slimus slimus;
+        private Slimus SLIMUS;
 
-        public static List<Image2D> AllSprites = new List<Image2D>();
+        public static List<Image2D> ALL_SPRITE = new List<Image2D>();
 
         readonly string[,] Map =
         {
@@ -57,41 +57,41 @@ namespace Explorus_K.Views
 
         public GameView(GameEngine gameEngine)
         {
-            oGameForm = new GameForm(gameEngine);
-            oGameForm.Size = new Size(screenWidth, screenHeight);
-            oGameForm.MinimumSize = new Size(600, 600);
-            headerHeight = screenHeight * headerRatio;
-            headerPosition = new Point(0, 0);
-            labyrinthPosition = new Point((int)((screenWidth-labyrinthWidth)/2), (int)headerHeight);
+            GAME_FORM = new GameForm(gameEngine);
+            GAME_FORM.Size = new Size(SCREEN_WIDTH, SREEN_HEIGHT);
+            GAME_FORM.MinimumSize = new Size(600, 600);
+            HEADER_HIGHT = SREEN_HEIGHT * HEADER_RATIO;
+            HEADER_POSITION = new Point(0, 0);
+            LABYRINTH_POSITION = new Point((int)((SCREEN_WIDTH-LABYRINTH_WIDTH)/2), (int)HEADER_HIGHT);
 
-            gameHeader.Dock = DockStyle.Top;
-            gameLabyrinth.Dock = DockStyle.Fill;
+            GAME_HEADER.Dock = DockStyle.Top;
+            GAME_LABYRINTH.Dock = DockStyle.Fill;
 
-            gameHeader.Paint += new PaintEventHandler(this.HeaderRenderer);
-            gameLabyrinth.Paint += new PaintEventHandler(this.LabyrinthRenderer);
+            GAME_HEADER.Paint += new PaintEventHandler(this.HeaderRenderer);
+            GAME_LABYRINTH.Paint += new PaintEventHandler(this.LabyrinthRenderer);
 
-            oGameForm.Controls.Add(gameHeader);
-            oGameForm.Controls.Add(gameLabyrinth);
+            GAME_FORM.Controls.Add(GAME_HEADER);
+            GAME_FORM.Controls.Add(GAME_LABYRINTH);
         }
 
         public void Show() 
         {
-            Application.Run(oGameForm); 
+            Application.Run(GAME_FORM); 
         }
 
         public void Render()
         {
-            if (oGameForm.Visible)
-                oGameForm.BeginInvoke((MethodInvoker)delegate {
-                    oGameForm.Refresh();
+            if (GAME_FORM.Visible)
+                GAME_FORM.BeginInvoke((MethodInvoker)delegate {
+                    GAME_FORM.Refresh();
                 });
         }
 
         public void Close()
         {
-            if (oGameForm.Visible)
-                oGameForm.BeginInvoke((MethodInvoker)delegate {
-                    oGameForm.Close();
+            if (GAME_FORM.Visible)
+                GAME_FORM.BeginInvoke((MethodInvoker)delegate {
+                    GAME_FORM.Close();
                 });
         }
 
@@ -106,27 +106,27 @@ namespace Explorus_K.Views
         {
             Graphics g = e.Graphics;
             g.Clear(Color.Black);
-            oGameForm.Text = gameTitle;
+            GAME_FORM.Text = GAME_TITLE;
 
-            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_TITLE), (screenWidth / 4) * 0, (float)((headerHeight-smallSpriteDimension)/2), smallSpriteDimension*4, smallSpriteDimension);
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_TITLE), (SCREEN_WIDTH / 4) * 0, (float)((HEADER_HIGHT-SMALL_SPRITE_DIMENSION)/2), SMALL_SPRITE_DIMENSION*4, SMALL_SPRITE_DIMENSION);
 
-            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.HEARTH), (int)((screenWidth/4)*0.95), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.HEARTH), (int)((SCREEN_WIDTH/4)*0.95), (float)((HEADER_HIGHT - SMALL_SPRITE_DIMENSION) / 2), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
             
-            foreach (Image2D image in healthBar.healthBar)
+            foreach (Image2D image in HEALTH_BAR.healthBar)
             {
-                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 4) * 1)+(image.X* smallSpriteDimension), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
+                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((SCREEN_WIDTH / 4) * 1)+(image.X* SMALL_SPRITE_DIMENSION), (float)((HEADER_HIGHT - SMALL_SPRITE_DIMENSION) / 2), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
             }
 
-            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.BUBBLE_BIG), (int)((screenWidth / 4) * 1.95), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
-            foreach (Image2D image in bubbleBar.bubbleBar)
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.BUBBLE_BIG), (int)((SCREEN_WIDTH / 4) * 1.95), (float)((HEADER_HIGHT - SMALL_SPRITE_DIMENSION) / 2), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
+            foreach (Image2D image in BUBBLE_BAR.bubbleBar)
             {
-                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 4) * 2) + (image.X * smallSpriteDimension), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
+                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((SCREEN_WIDTH / 4) * 2) + (image.X * SMALL_SPRITE_DIMENSION), (float)((HEADER_HIGHT - SMALL_SPRITE_DIMENSION) / 2), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
             }
 
-            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.GEM), (int)((screenWidth / 4) * 2.95), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
-            foreach (Image2D image in gemBar.gemBar)
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.GEM), (int)((SCREEN_WIDTH / 4) * 2.95), (float)((HEADER_HIGHT - SMALL_SPRITE_DIMENSION) / 2), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
+            foreach (Image2D image in GEM_BAR.gemBar)
             {
-                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 4) * 3) + (image.X * smallSpriteDimension), (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
+                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((SCREEN_WIDTH / 4) * 3) + (image.X * SMALL_SPRITE_DIMENSION), (float)((HEADER_HIGHT - SMALL_SPRITE_DIMENSION) / 2), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
             }
         }
 
@@ -135,28 +135,28 @@ namespace Explorus_K.Views
             Graphics g = e.Graphics;
             g.Clear(Color.Black);
 
-            foreach (Image2D sp in AllSprites)
+            foreach (Image2D sp in ALL_SPRITE)
             {
                 SpriteId spriteId = sp.getId();
                 if (spriteId == SpriteId.MINI_SLIMUS || spriteId == SpriteId.GEM)
                 {
-                    float pos = (bigSpriteDimension - smallSpriteDimension)/ 2;
-                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()), (float)(sp.X + pos), (float)(sp.Y + labyrinthPosition.Y + pos), smallSpriteDimension, smallSpriteDimension);
+                    float pos = (LARGE_SPRITE_DIMENSION - SMALL_SPRITE_DIMENSION)/ 2;
+                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()), (float)(sp.X + pos), (float)(sp.Y + LABYRINTH_POSITION.Y + pos), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
                 }
                 else if(spriteId == SpriteId.SLIMUS)
                 {
-                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(slimus.getImageType()), slimus.getPosX(), slimus.getPosY() + labyrinthPosition.Y, bigSpriteDimension, bigSpriteDimension);
+                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(SLIMUS.getImageType()), SLIMUS.getPosX(), SLIMUS.getPosY() + LABYRINTH_POSITION.Y, LARGE_SPRITE_DIMENSION, LARGE_SPRITE_DIMENSION);
                 }
                 else
                 {
-                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()), (float)(sp.X), (float)(sp.Y + labyrinthPosition.Y), bigSpriteDimension, bigSpriteDimension);
+                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()), (float)(sp.X), (float)(sp.Y + LABYRINTH_POSITION.Y), LARGE_SPRITE_DIMENSION, LARGE_SPRITE_DIMENSION);
                 }
             }
         }
 
         public void setWindowTitle(string title)
         {
-            gameTitle = title;
+            GAME_TITLE = title;
         }
 
         public void OnLoad()
@@ -167,21 +167,21 @@ namespace Explorus_K.Views
                 for (int j = 0; j < Map.GetLength(1); j++)
                 {
                     if (Map[i, j] == "w")
-                        AllSprites.Add(new Image2D(SpriteId.WALL, ImageType.WALL, j * bigSpriteDimension, i * bigSpriteDimension));
+                        ALL_SPRITE.Add(new Image2D(SpriteId.WALL, ImageType.WALL, j * LARGE_SPRITE_DIMENSION, i * LARGE_SPRITE_DIMENSION));
                     else if (Map[i, j] == "g")
-                        AllSprites.Add(new Image2D(SpriteId.GEM, ImageType.GEM, j * bigSpriteDimension, i * bigSpriteDimension));
+                        ALL_SPRITE.Add(new Image2D(SpriteId.GEM, ImageType.GEM, j * LARGE_SPRITE_DIMENSION, i * LARGE_SPRITE_DIMENSION));
                     else if (Map[i, j] == "m")
                     {
-                        AllSprites.Add(new Image2D(SpriteId.MINI_SLIMUS, ImageType.SMALL_SLIMUS, j * bigSpriteDimension, i * bigSpriteDimension));
+                        ALL_SPRITE.Add(new Image2D(SpriteId.MINI_SLIMUS, ImageType.SMALL_SLIMUS, j * LARGE_SPRITE_DIMENSION, i * LARGE_SPRITE_DIMENSION));
                     }
                     else if(Map[i, j] == "s")
                     {
-                        slimus = new Slimus(j * bigSpriteDimension, i * bigSpriteDimension);
-                        AllSprites.Add(new Image2D(SpriteId.SLIMUS, slimus.getImageType(), slimus.getPosX(), slimus.getPosY()));
+                        SLIMUS = new Slimus(j * LARGE_SPRITE_DIMENSION, i * LARGE_SPRITE_DIMENSION);
+                        ALL_SPRITE.Add(new Image2D(SpriteId.SLIMUS, SLIMUS.getImageType(), SLIMUS.getPosX(), SLIMUS.getPosY()));
                     }
                     else if (Map[i, j] == "s")
                     {
-                        AllSprites.Add(new Image2D(0, ImageType.SLIMUS_DOWN_ANIMATION_1, j * bigSpriteDimension, i * bigSpriteDimension));
+                        ALL_SPRITE.Add(new Image2D(0, ImageType.SLIMUS_DOWN_ANIMATION_1, j * LARGE_SPRITE_DIMENSION, i * LARGE_SPRITE_DIMENSION));
                     }
                 }
             }
@@ -191,7 +191,7 @@ namespace Explorus_K.Views
 
         public Slimus getSlimusObject()
         {
-            return slimus;
+            return SLIMUS;
         }
 
         public void InitializeHeaderBar(ProgressionBarCreator creator, int count)
@@ -200,52 +200,52 @@ namespace Explorus_K.Views
 
             if(creator.GetType() == typeof(HealthBarCreator))
             {
-                this.healthBar = (HealthBar)bar;
+                this.HEALTH_BAR = (HealthBar)bar;
             }
             else if (creator.GetType() == typeof(BubbleBarCreator))
             {
-                this.bubbleBar = (BubbleBar)bar;
+                this.BUBBLE_BAR = (BubbleBar)bar;
             }
             else if (creator.GetType() == typeof(GemBarCreator))
             {
-                this.gemBar = (GemBar)bar;
+                this.GEM_BAR = (GemBar)bar;
             }
         }
 
         public int DecreaseHealthBar()
         {
-            healthBar.Decrease();
-            return healthBar.getCurrent();
+            HEALTH_BAR.Decrease();
+            return HEALTH_BAR.getCurrent();
         }
 
         public int DecreaseBubbleBar()
         {
-            bubbleBar.Decrease();
-            return bubbleBar.getCurrent();
+            BUBBLE_BAR.Decrease();
+            return BUBBLE_BAR.getCurrent();
         }
 
         public int DecreaseGemBar()
         {
-            gemBar.Decrease();
-            return gemBar.getCurrent();
+            GEM_BAR.Decrease();
+            return GEM_BAR.getCurrent();
         }
 
         public int IncreaseHealthBar()
         {
-            healthBar.Increase();
-            return healthBar.getCurrent();
+            HEALTH_BAR.Increase();
+            return HEALTH_BAR.getCurrent();
         }
 
         public int IncreaseBubbleBar()
         {
-            bubbleBar.Increase();
-            return bubbleBar.getCurrent();
+            BUBBLE_BAR.Increase();
+            return BUBBLE_BAR.getCurrent();
         }
 
         public int IncreaseGemBar()
         {
-            gemBar.Increase();
-            return gemBar.getCurrent();
+            GEM_BAR.Increase();
+            return GEM_BAR.getCurrent();
         }
     }
 }
