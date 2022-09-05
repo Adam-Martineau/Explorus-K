@@ -19,6 +19,8 @@ namespace Explorus_K.Controllers
 		private int BUBBLE_COUNT = 3;
 		private int GEM_COUNT = 3;
 
+		private int count = 0;
+
         private MapCollection MAP = new MapCollection(new string[,]{
             {"w", "w", "w", "w", "w", "w", "w", "w", "w"},
             {"w", "." ,".", ".", ".", ".", ".", ".", "w"},
@@ -36,6 +38,7 @@ namespace Explorus_K.Controllers
         private Iterator MAP_ITERATOR = null;
 
         public GameEngine()
+
 		{
 			//The game engine get passed from contructor to constructor until it reach GameForm.cs
 			GAME_VIEW = new GameView(this);
@@ -114,41 +117,66 @@ namespace Explorus_K.Controllers
 			}
 		}
 
+		//Receving the event from a keypress and checking if we have a action bind to that key
+		public void KeyEventHandler(KeyEventArgs e)
+		{
+			foreach(Binding binding in BINDINGS)
+			{
+				if(binding.Key == e.KeyCode)
+				{
+					actionHandler(binding.Action);
+				}
+			}
+		}
+		
+		//If we have a action bind to that kay, we check if that action can be done
+		public void actionHandler(Actions action)
+        {
+			if (action == Actions.pause || action == Actions.exit)
+				CURRENT_ACTION = action;
+			else if (action == Actions.move_left && GAME_VIEW.MoveToLeft() && CURRENT_ACTION == Actions.none)
+				CURRENT_ACTION = action;
+			else if (action == Actions.move_right && GAME_VIEW.MoveToRight() && CURRENT_ACTION == Actions.none)
+				CURRENT_ACTION = action;
+			else if (action == Actions.move_up && GAME_VIEW.MoveToUp() && CURRENT_ACTION == Actions.none)
+				CURRENT_ACTION = action;
+			else if (action == Actions.move_down && GAME_VIEW.MoveToDown() && CURRENT_ACTION == Actions.none)
+				CURRENT_ACTION = action;
+		}
+
+		//If the action can be done, we use a state machine to wait until the action is over
 		public void characterActionsManagement()
 		{
 			//Actions state machine
 			if (CURRENT_ACTION == Actions.none) { }
 			else if (CURRENT_ACTION == Actions.move_left)
 			{
-                if (MAP_ITERATOR.MoveLeft())
-                {
-                    GAME_VIEW.getSlimusObject().moveLeft(52);
-                }
-				CURRENT_ACTION = Actions.none;
+				if (count < 52)
+				{
+					count += 4;
+					GAME_VIEW.getSlimusObject().moveLeft(4);
+				}
+				else
+				{
+					count = 0;
+					CURRENT_ACTION = Actions.none;
+				}
 			}
 			else if (CURRENT_ACTION == Actions.move_right)
 			{
-                if (MAP_ITERATOR.MoveRight())
-                {
-                    GAME_VIEW.getSlimusObject().moveRight(52);
-                }
-                CURRENT_ACTION = Actions.none;
+				GAME_VIEW.getSlimusObject().moveRight(52);
+				CURRENT_ACTION = Actions.none;
+
 			}
-			else if (CURRENT_ACTION == Actions.move_up)
+			else if (CURRENT_ACTION == Actions.move_up) 
 			{
-                if (MAP_ITERATOR.MoveUp())
-                {
-                    GAME_VIEW.getSlimusObject().moveUp(52);
-                }
-                CURRENT_ACTION = Actions.none;
+				GAME_VIEW.getSlimusObject().moveUp(52);
+				CURRENT_ACTION = Actions.none;
 			}
-			else if (CURRENT_ACTION == Actions.move_down)
+			else if (CURRENT_ACTION == Actions.move_down) 
 			{
-                if (MAP_ITERATOR.MoveDown())
-                {
-                    GAME_VIEW.getSlimusObject().moveDown(52);
-                }
-                CURRENT_ACTION = Actions.none;
+				GAME_VIEW.getSlimusObject().moveDown(52);
+				CURRENT_ACTION = Actions.none;
 			}
 		}
 
@@ -156,16 +184,5 @@ namespace Explorus_K.Controllers
 		{
 			return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
 		}
-
-		public void KeyEventHandler(KeyEventArgs e)
-		{
-			foreach(Binding binding in BINDINGS)
-			{
-				if(binding.Key == e.KeyCode)
-				{
-					CURRENT_ACTION = binding.Action;
-				}
-			}
-		}
-    }
+	}
 }
