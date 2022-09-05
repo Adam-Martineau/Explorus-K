@@ -12,7 +12,7 @@ namespace Explorus_K.Controllers
 		private GameView GAME_VIEW;
 		private List<Binding> BINDINGS;
 		private Actions CURRENT_ACTION = Actions.none;
-		private int MS_PER_FRAME = 200;
+		private int MS_PER_FRAME = 16;
 		private bool EXIT = false;
 		private bool PAUSED = false;
 		private int LIFE_COUNT = 3;
@@ -124,17 +124,17 @@ namespace Explorus_K.Controllers
         {
 			if (action == Actions.pause || action == Actions.exit)
 				CURRENT_ACTION = action;
-			else if (action == Actions.move_left && MAP_ITERATOR.MoveLeft() && CURRENT_ACTION == Actions.none)
+			else if (action == Actions.move_left && MAP_ITERATOR.isAbleToMoveLeft() && CURRENT_ACTION == Actions.none)
 			{
 				CURRENT_ACTION = action;
 				next_expected_pos = (MAP_ITERATOR.Current()[0] * 52) - 52;
 				start_time = getCurrentTime();
 			}
-			else if (action == Actions.move_right && MAP_ITERATOR.MoveRight() && CURRENT_ACTION == Actions.none)
+			else if (action == Actions.move_right && MAP_ITERATOR.isAbleToMoveRight() && CURRENT_ACTION == Actions.none)
 				CURRENT_ACTION = action;
-			else if (action == Actions.move_up && MAP_ITERATOR.MoveUp() && CURRENT_ACTION == Actions.none)
+			else if (action == Actions.move_up && MAP_ITERATOR.isAbleToMoveUp() && CURRENT_ACTION == Actions.none)
 				CURRENT_ACTION = action;
-			else if (action == Actions.move_down && MAP_ITERATOR.MoveDown() && CURRENT_ACTION == Actions.none)
+			else if (action == Actions.move_down && MAP_ITERATOR.isAbleToMoveDown() && CURRENT_ACTION == Actions.none)
 				CURRENT_ACTION = action;
 		}
 
@@ -149,28 +149,33 @@ namespace Explorus_K.Controllers
 				{
 					count++;
 					GAME_VIEW.getSlimusObject().moveLeft(1);
+					
 				}
 				else
 				{
 					count = 0;
 					CURRENT_ACTION = Actions.none;
-				}
+                    MAP_ITERATOR.MoveLeft();
+                }
 			}
 			else if (CURRENT_ACTION == Actions.move_right)
 			{
 				GAME_VIEW.getSlimusObject().moveRight(52);
+				MAP_ITERATOR.MoveRight();
 				CURRENT_ACTION = Actions.none;
 
 			}
 			else if (CURRENT_ACTION == Actions.move_up) 
 			{
 				GAME_VIEW.getSlimusObject().moveUp(52);
-				CURRENT_ACTION = Actions.none;
+                MAP_ITERATOR.MoveUp();
+                CURRENT_ACTION = Actions.none;
 			}
 			else if (CURRENT_ACTION == Actions.move_down) 
 			{
 				GAME_VIEW.getSlimusObject().moveDown(52);
-				CURRENT_ACTION = Actions.none;
+                MAP_ITERATOR.MoveDown();
+                CURRENT_ACTION = Actions.none;
 			}
 		}
 
