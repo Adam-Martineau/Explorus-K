@@ -99,67 +99,71 @@ namespace Explorus_K.Controllers
 			}
 		}
 
-		public void characterActionsManagement()
-		{
-			//Actions state machine
-			if (CURRENT_ACTION == Actions.none) { }
-			else if (CURRENT_ACTION == Actions.move_left)
-			{
-                if (GAME_VIEW.MoveToLeft())
-                {
-                    if (count < 52)
-					{
-						count += 2;
-						GAME_VIEW.getSlimusObject().moveLeft(2);
-					}
-					else
-					{
-						count = 0;
-						CURRENT_ACTION = Actions.none;
-					}
-                }
-
-			}
-			else if (CURRENT_ACTION == Actions.move_right)
-			{
-                if (GAME_VIEW.MoveToRight())
-                {
-                    GAME_VIEW.getSlimusObject().moveRight(52);
-                }
-                CURRENT_ACTION = Actions.none;
-			}
-			else if (CURRENT_ACTION == Actions.move_up)
-			{
-                if (GAME_VIEW.MoveToUp())
-                {
-                    GAME_VIEW.getSlimusObject().moveUp(52);
-                }
-                CURRENT_ACTION = Actions.none;
-			}
-			else if (CURRENT_ACTION == Actions.move_down)
-			{
-                if (GAME_VIEW.MoveToDown())
-                {
-                    GAME_VIEW.getSlimusObject().moveDown(52);
-                }
-                CURRENT_ACTION = Actions.none;
-			}
-		}
-
-		private long getCurrentTime()
-		{
-			return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-		}
-
+		//Receving the event from a keypress and checking if we have a action bind to that key
 		public void KeyEventHandler(KeyEventArgs e)
 		{
 			foreach(Binding binding in BINDINGS)
 			{
 				if(binding.Key == e.KeyCode)
 				{
-					CURRENT_ACTION = binding.Action;
+					actionHandler(binding.Action);
 				}
 			}
+		}
+		
+		//If we have a action bind to that kay, we check if that action can be done
+		public void actionHandler(Actions action)
+        {
+			if (action == Actions.pause || action == Actions.exit)
+				CURRENT_ACTION = action;
+			else if (action == Actions.move_left && GAME_VIEW.MoveToLeft() && CURRENT_ACTION == Actions.none)
+				CURRENT_ACTION = action;
+			else if (action == Actions.move_right && GAME_VIEW.MoveToRight() && CURRENT_ACTION == Actions.none)
+				CURRENT_ACTION = action;
+			else if (action == Actions.move_up && GAME_VIEW.MoveToUp() && CURRENT_ACTION == Actions.none)
+				CURRENT_ACTION = action;
+			else if (action == Actions.move_down && GAME_VIEW.MoveToDown() && CURRENT_ACTION == Actions.none)
+				CURRENT_ACTION = action;
+		}
+
+		//If the action can be done, we use a state machine to wait until the action is over
+		public void characterActionsManagement()
+		{
+			//Actions state machine
+			if (CURRENT_ACTION == Actions.none) { }
+			else if (CURRENT_ACTION == Actions.move_left)
+			{
+				if (count < 52)
+				{
+					count += 4;
+					GAME_VIEW.getSlimusObject().moveLeft(4);
+				}
+				else
+				{
+					count = 0;
+					CURRENT_ACTION = Actions.none;
+				}
+			}
+			else if (CURRENT_ACTION == Actions.move_right)
+			{
+				GAME_VIEW.getSlimusObject().moveRight(52);
+				CURRENT_ACTION = Actions.none;
+			}
+			else if (CURRENT_ACTION == Actions.move_up) 
+			{
+				GAME_VIEW.getSlimusObject().moveUp(52);
+				CURRENT_ACTION = Actions.none;
+			}
+			else if (CURRENT_ACTION == Actions.move_down) 
+			{
+				GAME_VIEW.getSlimusObject().moveDown(52);
+				CURRENT_ACTION = Actions.none;
+			}
+		}
+
+		private long getCurrentTime()
+		{
+			return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
 		}
 	}
 }
