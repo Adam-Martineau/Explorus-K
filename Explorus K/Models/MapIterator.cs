@@ -10,10 +10,15 @@ namespace Explorus_K.Models
     abstract class Iterator
     {
         public abstract int[] Current();
-        public abstract bool MoveLeft();
-        public abstract bool MoveRight();
-        public abstract bool MoveUp();
-        public abstract bool MoveDown();
+        public abstract void MoveLeft();
+        public abstract void MoveRight();
+        public abstract void MoveUp();
+        public abstract void MoveDown();
+        public abstract bool isAbleToMoveLeft();
+        public abstract bool isAbleToMoveRight();
+        public abstract bool isAbleToMoveUp();
+        public abstract bool isAbleToMoveDown();
+
         public abstract int[] findPosition(string key);
     }
 
@@ -46,9 +51,7 @@ namespace Explorus_K.Models
 
             // iteration over all the elements of the 2-D array
             // row
-       
-            Console.WriteLine(_collection.getLengthX());
-            Console.WriteLine(_collection.getLengthY());
+
             for (int i = 0; i < _collection.getLengthX(); i++)
             {
                 for (int j = 0; j < _collection.getLengthY(); j++)
@@ -58,8 +61,6 @@ namespace Explorus_K.Models
                     {
                         result[0] = i;
                         result[1] = j;
-                        Console.WriteLine(result[0]);
-                        Console.WriteLine(result[1]);
                         return result;
                     }
                 }
@@ -74,84 +75,101 @@ namespace Explorus_K.Models
             return _position;
         }
 
-        public override bool MoveLeft()
+        public override void MoveLeft()
         {
             int updatedX = this._position[0] - 1;
             int updatedY = this._position[1];
-            Console.WriteLine(updatedX);
-            Console.WriteLine(updatedY);
-            Console.WriteLine(_collection.getMap()[updatedX, updatedY]);
 
-            if (updatedX > 0 && _collection.getMap()[updatedX, updatedY] != "w")
+            if (isAbleToMoveLeft())
             {
                 this._position = new int[] { updatedX, updatedY };
-                return true;
-            }
-            else
-            {
-                Console.WriteLine("Wall detect");
-                return false;
             }
         }
 
-        public override bool MoveRight()
+        public override void MoveRight()
         {
             int updatedX = this._position[0] + 1;
             int updatedY = this._position[1];
-            Console.WriteLine(updatedX);
-            Console.WriteLine(updatedY);
-            Console.WriteLine(_collection.getMap()[updatedX, updatedY]);
 
-            if (updatedX < _collection.getLengthX() && _collection.getMap()[updatedX, updatedY] != "w")
+            if (isAbleToMoveRight())
             {
                 this._position = new int[] { updatedX, updatedY };
-                return true;
-            }
-            else
-            {
-                Console.WriteLine("Wall detect");
-                return false;
             }
         }
 
-        public override bool MoveUp()
+        public override void MoveUp()
         {
             int updatedX = this._position[0];
             int updatedY = this._position[1] - 1;
-            Console.WriteLine(updatedX);
-            Console.WriteLine(updatedY);
-            Console.WriteLine(_collection.getMap()[updatedX, updatedY]);
 
-            if (updatedY > 0 && _collection.getMap()[updatedX, updatedY] != "w")
+            if (isAbleToMoveUp())
             {
                 this._position = new int[] { updatedX, updatedY };
-                return true;
-            }
-            else
-            {
-                Console.WriteLine("Wall detect");
-                return false;
             }
         }
 
-        public override bool MoveDown()
+        public override void MoveDown()
         {
             int updatedX = this._position[0];
             int updatedY = this._position[1] + 1;
-            Console.WriteLine(updatedX);
-            Console.WriteLine(updatedY);
-            Console.WriteLine(_collection.getMap()[updatedX, updatedY]);
+
+            if (isAbleToMoveDown())
+            {
+                this._position = new int[] { updatedX, updatedY };
+            }
+        }
+
+        public override bool isAbleToMoveLeft()
+        {
+            int updatedX = this._position[0] - 1;
+            int updatedY = this._position[1];
+
+            if (updatedX > 0 && _collection.getMap()[updatedX, updatedY] != "w")
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public override bool isAbleToMoveRight()
+        {
+            int updatedX = this._position[0] + 1;
+            int updatedY = this._position[1];
+
+            if (updatedX < _collection.getLengthX() && _collection.getMap()[updatedX, updatedY] != "w")
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public override bool isAbleToMoveDown()
+        {
+            int updatedX = this._position[0];
+            int updatedY = this._position[1] + 1;
 
             if (updatedY < _collection.getLengthY() && _collection.getMap()[updatedX, updatedY] != "w")
             {
-                this._position = new int[] { updatedX, updatedY };
                 return true;
             }
-            else
+
+            return false;
+        }
+
+        public override bool isAbleToMoveUp()
+        {
+            int updatedX = this._position[0];
+            int updatedY = this._position[1] - 1;
+
+            if (updatedY > 0 && _collection.getMap()[updatedX, updatedY] != "w")
             {
-                Console.WriteLine("Wall detect");
-                return false;
+                return true;
             }
+
+            return false;
+
         }
     }
 

@@ -189,8 +189,6 @@ namespace Explorus_K.Views
             }
         }
 
-        //public void refreshSingleSprite(SpriteId spriteId, )
-
         public Slimus getSlimusObject()
         {
             return SLIMUS;
