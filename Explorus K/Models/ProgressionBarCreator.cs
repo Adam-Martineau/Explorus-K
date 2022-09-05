@@ -161,7 +161,7 @@ namespace Explorus_K.Models
 
         public IBar Initialize(int length)
         {
-            this.current = 1;
+            this.current = 0;
             this.length = length;
 
             gemBar.Add(new Image2D(0, ImageType.LEFT_SIDE_BAR, 0, 1));
@@ -187,7 +187,7 @@ namespace Explorus_K.Models
         {
             if (current <= length)
             {
-                gemBar[current].setType(ImageType.GEM_BAR_FULL);
+                gemBar[current+1].setType(ImageType.GEM_BAR_FULL);
                 current++;
                 //gemBar[current].setType(ImageType.GEM_BAR_HALF);
             }

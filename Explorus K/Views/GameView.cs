@@ -94,6 +94,8 @@ namespace Explorus_K.Views
             {
                 IncreaseGemBar();
             }
+
+            //if(IsColliding(SpriteId))
         }
 
         private void HeaderRenderer(object sender, PaintEventArgs e)
@@ -242,7 +244,9 @@ namespace Explorus_K.Views
         public int IncreaseGemBar()
         {
             GEM_BAR.Increase();
-            if(GEM_BAR.getCurrent() == GEM_BAR.getLength())
+            Console.WriteLine(GEM_BAR.getCurrent());
+            Console.WriteLine(GEM_BAR.getLength());
+            if (GEM_BAR.getCurrent() == GEM_BAR.getLength())
             {
                 KEY_STATE.RequestChangingState();
             }
