@@ -35,6 +35,11 @@ namespace Explorus_K
             return posY;
         }
 
+        public void setImageType(ImageType imageType)
+        {
+            this.imageType = imageType;
+        }
+
         public void moveDown(int stepSize)
         {
             posY += stepSize;

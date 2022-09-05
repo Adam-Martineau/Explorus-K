@@ -39,9 +39,8 @@ namespace Explorus_K.Views
         public BubbleBar BUBBLE_BAR = new BubbleBar();
         public GemBar GEM_BAR = new GemBar();
 
+        public Slimus SLIMUS;
         Context KEY_STATE = null;
-
-        private Slimus SLIMUS;
 
         public static List<Image2D> ALL_SPRITE = new List<Image2D>();
 
