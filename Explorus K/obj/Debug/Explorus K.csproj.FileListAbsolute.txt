@@ -29,22 +29,6 @@ C:\Users\matsh\Documents\S8\APP1\Explorus-K\Explorus K\obj\Debug\Explorus K.cspr
 C:\Users\matsh\Documents\S8\APP1\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.CoreCompileInputs.cache
 C:\Users\matsh\Documents\S8\APP1\Explorus-K\Explorus K\obj\Debug\Explorus K.exe
 C:\Users\matsh\Documents\S8\APP1\Explorus-K\Explorus K\obj\Debug\Explorus K.pdb
-<<<<<<< HEAD
-C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\bin\Debug\Explorus K.exe.config
-C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\bin\Debug\Explorus K.exe
-C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\bin\Debug\Explorus K.pdb
-C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\bin\Debug\System.Numerics.Vectors.dll
-C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\bin\Debug\System.Numerics.Vectors.xml
-C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.AssemblyReference.cache
-C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.SuggestedBindingRedirects.cache
-C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\obj\Debug\Explorus_K.GameForm.resources
-C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\obj\Debug\Explorus_K.Properties.Resources.resources
-C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.GenerateResource.cache
-C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.CoreCompileInputs.cache
-C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.CopyComplete
-C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\obj\Debug\Explorus K.exe
-C:\Users\Tom\Source\Repos\Explorus-K\Explorus K\obj\Debug\Explorus K.pdb
-=======
 C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\bin\Debug\Explorus K.exe.config
 C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\bin\Debug\Explorus K.exe
 C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\bin\Debug\Explorus K.pdb
@@ -59,4 +43,6 @@ C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explor
 C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.CopyComplete
 C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explorus K.exe
 C:\Users\Adam\Source\Repos\Adam-Martineau\Explorus-K\Explorus K\obj\Debug\Explorus K.pdb
->>>>>>> dafa052e5c229d479c2c6040aac8b03c72671a9b
+C:\Users\matsh\Documents\S8\APP1\Explorus-K\Explorus K\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\matsh\Documents\S8\APP1\Explorus-K\Explorus K\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\matsh\Documents\S8\APP1\Explorus-K\Explorus K\obj\Debug\Explorus K.csproj.CopyComplete
