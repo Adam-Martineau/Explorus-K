@@ -9,7 +9,7 @@ namespace Explorus_K.Models
 {
     abstract class Iterator
     {
-        public abstract object Current();
+        public abstract int[] Current();
         public abstract bool MoveLeft();
         public abstract bool MoveRight();
         public abstract bool MoveUp();
@@ -69,7 +69,7 @@ namespace Explorus_K.Models
             return result;
         }
 
-        public override object Current()
+        public override int[] Current()
         {
             return _position;
         }
