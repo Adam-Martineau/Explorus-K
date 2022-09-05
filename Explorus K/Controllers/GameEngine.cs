@@ -19,12 +19,29 @@ namespace Explorus_K.Controllers
 		private int BUBBLE_COUNT = 3;
 		private int GEM_COUNT = 3;
 
-		public GameEngine()
+        private MapCollection MAP = new MapCollection(new string[,]{
+            {"w", "w", "w", "w", "w", "w", "w", "w", "w"},
+            {"w", "." ,".", ".", ".", ".", ".", ".", "w"},
+            { "w", ".", "w", ".", "w", "w", "w", ".", "w"},
+            { "w", "g", "w", ".", ".", ".", ".", ".", "w"},
+            { "w", ".", "w", ".", "w", "w", "w", "s", "w"},
+            { "w", ".", ".", ".", "w", "g", "w", "w", "w"},
+            { "w", ".", "w", "w", "w", ".", ".", ".", "w"},
+            { "w", ".", "w", "m", "w", ".", "w", ".", "w"},
+            { "w", ".", "w", "w", "w", ".", "w", "g", "w"},
+            { "w", ".", ".", ".", ".", ".", ".", ".", "w"},
+            { "w", "w", "w", "w", "w", "w", "w", "w", "w"}
+        });
+
+        private Iterator MAP_ITERATOR = null;
+
+        public GameEngine()
 		{
 			//The game engine get passed from contructor to constructor until it reach GameForm.cs
 			GAME_VIEW = new GameView(this);
 			BINDINGS = initiate_bindings();
-			Thread thread = new Thread(new ThreadStart(GameLoop));
+            MAP_ITERATOR = MAP.CreateIterator();
+            Thread thread = new Thread(new ThreadStart(GameLoop));
 			thread.Start();
 			GAME_VIEW.Show();
 		}
@@ -46,7 +63,7 @@ namespace Explorus_K.Controllers
 			GAME_VIEW.InitializeHeaderBar(new HealthBarCreator(), LIFE_COUNT);
 			GAME_VIEW.InitializeHeaderBar(new BubbleBarCreator(), BUBBLE_COUNT);
 			GAME_VIEW.InitializeHeaderBar(new GemBarCreator(), GEM_COUNT);
-			GAME_VIEW.OnLoad();
+			GAME_VIEW.OnLoad(MAP);
 
 			double previous = getCurrentTime();
 			double lag = 0.0;
@@ -103,7 +120,7 @@ namespace Explorus_K.Controllers
 			if (CURRENT_ACTION == Actions.none) { }
 			else if (CURRENT_ACTION == Actions.move_left)
 			{
-                if (GAME_VIEW.MoveToLeft())
+                if (MAP_ITERATOR.MoveLeft())
                 {
                     GAME_VIEW.getSlimusObject().moveLeft(52);
                 }
@@ -111,7 +128,7 @@ namespace Explorus_K.Controllers
 			}
 			else if (CURRENT_ACTION == Actions.move_right)
 			{
-                if (GAME_VIEW.MoveToRight())
+                if (MAP_ITERATOR.MoveRight())
                 {
                     GAME_VIEW.getSlimusObject().moveRight(52);
                 }
@@ -119,7 +136,7 @@ namespace Explorus_K.Controllers
 			}
 			else if (CURRENT_ACTION == Actions.move_up)
 			{
-                if (GAME_VIEW.MoveToUp())
+                if (MAP_ITERATOR.MoveUp())
                 {
                     GAME_VIEW.getSlimusObject().moveUp(52);
                 }
@@ -127,7 +144,7 @@ namespace Explorus_K.Controllers
 			}
 			else if (CURRENT_ACTION == Actions.move_down)
 			{
-                if (GAME_VIEW.MoveToDown())
+                if (MAP_ITERATOR.MoveDown())
                 {
                     GAME_VIEW.getSlimusObject().moveDown(52);
                 }
@@ -150,5 +167,5 @@ namespace Explorus_K.Controllers
 				}
 			}
 		}
-	}
+    }
 }

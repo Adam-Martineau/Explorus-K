@@ -40,22 +40,6 @@ namespace Explorus_K.Views
 
         public static List<Image2D> ALL_SPRITE = new List<Image2D>();
 
-        private MapCollection Map = new MapCollection(new string[,]{
-            {"w", "w", "w", "w", "w", "w", "w", "w", "w"},
-            {"w", "." ,".", ".", ".", ".", ".", ".", "w"},
-            { "w", ".", "w", ".", "w", "w", "w", ".", "w"},
-            { "w", "g", "w", ".", ".", ".", ".", ".", "w"},
-            { "w", ".", "w", ".", "w", "w", "w", "s", "w"},
-            { "w", ".", ".", ".", "w", "g", "w", "w", "w"},
-            { "w", ".", "w", "w", "w", ".", ".", ".", "w"},
-            { "w", ".", "w", "m", "w", ".", "w", ".", "w"},
-            { "w", ".", "w", "w", "w", ".", "w", "g", "w"},
-            { "w", ".", ".", ".", ".", ".", ".", ".", "w"},
-            { "w", "w", "w", "w", "w", "w", "w", "w", "w"}
-        });
-
-        private Iterator mapIterator = null;
-
         int i = 0;
 
         public GameView(GameEngine gameEngine)
@@ -67,8 +51,6 @@ namespace Explorus_K.Views
             HEADER_POSITION = new Point(0, 0);
             LABYRINTH_POSITION = new Point((int)((SCREEN_WIDTH-LABYRINTH_WIDTH)/2), (int)HEADER_HIGHT);
 
-
-            mapIterator = Map.CreateIterator();
             GAME_HEADER.Dock = DockStyle.Top;
             GAME_LABYRINTH.Dock = DockStyle.Fill;
 
@@ -164,7 +146,7 @@ namespace Explorus_K.Views
             GAME_TITLE = title;
         }
 
-        public void OnLoad()
+        public void OnLoad(MapCollection Map)
         {
             for (int i = 0; i < Map.getLengthX(); i++)
             {
@@ -251,25 +233,5 @@ namespace Explorus_K.Views
             GEM_BAR.Increase();
             return GEM_BAR.getCurrent();
         }
-
-        public bool MoveToLeft()
-        {
-            return mapIterator.MoveLeft();
-        }
-
-        public bool MoveToRight()
-        {
-            return mapIterator.MoveRight();
-        }
-
-        public bool MoveToUp()
-        {
-            return mapIterator.MoveUp();
-        }
-        public bool MoveToDown()
-        {
-            return mapIterator.MoveDown();
-        }
-
     }
 }
