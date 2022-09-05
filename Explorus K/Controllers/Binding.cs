@@ -14,7 +14,8 @@ namespace Explorus_K.Controllers
         move_down,
         move_left,
         move_right,
-        pause
+        pause,
+        unpause
     }
 
     internal class Binding
