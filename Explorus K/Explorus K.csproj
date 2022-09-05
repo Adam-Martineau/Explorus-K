@@ -61,6 +61,7 @@
     <Compile Include="GameForm.Designer.cs">
       <DependentUpon>GameForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Game\KeyState.cs" />
     <Compile Include="Models\Image2D.cs" />
     <Compile Include="Models\MapIterator.cs" />
     <Compile Include="Models\ProgressionBarCreator.cs" />

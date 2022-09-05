@@ -18,6 +18,7 @@ namespace Explorus_K.Controllers
 		private int LIFE_COUNT = 3;
 		private int BUBBLE_COUNT = 3;
 		private int GEM_COUNT = 3;
+		private int ANIMATION_COUNT = 0;
 
 		//Time space continum related global variables
 		private double start_time = 0;
@@ -32,7 +33,7 @@ namespace Explorus_K.Controllers
             { "w", ".", "w", ".", "w", "w", "w", "s", "w"},
             { "w", ".", ".", ".", "w", "g", "w", "w", "w"},
             { "w", ".", "w", "w", "w", ".", ".", ".", "w"},
-            { "w", ".", "w", "m", "w", ".", "w", ".", "w"},
+            { "w", ".", "w", "m", "p", ".", "w", ".", "w"},
             { "w", ".", "w", "w", "w", ".", "w", "g", "w"},
             { "w", ".", ".", ".", ".", ".", ".", ".", "w"},
             { "w", "w", "w", "w", "w", "w", "w", "w", "w"}
@@ -94,10 +95,6 @@ namespace Explorus_K.Controllers
 						lag -= MS_PER_FRAME;
 					}
 
-					//gemCount = oView.IncreaseGemBar();
-					//bubbleCount = oView.DecreaseBubbleBar();
-					//lifeCount = oView.DecreaseHealthBar();
-
 					GAME_VIEW.Render();
 				}
 
@@ -149,7 +146,17 @@ namespace Explorus_K.Controllers
 				{
 					count++;
 					GAME_VIEW.getSlimusObject().moveLeft(1);
-					
+          
+					if (count < 8)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_1);
+					else if (count > 8 && count < 16)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_2);
+					else if (count > 16 && count < 32)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_3);
+					else if (count > 32 && count < 40)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_2);
+					else if (count > 40)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_1);
 				}
 				else
 				{
@@ -160,22 +167,76 @@ namespace Explorus_K.Controllers
 			}
 			else if (CURRENT_ACTION == Actions.move_right)
 			{
-				GAME_VIEW.getSlimusObject().moveRight(52);
-				MAP_ITERATOR.MoveRight();
-				CURRENT_ACTION = Actions.none;
+				if (count < 52)
+				{
+					count++;
+					GAME_VIEW.getSlimusObject().moveRight(1);
+
+					if (count < 8)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_1);
+					else if (count > 8 && count < 16)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_2);
+					else if (count > 16 && count < 32)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_3);
+					else if (count > 32 && count < 40)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_2);
+					else if (count > 40)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_1);
+				}
+				else
+				{
+					count = 0;
+					CURRENT_ACTION = Actions.none;
+				}
 
 			}
 			else if (CURRENT_ACTION == Actions.move_up) 
 			{
-				GAME_VIEW.getSlimusObject().moveUp(52);
-                MAP_ITERATOR.MoveUp();
-                CURRENT_ACTION = Actions.none;
+				if (count < 52)
+				{
+					count++;
+					GAME_VIEW.getSlimusObject().moveUp(1);
+
+					if (count < 8)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_1);
+					else if (count > 8 && count < 16)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_2);
+					else if (count > 16 && count < 32)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_3);
+					else if (count > 32 && count < 40)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_2);
+					else if (count > 40)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_1);
+				}
+				else
+				{
+					count = 0;
+					CURRENT_ACTION = Actions.none;
+				}
 			}
 			else if (CURRENT_ACTION == Actions.move_down) 
 			{
-				GAME_VIEW.getSlimusObject().moveDown(52);
-                MAP_ITERATOR.MoveDown();
-                CURRENT_ACTION = Actions.none;
+				if (count < 52)
+				{
+					count++;
+					GAME_VIEW.getSlimusObject().moveDown(1);
+
+					if (count < 8)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_1);
+					else if (count > 8 && count < 16)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_2);
+					else if (count > 16 && count < 32)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_3);
+					else if (count > 32 && count < 40)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_2);
+					else if (count > 40)
+						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_1);
+				}
+				else
+				{
+					count = 0;
+					CURRENT_ACTION = Actions.none;
+				}
 			}
 		}
 

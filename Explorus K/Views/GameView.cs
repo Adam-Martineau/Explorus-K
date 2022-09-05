@@ -1,4 +1,5 @@
 ﻿using Explorus_K.Controllers;
+using Explorus_K.Game;
 using Explorus_K.Models;
 using Explorus_K.NewFolder1;
 using System;
@@ -8,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
+using Application = System.Windows.Forms.Application;
 using Size = System.Drawing.Size;
 
 namespace Explorus_K.Views
@@ -36,11 +39,10 @@ namespace Explorus_K.Views
         public BubbleBar BUBBLE_BAR = new BubbleBar();
         public GemBar GEM_BAR = new GemBar();
 
-        private Slimus SLIMUS;
+        public Slimus SLIMUS;
+        Context KEY_STATE = null;
 
         public static List<Image2D> ALL_SPRITE = new List<Image2D>();
-
-        int i = 0;
 
         public GameView(GameEngine gameEngine)
         {
@@ -50,6 +52,7 @@ namespace Explorus_K.Views
             HEADER_HIGHT = SREEN_HEIGHT * HEADER_RATIO;
             HEADER_POSITION = new Point(0, 0);
             LABYRINTH_POSITION = new Point((int)((SCREEN_WIDTH-LABYRINTH_WIDTH)/2), (int)HEADER_HIGHT);
+            KEY_STATE = new Context(new NoKeyState());
 
             GAME_HEADER.Dock = DockStyle.Top;
             GAME_LABYRINTH.Dock = DockStyle.Fill;
@@ -84,13 +87,17 @@ namespace Explorus_K.Views
 
         public void Update(double elapsed)
         {
-            i += (int) elapsed;
             double FPS = Math.Round(1000 / elapsed, 1);
             setWindowTitle("Explorus-K - FPS " + FPS.ToString());
 
             if (IsColliding(SpriteId.GEM))
             {
                 IncreaseGemBar();
+            }
+
+            if (KEY_STATE.CurrentState() == "WithKeyState")
+            {
+                IsColliding(SpriteId.DOOR);
             }
         }
 
@@ -100,28 +107,32 @@ namespace Explorus_K.Views
             g.Clear(Color.Black);
             GAME_FORM.Text = GAME_TITLE;
 
-            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_TITLE), (SCREEN_WIDTH / 4) * 0, (float)((HEADER_HIGHT-SMALL_SPRITE_DIMENSION)/2), SMALL_SPRITE_DIMENSION*4, SMALL_SPRITE_DIMENSION);
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_TITLE), (SCREEN_WIDTH / 5) * 0, (float)((HEADER_HIGHT-SMALL_SPRITE_DIMENSION)/2), SMALL_SPRITE_DIMENSION*4, SMALL_SPRITE_DIMENSION);
 
-            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.HEARTH), (int)((SCREEN_WIDTH/4)*0.95), (float)((HEADER_HIGHT - SMALL_SPRITE_DIMENSION) / 2), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.HEARTH), (int)((SCREEN_WIDTH/5)*0.95), (float)((HEADER_HIGHT - SMALL_SPRITE_DIMENSION) / 2), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
             
             foreach (Image2D image in HEALTH_BAR.healthBar)
             {
-                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((SCREEN_WIDTH / 4) * 1)+(image.X* SMALL_SPRITE_DIMENSION), (float)((HEADER_HIGHT - SMALL_SPRITE_DIMENSION) / 2), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
+                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((SCREEN_WIDTH / 5) * 1)+(image.X* SMALL_SPRITE_DIMENSION), (float)((HEADER_HIGHT - SMALL_SPRITE_DIMENSION) / 2), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
             }
 
-            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.BUBBLE_BIG), (int)((SCREEN_WIDTH / 4) * 1.95), (float)((HEADER_HIGHT - SMALL_SPRITE_DIMENSION) / 2), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.BUBBLE_BIG), (int)((SCREEN_WIDTH / 5) * 1.95), (float)((HEADER_HIGHT - SMALL_SPRITE_DIMENSION) / 2), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
             foreach (Image2D image in BUBBLE_BAR.bubbleBar)
             {
-                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((SCREEN_WIDTH / 4) * 2) + (image.X * SMALL_SPRITE_DIMENSION), (float)((HEADER_HIGHT - SMALL_SPRITE_DIMENSION) / 2), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
+                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((SCREEN_WIDTH / 5) * 2) + (image.X * SMALL_SPRITE_DIMENSION), (float)((HEADER_HIGHT - SMALL_SPRITE_DIMENSION) / 2), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
             }
 
-            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.GEM), (int)((SCREEN_WIDTH / 4) * 2.95), (float)((HEADER_HIGHT - SMALL_SPRITE_DIMENSION) / 2), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.GEM), (int)((SCREEN_WIDTH / 5) * 2.95), (float)((HEADER_HIGHT - SMALL_SPRITE_DIMENSION) / 2), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
             foreach (Image2D image in GEM_BAR.gemBar)
             {
-                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((SCREEN_WIDTH / 4) * 3) + (image.X * SMALL_SPRITE_DIMENSION), (float)((HEADER_HIGHT - SMALL_SPRITE_DIMENSION) / 2), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
+                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((SCREEN_WIDTH / 5) * 3) + (image.X * SMALL_SPRITE_DIMENSION), (float)((HEADER_HIGHT - SMALL_SPRITE_DIMENSION) / 2), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
+            }
+
+            if(KEY_STATE.CurrentState() == "WithKeyState")
+            {
+                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.KEY), ((SCREEN_WIDTH / 5) * 4), (float)((HEADER_HIGHT - SMALL_SPRITE_DIMENSION) / 2), SMALL_SPRITE_DIMENSION, SMALL_SPRITE_DIMENSION);
             }
         }
-
         private void LabyrinthRenderer(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -234,6 +245,12 @@ namespace Explorus_K.Views
         public int IncreaseGemBar()
         {
             GEM_BAR.Increase();
+            Console.WriteLine(GEM_BAR.getCurrent());
+            Console.WriteLine(GEM_BAR.getLength());
+            if (GEM_BAR.getCurrent() == GEM_BAR.getLength())
+            {
+                KEY_STATE.RequestChangingState();
+            }
             return GEM_BAR.getCurrent();
         }
 
@@ -265,11 +282,6 @@ namespace Explorus_K.Views
             }
 
             return false;
-        }
-
-        public void removeSpriteAt(SpriteId sprite, int x, int y)
-        {
-            ALL_SPRITE.RemoveAt(x);
         }
     }
 }
