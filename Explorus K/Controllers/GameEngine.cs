@@ -36,7 +36,8 @@ namespace Explorus_K.Controllers
             bindings.Add(new Binding(Keys.Down, Actions.move_down));
             bindings.Add(new Binding(Keys.Left, Actions.move_left));
             bindings.Add(new Binding(Keys.Right, Actions.move_right));
-            bindings.Add(new Binding(Keys.Escape, Actions.pause));
+            bindings.Add(new Binding(Keys.P, Actions.pause));
+            bindings.Add(new Binding(Keys.R, Actions.unpause));
             return bindings;
         }
 
