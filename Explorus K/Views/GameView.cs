@@ -141,7 +141,7 @@ namespace Explorus_K.Views
             Graphics g = e.Graphics;
             g.Clear(Color.Black);
 
-            foreach (Image2D sp in ALL_SPRITE)
+            foreach (Image2D sp in ALL_SPRITE.ToArray())
             {
                 SpriteId spriteId = sp.getId();
                 if (spriteId == SpriteId.MINI_SLIMUS || spriteId == SpriteId.GEM)
