@@ -4,5 +4,5 @@ Itérateur : MapIterator.cs
 État : KeyState.cs
 Singleton : SpriteContainer.cs
 Fabrique : ProgressionBarCreator.cs
-Commande : Cramer dans View
+Commande : Binding.cs
 Stratégie : CollisionStrategy.cs
