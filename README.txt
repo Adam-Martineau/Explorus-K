@@ -6,3 +6,4 @@ Singleton : SpriteContainer.cs
 Fabrique : ProgressionBarCreator.cs
 Commande : Cramer dans View
 Momento : Fuck le momento
+Binding : /Controlers/Binding.cs & /Controlers/GameEngines.cs

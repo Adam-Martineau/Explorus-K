@@ -26,9 +26,9 @@ namespace Explorus_K
             gameEngine.KeyEventHandler(e);
         }
 
-        private void GameForm_SizeChanged(object sender, EventArgs e)
+        private void GameForm_SizeChanged_1(object sender, EventArgs e)
         {
-            if (gameEngine != null)
+            if (this.gameEngine != null)
                 gameEngine.resize();
         }
     }

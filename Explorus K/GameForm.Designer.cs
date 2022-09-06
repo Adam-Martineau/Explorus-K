@@ -41,7 +41,7 @@ namespace Explorus_K
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "GameForm";
             this.Text = "Form1";
-            this.SizeChanged += new System.EventHandler(this.GameForm_SizeChanged);
+            this.SizeChanged += new System.EventHandler(this.GameForm_SizeChanged_1);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GameForm_KeyDown);
             this.ResumeLayout(false);
 
