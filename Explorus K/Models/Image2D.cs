@@ -18,6 +18,8 @@ namespace Explorus_K.Models
         public int Y { get => y; set => y = value; }
         public int X { get => x; set => x = value; }
 
+        public Image2D() { }
+
         public Image2D(SpriteId id, ImageType type)
         {
             this.id = id;
@@ -63,7 +65,19 @@ namespace Explorus_K.Models
             setType(type);
             return this;
         }
-        
+
+        public Image2D withX(int x)
+        {
+            X = x;
+            return this;
+        }
+
+        public Image2D withY(int y)
+        {
+            Y = y;
+            return this;
+        }
+
         public Bitmap getBitmapFromContainer()
         {
             return SpriteContainer.getInstance().getBitmapByImageType(type);

@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Explorus K", "Explorus K\Explorus K.csproj", "{A540F6F9-8526-4FF8-9B98-4A5D6439723F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestExplorus", "TestExplorus\TestExplorus.csproj", "{7574AF77-D28A-4923-8CEC-066C88CEA04E}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EFBFD900-6A34-4549-A2FE-CDE763FFE2CB}"
 	ProjectSection(SolutionItems) = preProject
 		README.txt = README.txt
@@ -20,6 +22,10 @@ Global
 		{A540F6F9-8526-4FF8-9B98-4A5D6439723F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A540F6F9-8526-4FF8-9B98-4A5D6439723F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A540F6F9-8526-4FF8-9B98-4A5D6439723F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7574AF77-D28A-4923-8CEC-066C88CEA04E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7574AF77-D28A-4923-8CEC-066C88CEA04E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7574AF77-D28A-4923-8CEC-066C88CEA04E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7574AF77-D28A-4923-8CEC-066C88CEA04E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
