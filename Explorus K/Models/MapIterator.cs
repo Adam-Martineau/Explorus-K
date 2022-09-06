@@ -17,6 +17,10 @@ namespace Explorus_K.Models
         public abstract void MoveRight();
         public abstract void MoveUp();
         public abstract void MoveDown();
+        public abstract object GetLeft();
+        public abstract object GetRight();
+        public abstract object GetUp();
+        public abstract object GetDown();
         public abstract bool isAbleToMoveLeft();
         public abstract bool isAbleToMoveRight();
         public abstract bool isAbleToMoveUp();
@@ -121,6 +125,26 @@ namespace Explorus_K.Models
             {
                 this._position = new Point(updatedX, updatedY);
             }
+        }
+
+        public override object GetLeft()
+        {
+            return _collection.getMap()[_position.X-1, _position.Y];
+        }
+
+        public override object GetRight()
+        {
+            return _collection.getMap()[_position.X+1, _position.Y];
+        }
+
+        public override object GetUp()
+        {
+            return _collection.getMap()[_position.X, _position.Y-1];
+        }
+
+        public override object GetDown()
+        {
+            return _collection.getMap()[_position.X, _position.Y+1];
         }
 
         public override bool isAbleToMoveLeft()

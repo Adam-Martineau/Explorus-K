@@ -277,8 +277,8 @@ namespace Explorus_K.Views
             if (GEM_BAR.getCurrent() == GEM_BAR.getLength())
             {
                 KEY_STATE.RequestChangingState();
-                int[] pos = mapIterator.findPosition("p");
-                mapIterator.removeAt(pos[0], pos[1]);
+                Point pos = mapIterator.findPosition("p");
+                mapIterator.removeAt(pos.X, pos.Y);
             }
             return GEM_BAR.getCurrent();
         }

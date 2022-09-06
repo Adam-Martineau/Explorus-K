@@ -120,17 +120,15 @@ namespace Explorus_K.Controllers
 		//If we have a action bind to that kay, we check if that action can be done
 		public void actionHandler(Actions action)
         {
-			if (action == Actions.pause || action == Actions.exit)
+            if (action == Actions.pause || action == Actions.exit)
 				CURRENT_ACTION = action;
-			else if (action == Actions.move_left && MAP_ITERATOR.isAbleToMoveLeft() && CURRENT_ACTION == Actions.none)
-			{
+			else if (action == Actions.move_left && MAP_ITERATOR.isAbleToMoveLeft() && MAP_ITERATOR.GetLeft() != "w" && MAP_ITERATOR.GetLeft() != "p" && CURRENT_ACTION == Actions.none)
 				CURRENT_ACTION = action;
-			}
-			else if (action == Actions.move_right && MAP_ITERATOR.isAbleToMoveRight() && CURRENT_ACTION == Actions.none)
+			else if (action == Actions.move_right && MAP_ITERATOR.isAbleToMoveRight() && MAP_ITERATOR.GetRight() != "w" && MAP_ITERATOR.GetRight() != "p" && CURRENT_ACTION == Actions.none)
 				CURRENT_ACTION = action;
-			else if (action == Actions.move_up && MAP_ITERATOR.isAbleToMoveUp() && CURRENT_ACTION == Actions.none)
+			else if (action == Actions.move_up && MAP_ITERATOR.isAbleToMoveUp() && MAP_ITERATOR.GetUp() != "w" && MAP_ITERATOR.GetUp() != "p" && CURRENT_ACTION == Actions.none)
 				CURRENT_ACTION = action;
-			else if (action == Actions.move_down && MAP_ITERATOR.isAbleToMoveDown() && CURRENT_ACTION == Actions.none)
+			else if (action == Actions.move_down && MAP_ITERATOR.isAbleToMoveDown() && MAP_ITERATOR.GetDown() != "w" && MAP_ITERATOR.GetDown() != "p" && CURRENT_ACTION == Actions.none)
 				CURRENT_ACTION = action;
 		}
 
