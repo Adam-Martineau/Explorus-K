@@ -91,7 +91,7 @@ namespace Explorus_K.Controllers
 
 					while (lag >= MS_PER_FRAME)
 					{
-						GAME_VIEW.Update(elapsed_time);
+						GAME_VIEW.Update(elapsed_time, MAP_ITERATOR);
 						lag -= MS_PER_FRAME;
 					}
 
@@ -144,8 +144,8 @@ namespace Explorus_K.Controllers
 			{
 				if (count < 52)
 				{
-					count++;
-					GAME_VIEW.getSlimusObject().moveLeft(1);
+					count+=2;
+					GAME_VIEW.getSlimusObject().moveLeft(2);
           
 					if (count < 8)
 						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_1);
@@ -169,8 +169,8 @@ namespace Explorus_K.Controllers
 			{
 				if (count < 52)
 				{
-					count++;
-					GAME_VIEW.getSlimusObject().moveRight(1);
+					count += 2;
+					GAME_VIEW.getSlimusObject().moveRight(2);
 
 					if (count < 8)
 						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_1);
@@ -195,8 +195,8 @@ namespace Explorus_K.Controllers
 			{
 				if (count < 52)
 				{
-					count++;
-					GAME_VIEW.getSlimusObject().moveUp(1);
+					count += 2;
+					GAME_VIEW.getSlimusObject().moveUp(2);
 
 					if (count < 8)
 						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_1);
@@ -220,8 +220,8 @@ namespace Explorus_K.Controllers
 			{
 				if (count < 52)
 				{
-					count++;
-					GAME_VIEW.getSlimusObject().moveDown(1);
+					count += 2;
+					GAME_VIEW.getSlimusObject().moveDown(2);
 
 					if (count < 8)
 						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_1);

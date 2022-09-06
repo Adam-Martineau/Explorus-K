@@ -18,6 +18,7 @@ namespace Explorus_K.Models
         public abstract bool isAbleToMoveRight();
         public abstract bool isAbleToMoveUp();
         public abstract bool isAbleToMoveDown();
+        public abstract void removeAt(int x, int y);
 
         public abstract int[] findPosition(string key);
     }
@@ -163,13 +164,18 @@ namespace Explorus_K.Models
             int updatedX = this._position[0];
             int updatedY = this._position[1] - 1;
 
-            if (updatedY > 0 && _collection.getMap()[updatedX, updatedY] != "w")
+            if (updatedY > 0 && _collection.getMap()[updatedX, updatedY] != "w" && _collection.getMap()[updatedX, updatedY] != "p")
             {
                 return true;
             }
 
             return false;
 
+        }
+
+        public override void removeAt(int x, int y)
+        {
+            _collection.getMap()[x, y] = ".";
         }
     }
 
