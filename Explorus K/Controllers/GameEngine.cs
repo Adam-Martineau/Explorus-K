@@ -105,8 +105,14 @@ namespace Explorus_K.Controllers
 			Application.Exit();
 		}
 
+		internal void resize()
+		{
+			if (GAME_VIEW != null)
+				GAME_VIEW.resize();
+		}
+
 		//Receving the event from a keypress and checking if we have a action bind to that key
-		public void KeyEventHandler(KeyEventArgs e)
+		internal void KeyEventHandler(KeyEventArgs e)
 		{
 			foreach(Binding binding in BINDINGS)
 			{
@@ -118,7 +124,7 @@ namespace Explorus_K.Controllers
 		}
 		
 		//If we have a action bind to that kay, we check if that action can be done
-		public void actionHandler(Actions action)
+		private void actionHandler(Actions action)
         {
             if (action == Actions.pause || action == Actions.exit)
 				CURRENT_ACTION = action;
@@ -133,13 +139,13 @@ namespace Explorus_K.Controllers
 		}
 
 		//If the action can be done, we use a state machine to wait until the action is over
-		public void characterActionsManagement(double elapsed_time)
+		private void characterActionsManagement(double elapsed_time)
 		{
 			//Actions state machine
 			if (CURRENT_ACTION == Actions.none) { }
 			else if (CURRENT_ACTION == Actions.move_left)
 			{
-				if (count < 52)
+				if (count < GAME_VIEW.LARGE_SPRITE_DIMENSION)
 				{
 					count+=2;
 					GAME_VIEW.getSlimusObject().moveLeft(2);
@@ -164,7 +170,7 @@ namespace Explorus_K.Controllers
 			}
 			else if (CURRENT_ACTION == Actions.move_right)
 			{
-				if (count < 52)
+				if (count < GAME_VIEW.LARGE_SPRITE_DIMENSION)
 				{
 					count += 2;
 					GAME_VIEW.getSlimusObject().moveRight(2);
@@ -190,7 +196,7 @@ namespace Explorus_K.Controllers
 			}
 			else if (CURRENT_ACTION == Actions.move_up) 
 			{
-				if (count < 52)
+				if (count < GAME_VIEW.LARGE_SPRITE_DIMENSION)
 				{
 					count += 2;
 					GAME_VIEW.getSlimusObject().moveUp(2);
@@ -215,7 +221,7 @@ namespace Explorus_K.Controllers
 			}
 			else if (CURRENT_ACTION == Actions.move_down) 
 			{
-				if (count < 52)
+				if (count < GAME_VIEW.LARGE_SPRITE_DIMENSION)
 				{
 					count += 2;
 					GAME_VIEW.getSlimusObject().moveDown(2);
@@ -240,7 +246,7 @@ namespace Explorus_K.Controllers
 			}
 		}
 
-		public void systemActionsManagement()
+		private void systemActionsManagement()
 		{
 			//Actions state machine
 			if (CURRENT_ACTION == Actions.none) { }
