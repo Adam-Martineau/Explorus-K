@@ -65,8 +65,8 @@
     <Compile Include="Models\Image2D.cs" />
     <Compile Include="Models\MapIterator.cs" />
     <Compile Include="Models\ProgressionBarCreator.cs" />
-    <Compile Include="Models\SpriteContainer.cs" />
-    <Compile Include="Models\ImageType.cs" />
+    <Compile Include="Game\SpriteContainer.cs" />
+    <Compile Include="Game\ImageType.cs" />
     <Compile Include="Game\SpriteId.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

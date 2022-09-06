@@ -83,19 +83,24 @@ namespace Explorus_K.Views
                 });
         }
 
-        public void Update(double elapsed)
+        public void Update(double elapsed, Iterator mapIterator)
         {
             double FPS = Math.Round(1000 / elapsed, 1);
             setWindowTitle("Explorus-K - FPS " + FPS.ToString());
 
             if (IsColliding(SpriteId.GEM))
             {
-                IncreaseGemBar();
+                IncreaseGemBar(mapIterator);
             }
 
             if (KEY_STATE.CurrentState() == "WithKeyState")
             {
                 IsColliding(SpriteId.DOOR);
+            }
+
+            if (IsColliding(SpriteId.MINI_SLIMUS))
+            {
+                Close();
             }
         }
 
@@ -136,8 +141,6 @@ namespace Explorus_K.Views
             Graphics g = e.Graphics;
             g.Clear(Color.Black);
 
-            
-
             foreach (Image2D sp in ALL_SPRITE)
             {
                 SpriteId spriteId = sp.getId();
@@ -152,18 +155,33 @@ namespace Explorus_K.Views
                 }
                 else if (spriteId == SpriteId.DOOR)
                 {
-                    Graphics graphics = Graphics.FromImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()));
-                    ColorMatrix colormatrix = new ColorMatrix();
-                    colormatrix.Matrix33 = 50;
-                    ImageAttributes imgAttribute = new ImageAttributes();
-                    imgAttribute.SetColorMatrix(colormatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()), new Rectangle(), (float)(sp.X), (float)(sp.Y + LABYRINTH_POSITION.Y), LARGE_SPRITE_DIMENSION, LARGE_SPRITE_DIMENSION, GraphicsUnit.Pixel, imgAttribute);
+                    Bitmap opacityImage = SetOpacity(new Bitmap(SpriteContainer.getInstance().getBitmapByImageType(sp.getType())), 0.4f);
+                    g.DrawImage(opacityImage, (float)(sp.X), (float)(sp.Y + LABYRINTH_POSITION.Y), LARGE_SPRITE_DIMENSION, LARGE_SPRITE_DIMENSION);
                 }
                 else
                 {
                     g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()), (float)(sp.X), (float)(sp.Y + LABYRINTH_POSITION.Y), LARGE_SPRITE_DIMENSION, LARGE_SPRITE_DIMENSION);
                 }
             }
+        }
+
+        private Bitmap SetOpacity(Bitmap image, float opacity)
+        {
+            Bitmap output = new Bitmap(image.Width, image.Height);
+
+            using (Graphics gr = Graphics.FromImage(output))
+            {
+                ColorMatrix colorMatrix = new ColorMatrix();
+                colorMatrix.Matrix33 = opacity;
+
+                ImageAttributes attributes = new ImageAttributes();
+                attributes.SetColorMatrix(colorMatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+
+                Rectangle rect = new Rectangle(0,0, output.Width, output.Height);
+
+                gr.DrawImage(image, rect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, attributes);
+            }
+            return output;
         }
 
         public void setWindowTitle(string title)
@@ -253,14 +271,14 @@ namespace Explorus_K.Views
             return BUBBLE_BAR.getCurrent();
         }
 
-        public int IncreaseGemBar()
+        public int IncreaseGemBar(Iterator mapIterator)
         {
             GEM_BAR.Increase();
-            Console.WriteLine(GEM_BAR.getCurrent());
-            Console.WriteLine(GEM_BAR.getLength());
             if (GEM_BAR.getCurrent() == GEM_BAR.getLength())
             {
                 KEY_STATE.RequestChangingState();
+                int[] pos = mapIterator.findPosition("p");
+                mapIterator.removeAt(pos[0], pos[1]);
             }
             return GEM_BAR.getCurrent();
         }
@@ -281,12 +299,13 @@ namespace Explorus_K.Views
                     float objectX = sp.X + pos;
                     float objectY = sp.Y + LABYRINTH_POSITION.Y + pos;
 
-                    if (slimusX < objectX + SMALL_SPRITE_DIMENSION &&
-                    slimusX + LARGE_SPRITE_DIMENSION > objectX &&
-                    slimusY < objectY + SMALL_SPRITE_DIMENSION &&
-                    slimusY + LARGE_SPRITE_DIMENSION > objectY)
+                    if (slimusX < objectX + SMALL_SPRITE_DIMENSION - 5 &&
+                    slimusX + LARGE_SPRITE_DIMENSION - 5 > objectX &&
+                    slimusY < objectY + SMALL_SPRITE_DIMENSION - 5 &&
+                    slimusY + LARGE_SPRITE_DIMENSION - 5 > objectY)
                     {
                         ALL_SPRITE.RemoveAt(i);
+                        
                         return true;
                     }
                 }

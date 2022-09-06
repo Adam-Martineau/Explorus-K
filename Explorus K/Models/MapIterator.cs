@@ -21,6 +21,7 @@ namespace Explorus_K.Models
         public abstract bool isAbleToMoveRight();
         public abstract bool isAbleToMoveUp();
         public abstract bool isAbleToMoveDown();
+        public abstract void removeAt(int x, int y);
 
         public abstract Point findPosition(object key);
     }
@@ -173,6 +174,11 @@ namespace Explorus_K.Models
 
             return false;
 
+        }
+
+        public override void removeAt(int x, int y)
+        {
+            _collection.getMap()[x, y] = ".";
         }
     }
 
