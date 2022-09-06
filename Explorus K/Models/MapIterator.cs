@@ -129,21 +129,41 @@ namespace Explorus_K.Models
 
         public override object GetLeft()
         {
+            if(_position.X == 0)
+            {
+                return String.Empty;
+            }
+
             return _collection.getMap()[_position.X-1, _position.Y];
         }
 
         public override object GetRight()
         {
+            if (_position.X == _collection.getLengthX() - 1)
+            {
+                return String.Empty;
+            }
+
             return _collection.getMap()[_position.X+1, _position.Y];
         }
 
         public override object GetUp()
         {
+            if (_position.Y == 0)
+            {
+                return String.Empty;
+            }
+
             return _collection.getMap()[_position.X, _position.Y-1];
         }
 
         public override object GetDown()
         {
+            if (_position.Y == _collection.getLengthY() - 1)
+            {
+                return String.Empty;
+            }
+
             return _collection.getMap()[_position.X, _position.Y+1];
         }
 
@@ -152,7 +172,7 @@ namespace Explorus_K.Models
             int updatedX = this._position.X - 1;
             int updatedY = this._position.Y;
 
-            if (updatedX > 0)
+            if (updatedX >= 0)
             {
                 return true;
             }
@@ -191,7 +211,7 @@ namespace Explorus_K.Models
             int updatedX = this._position.X;
             int updatedY = this._position.Y - 1;
 
-            if (updatedY > 0)
+            if (updatedY >= 0)
             {
                 return true;
             }
