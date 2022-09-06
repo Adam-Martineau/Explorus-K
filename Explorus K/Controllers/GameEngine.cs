@@ -2,6 +2,7 @@
 using Explorus_K.Views;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -47,7 +48,7 @@ namespace Explorus_K.Controllers
 			//The game engine get passed from contructor to constructor until it reach GameForm.cs
 			GAME_VIEW = new GameView(this);
 			BINDINGS = initiate_bindings();
-            MAP_ITERATOR = MAP.CreateIterator();
+            MAP_ITERATOR = MAP.CreateIterator("s");
             Thread thread = new Thread(new ThreadStart(GameLoop));
 			thread.Start();
 			GAME_VIEW.Show();
@@ -91,7 +92,7 @@ namespace Explorus_K.Controllers
 
 					while (lag >= MS_PER_FRAME)
 					{
-						GAME_VIEW.Update(elapsed_time);
+						GAME_VIEW.Update(elapsed_time, MAP_ITERATOR);
 						lag -= MS_PER_FRAME;
 					}
 
@@ -104,8 +105,14 @@ namespace Explorus_K.Controllers
 			Application.Exit();
 		}
 
+		internal void resize()
+		{
+			if (GAME_VIEW != null)
+				GAME_VIEW.resize();
+		}
+
 		//Receving the event from a keypress and checking if we have a action bind to that key
-		public void KeyEventHandler(KeyEventArgs e)
+		internal void KeyEventHandler(KeyEventArgs e)
 		{
 			foreach(Binding binding in BINDINGS)
 			{
@@ -117,35 +124,31 @@ namespace Explorus_K.Controllers
 		}
 		
 		//If we have a action bind to that kay, we check if that action can be done
-		public void actionHandler(Actions action)
+		private void actionHandler(Actions action)
         {
-			if (action == Actions.pause || action == Actions.exit)
+            if (action == Actions.pause || action == Actions.exit)
 				CURRENT_ACTION = action;
-			else if (action == Actions.move_left && MAP_ITERATOR.isAbleToMoveLeft() && CURRENT_ACTION == Actions.none)
-			{
+			else if (action == Actions.move_left && MAP_ITERATOR.isAbleToMoveLeft() && MAP_ITERATOR.GetLeft() != "w" && MAP_ITERATOR.GetLeft() != "p" && CURRENT_ACTION == Actions.none)
 				CURRENT_ACTION = action;
-				next_expected_pos = (MAP_ITERATOR.Current()[0] * 52) - 52;
-				start_time = getCurrentTime();
-			}
-			else if (action == Actions.move_right && MAP_ITERATOR.isAbleToMoveRight() && CURRENT_ACTION == Actions.none)
+			else if (action == Actions.move_right && MAP_ITERATOR.isAbleToMoveRight() && MAP_ITERATOR.GetRight() != "w" && MAP_ITERATOR.GetRight() != "p" && CURRENT_ACTION == Actions.none)
 				CURRENT_ACTION = action;
-			else if (action == Actions.move_up && MAP_ITERATOR.isAbleToMoveUp() && CURRENT_ACTION == Actions.none)
+			else if (action == Actions.move_up && MAP_ITERATOR.isAbleToMoveUp() && MAP_ITERATOR.GetUp() != "w" && MAP_ITERATOR.GetUp() != "p" && CURRENT_ACTION == Actions.none)
 				CURRENT_ACTION = action;
-			else if (action == Actions.move_down && MAP_ITERATOR.isAbleToMoveDown() && CURRENT_ACTION == Actions.none)
+			else if (action == Actions.move_down && MAP_ITERATOR.isAbleToMoveDown() && MAP_ITERATOR.GetDown() != "w" && MAP_ITERATOR.GetDown() != "p" && CURRENT_ACTION == Actions.none)
 				CURRENT_ACTION = action;
 		}
 
 		//If the action can be done, we use a state machine to wait until the action is over
-		public void characterActionsManagement(double elapsed_time)
+		private void characterActionsManagement(double elapsed_time)
 		{
 			//Actions state machine
 			if (CURRENT_ACTION == Actions.none) { }
 			else if (CURRENT_ACTION == Actions.move_left)
 			{
-				if (count < 52)
+				if (count < GAME_VIEW.LARGE_SPRITE_DIMENSION)
 				{
-					count++;
-					GAME_VIEW.getSlimusObject().moveLeft(1);
+					count+=2;
+					GAME_VIEW.getSlimusObject().moveLeft(2);
           
 					if (count < 8)
 						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_1);
@@ -167,10 +170,10 @@ namespace Explorus_K.Controllers
 			}
 			else if (CURRENT_ACTION == Actions.move_right)
 			{
-				if (count < 52)
+				if (count < GAME_VIEW.LARGE_SPRITE_DIMENSION)
 				{
-					count++;
-					GAME_VIEW.getSlimusObject().moveRight(1);
+					count += 2;
+					GAME_VIEW.getSlimusObject().moveRight(2);
 
 					if (count < 8)
 						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_1);
@@ -193,10 +196,10 @@ namespace Explorus_K.Controllers
 			}
 			else if (CURRENT_ACTION == Actions.move_up) 
 			{
-				if (count < 52)
+				if (count < GAME_VIEW.LARGE_SPRITE_DIMENSION)
 				{
-					count++;
-					GAME_VIEW.getSlimusObject().moveUp(1);
+					count += 2;
+					GAME_VIEW.getSlimusObject().moveUp(2);
 
 					if (count < 8)
 						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_1);
@@ -218,10 +221,10 @@ namespace Explorus_K.Controllers
 			}
 			else if (CURRENT_ACTION == Actions.move_down) 
 			{
-				if (count < 52)
+				if (count < GAME_VIEW.LARGE_SPRITE_DIMENSION)
 				{
-					count++;
-					GAME_VIEW.getSlimusObject().moveDown(1);
+					count += 2;
+					GAME_VIEW.getSlimusObject().moveDown(2);
 
 					if (count < 8)
 						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_1);
@@ -243,7 +246,7 @@ namespace Explorus_K.Controllers
 			}
 		}
 
-		public void systemActionsManagement()
+		private void systemActionsManagement()
 		{
 			//Actions state machine
 			if (CURRENT_ACTION == Actions.none) { }

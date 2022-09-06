@@ -26,9 +26,10 @@ namespace Explorus_K
             gameEngine.KeyEventHandler(e);
         }
 
-        private void GameForm_FormClosed(object sender, FormClosedEventArgs e)
+        private void GameForm_SizeChanged_1(object sender, EventArgs e)
         {
-            //ToDo: find a way to stop all processes
+            if (this.gameEngine != null)
+                gameEngine.resize();
         }
     }
 }
