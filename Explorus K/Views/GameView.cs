@@ -39,6 +39,7 @@ namespace Explorus_K.Views
 
         public Slimus SLIMUS;
         Context KEY_STATE = null;
+        CollisionContext COLLISION_STRAT = null;
 
         public static List<Image2D> ALL_SPRITE = new List<Image2D>();
 
@@ -51,6 +52,7 @@ namespace Explorus_K.Views
             HEADER_POSITION = new Point(0, 0);
             LABYRINTH_POSITION = new Point((int)((SCREEN_WIDTH-LABYRINTH_WIDTH)/2), (int)HEADER_HIGHT);
             KEY_STATE = new Context(new NoKeyState());
+            COLLISION_STRAT = new CollisionContext();
 
             GAME_HEADER.Dock = DockStyle.Top;
             GAME_LABYRINTH.Dock = DockStyle.Fill;
@@ -285,10 +287,25 @@ namespace Explorus_K.Views
 
         public bool IsColliding(SpriteId sprite)
         {
+            if(sprite == SpriteId.GEM)
+            {
+                COLLISION_STRAT.SetStrategy(new GemStrategy());
+            }
+            else if (sprite == SpriteId.DOOR)
+            {
+                COLLISION_STRAT.SetStrategy(new DoorStrategy());
+            }
+            else if (sprite == SpriteId.MINI_SLIMUS)
+            {
+                COLLISION_STRAT.SetStrategy(new MiniSlimeStrategy());
+            }
+
             float pos = (LARGE_SPRITE_DIMENSION - SMALL_SPRITE_DIMENSION) / 2;
 
             float slimusX = SLIMUS.getPosX();
             float slimusY = SLIMUS.getPosY() + LABYRINTH_POSITION.Y;
+
+            int pixel = COLLISION_STRAT.executeStrategy();
 
             //foreach (Image2D sp in ALL_SPRITE.FindAll(im => im.getId() == sprite))
             for (int i = 0; i < ALL_SPRITE.Count; i++)
@@ -299,10 +316,10 @@ namespace Explorus_K.Views
                     float objectX = sp.X + pos;
                     float objectY = sp.Y + LABYRINTH_POSITION.Y + pos;
 
-                    if (slimusX < objectX + SMALL_SPRITE_DIMENSION - 5 &&
-                    slimusX + LARGE_SPRITE_DIMENSION - 5 > objectX &&
-                    slimusY < objectY + SMALL_SPRITE_DIMENSION - 5 &&
-                    slimusY + LARGE_SPRITE_DIMENSION - 5 > objectY)
+                    if (slimusX < objectX + SMALL_SPRITE_DIMENSION - pixel &&
+                    slimusX + LARGE_SPRITE_DIMENSION - pixel > objectX &&
+                    slimusY < objectY + SMALL_SPRITE_DIMENSION - pixel &&
+                    slimusY + LARGE_SPRITE_DIMENSION - pixel > objectY)
                     {
                         ALL_SPRITE.RemoveAt(i);
                         
