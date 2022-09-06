@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +12,7 @@ namespace Explorus_K.Models
 {
     abstract class Iterator
     {
-        public abstract int[] Current();
+        public abstract Point Current();
         public abstract void MoveLeft();
         public abstract void MoveRight();
         public abstract void MoveUp();
@@ -20,7 +23,7 @@ namespace Explorus_K.Models
         public abstract bool isAbleToMoveDown();
         public abstract void removeAt(int x, int y);
 
-        public abstract int[] findPosition(string key);
+        public abstract Point findPosition(object key);
     }
 
     /// <summary>
@@ -28,27 +31,27 @@ namespace Explorus_K.Models
     /// </summary>
     abstract class IteratorAggregate
     {
-        public abstract Iterator CreateIterator();
+        public abstract Iterator CreateIterator(object key);
     }
 
     class MapIterator : Iterator
     {
         private MapCollection _collection;
 
-        private int[] _position = { -1, -1 };
+        private Point _position = new Point(-1, -1);
 
-        public MapIterator(MapCollection collection)
+        public MapIterator(MapCollection collection, object key)
         {
             this._collection = collection;
 
-             _position = findPosition("s");
+            _position = findPosition(key);
         }
 
-        public override int[] findPosition(string key)
+        public override Point findPosition(object key)
         {
             // initialising result array to -1 in case keyString
             // is not found
-            int[] result = { -1, -1 };
+            Point result = new Point(-1, -1);
 
             // iteration over all the elements of the 2-D array
             // row
@@ -60,8 +63,8 @@ namespace Explorus_K.Models
                     // if keyString is found
                     if (_collection.getMap()[i, j].Equals(key))
                     {
-                        result[0] = i;
-                        result[1] = j;
+                        result.X = i;
+                        result.Y = j;
                         return result;
                     }
                 }
@@ -71,61 +74,61 @@ namespace Explorus_K.Models
             return result;
         }
 
-        public override int[] Current()
+        public override Point Current()
         {
             return _position;
         }
 
         public override void MoveLeft()
         {
-            int updatedX = this._position[0] - 1;
-            int updatedY = this._position[1];
+            int updatedX = this._position.X - 1;
+            int updatedY = this._position.Y;
 
             if (isAbleToMoveLeft())
             {
-                this._position = new int[] { updatedX, updatedY };
+                this._position = new Point(updatedX, updatedY);
             }
         }
 
         public override void MoveRight()
         {
-            int updatedX = this._position[0] + 1;
-            int updatedY = this._position[1];
+            int updatedX = this._position.X + 1;
+            int updatedY = this._position.Y;
 
             if (isAbleToMoveRight())
             {
-                this._position = new int[] { updatedX, updatedY };
+                this._position = new Point(updatedX, updatedY);
             }
         }
 
         public override void MoveUp()
         {
-            int updatedX = this._position[0];
-            int updatedY = this._position[1] - 1;
+            int updatedX = this._position.X;
+            int updatedY = this._position.Y - 1;
 
             if (isAbleToMoveUp())
             {
-                this._position = new int[] { updatedX, updatedY };
+                this._position = new Point(updatedX, updatedY);
             }
         }
 
         public override void MoveDown()
         {
-            int updatedX = this._position[0];
-            int updatedY = this._position[1] + 1;
+            int updatedX = this._position.X;
+            int updatedY = this._position.Y + 1;
 
             if (isAbleToMoveDown())
             {
-                this._position = new int[] { updatedX, updatedY };
+                this._position = new Point(updatedX, updatedY);
             }
         }
 
         public override bool isAbleToMoveLeft()
         {
-            int updatedX = this._position[0] - 1;
-            int updatedY = this._position[1];
+            int updatedX = this._position.X - 1;
+            int updatedY = this._position.Y;
 
-            if (updatedX > 0 && _collection.getMap()[updatedX, updatedY] != "w")
+            if (updatedX > 0)
             {
                 return true;
             }
@@ -135,10 +138,10 @@ namespace Explorus_K.Models
 
         public override bool isAbleToMoveRight()
         {
-            int updatedX = this._position[0] + 1;
-            int updatedY = this._position[1];
+            int updatedX = this._position.X + 1;
+            int updatedY = this._position.Y;
 
-            if (updatedX < _collection.getLengthX() && _collection.getMap()[updatedX, updatedY] != "w")
+            if (updatedX < _collection.getLengthX())
             {
                 return true;
             }
@@ -148,10 +151,10 @@ namespace Explorus_K.Models
 
         public override bool isAbleToMoveDown()
         {
-            int updatedX = this._position[0];
-            int updatedY = this._position[1] + 1;
+            int updatedX = this._position.X;
+            int updatedY = this._position.Y + 1;
 
-            if (updatedY < _collection.getLengthY() && _collection.getMap()[updatedX, updatedY] != "w")
+            if (updatedY < _collection.getLengthY())
             {
                 return true;
             }
@@ -161,10 +164,10 @@ namespace Explorus_K.Models
 
         public override bool isAbleToMoveUp()
         {
-            int updatedX = this._position[0];
-            int updatedY = this._position[1] - 1;
+            int updatedX = this._position.X;
+            int updatedY = this._position.Y - 1;
 
-            if (updatedY > 0 && _collection.getMap()[updatedX, updatedY] != "w" && _collection.getMap()[updatedX, updatedY] != "p")
+            if (updatedY > 0)
             {
                 return true;
             }
@@ -194,9 +197,9 @@ namespace Explorus_K.Models
         {
             return _collection;
         }
-        public override Iterator CreateIterator()
+        public override Iterator CreateIterator(object key)
         {
-            return new MapIterator(this);
+            return new MapIterator(this, key);
         }
 
         public int getLengthX()

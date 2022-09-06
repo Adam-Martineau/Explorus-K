@@ -2,6 +2,7 @@
 using Explorus_K.Views;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -47,7 +48,7 @@ namespace Explorus_K.Controllers
 			//The game engine get passed from contructor to constructor until it reach GameForm.cs
 			GAME_VIEW = new GameView(this);
 			BINDINGS = initiate_bindings();
-            MAP_ITERATOR = MAP.CreateIterator();
+            MAP_ITERATOR = MAP.CreateIterator("s");
             Thread thread = new Thread(new ThreadStart(GameLoop));
 			thread.Start();
 			GAME_VIEW.Show();
@@ -124,8 +125,6 @@ namespace Explorus_K.Controllers
 			else if (action == Actions.move_left && MAP_ITERATOR.isAbleToMoveLeft() && CURRENT_ACTION == Actions.none)
 			{
 				CURRENT_ACTION = action;
-				next_expected_pos = (MAP_ITERATOR.Current()[0] * 52) - 52;
-				start_time = getCurrentTime();
 			}
 			else if (action == Actions.move_right && MAP_ITERATOR.isAbleToMoveRight() && CURRENT_ACTION == Actions.none)
 				CURRENT_ACTION = action;
