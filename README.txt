@@ -1,9 +1,10 @@
-Modèle de conception utilisés :
+Modï¿½le de conception utilisï¿½s :
 
-Itérateur : MapIterator.cs
-État : KeyState.cs
+Itï¿½rateur : MapIterator.cs
+ï¿½tat : KeyState.cs
 Singleton : SpriteContainer.cs
 Fabrique : ProgressionBarCreator.cs
-Commande : Cramer dans View
 Momento : Fuck le momento
 Binding : /Controlers/Binding.cs & /Controlers/GameEngines.cs
+Commande : Binding.cs
+Stratï¿½gie : CollisionStrategy.cs
