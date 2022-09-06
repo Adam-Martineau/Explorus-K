@@ -124,7 +124,7 @@ namespace Explorus_K.Models
             int updatedX = this._position[0] - 1;
             int updatedY = this._position[1];
 
-            if (updatedX > 0 && _collection.getMap()[updatedX, updatedY] != "w")
+            if (updatedX >= 0 && _collection.getMap()[updatedX, updatedY] != "w")
             {
                 return true;
             }
@@ -163,7 +163,7 @@ namespace Explorus_K.Models
             int updatedX = this._position[0];
             int updatedY = this._position[1] - 1;
 
-            if (updatedY > 0 && _collection.getMap()[updatedX, updatedY] != "w")
+            if (updatedY >= 0 && _collection.getMap()[updatedX, updatedY] != "w")
             {
                 return true;
             }
