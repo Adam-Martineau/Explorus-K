@@ -318,7 +318,7 @@ namespace Explorus_K.Views
 			{
 				keyState.RequestChangingState();
 				Point pos = mapIterator.findPosition("p");
-				mapIterator.removeAt(pos.X, pos.Y);
+				mapIterator.replaceAt(".", pos.X, pos.Y);
 			}
 			return gemBar.getCurrent();
 		}

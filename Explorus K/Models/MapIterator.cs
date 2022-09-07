@@ -25,7 +25,7 @@ namespace Explorus_K.Models
         public abstract bool isAbleToMoveRight();
         public abstract bool isAbleToMoveUp();
         public abstract bool isAbleToMoveDown();
-        public abstract void removeAt(int x, int y);
+        public abstract void replaceAt(object newValue, int x, int y);
 
         public abstract Point findPosition(object key);
     }
@@ -170,7 +170,6 @@ namespace Explorus_K.Models
         public override bool isAbleToMoveLeft()
         {
             int updatedX = this._position.X - 1;
-            int updatedY = this._position.Y;
 
             if (updatedX >= 0)
             {
@@ -183,7 +182,6 @@ namespace Explorus_K.Models
         public override bool isAbleToMoveRight()
         {
             int updatedX = this._position.X + 1;
-            int updatedY = this._position.Y;
 
             if (updatedX < _collection.getLengthX())
             {
@@ -195,7 +193,6 @@ namespace Explorus_K.Models
 
         public override bool isAbleToMoveDown()
         {
-            int updatedX = this._position.X;
             int updatedY = this._position.Y + 1;
 
             if (updatedY < _collection.getLengthY())
@@ -208,7 +205,6 @@ namespace Explorus_K.Models
 
         public override bool isAbleToMoveUp()
         {
-            int updatedX = this._position.X;
             int updatedY = this._position.Y - 1;
 
             if (updatedY >= 0)
@@ -217,12 +213,14 @@ namespace Explorus_K.Models
             }
 
             return false;
-
         }
 
-        public override void removeAt(int x, int y)
+        public override void replaceAt(object newValue, int x, int y)
         {
-            _collection.getMap()[x, y] = ".";
+            if (x < _collection.getLengthX() && x >= 0 && y < _collection.getLengthX() && y >= 0)
+            {
+                _collection.getMap()[x, y] = newValue;
+            }
         }
     }
 
@@ -230,14 +228,14 @@ namespace Explorus_K.Models
     // iterator instances, compatible with the collection class.
     class MapCollection : IteratorAggregate
     {
-        string[,] _collection = null;
+        object[,] _collection = null;
 
-        public MapCollection(string[,] collection)
+        public MapCollection(object[,] collection)
         {
             this._collection = collection;
         }
 
-        public string[,] getMap()
+        public object[,] getMap()
         {
             return _collection;
         }
