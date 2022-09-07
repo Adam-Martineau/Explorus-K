@@ -22,6 +22,8 @@ namespace Explorus_K.Controllers
 		private int bubbleCount = 3;
 		private int gemCount = 3;
 		private int animationCount = 0;
+		Labyrinth labyrinth;
+		ActionManager actionManager;
 
 		//Time space continum related global variables
 		private double start_time = 0;
@@ -57,7 +59,7 @@ namespace Explorus_K.Controllers
 			gameView.InitializeHeaderBar(new HealthBarCreator(), lifeCount);
 			gameView.InitializeHeaderBar(new BubbleBarCreator(), bubbleCount);
 			gameView.InitializeHeaderBar(new GemBarCreator(), gemCount);
-			gameView.OnLoad(gameMap);
+			gameView.OnLoad(labyrinth.Map);
 
 			double previous_time = getCurrentTime();
 			double lag = 0.0;
@@ -74,7 +76,7 @@ namespace Explorus_K.Controllers
 
 				if (!actionManager.Paused)
 				{
-					actionManager.characterActionsManagement(GAME_VIEW, labyrinth.MapIterator);
+					actionManager.characterActionsManagement(gameView, labyrinth.MapIterator);
 
 					if (lag >= MS_PER_FRAME)
 					{
@@ -93,8 +95,6 @@ namespace Explorus_K.Controllers
 					Thread.Sleep(1);
 				}
 			}
-
-			Application.Exit();
 		}
 
 		internal void resize()
