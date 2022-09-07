@@ -124,10 +124,9 @@ namespace Explorus_K.Views
 			*/
 		}
 
-		public void Update(double elapsed, Iterator mapIterator)
+		public void Update(double fps, Iterator mapIterator)
 		{
-			double FPS = Math.Round(1000 / elapsed, 1);
-			setWindowTitle("Explorus-K - FPS " + FPS.ToString());
+			setWindowTitle("Explorus-K - FPS " + Math.Round(fps, 1).ToString());
 
 			if (IsColliding(SpriteId.GEM))
 			{

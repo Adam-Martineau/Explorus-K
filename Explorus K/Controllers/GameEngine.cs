@@ -88,18 +88,23 @@ namespace Explorus_K.Controllers
 
 				if (!PAUSED)
 				{
-					characterActionsManagement(elapsed_time);
-
-					while (lag >= MS_PER_FRAME)
+					if (lag >= MS_PER_FRAME)
 					{
-						GAME_VIEW.Update(elapsed_time, MAP_ITERATOR);
-						lag -= MS_PER_FRAME;
+						characterActionsManagement(elapsed_time);
+
+						float fps = 1000f / (float)lag;
+
+						while (lag >= MS_PER_FRAME)
+						{
+							GAME_VIEW.Update(fps, MAP_ITERATOR);
+							lag -= MS_PER_FRAME;
+						}
+
+						GAME_VIEW.Render();
+
+						Thread.Sleep(1);
 					}
-
-					GAME_VIEW.Render();
 				}
-
-				Thread.Sleep(1);
 			}
 
 			Application.Exit();
