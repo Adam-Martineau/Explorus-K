@@ -13,7 +13,7 @@ namespace Explorus_K.Controllers
 		private GameView GAME_VIEW;
 		private List<Binding> BINDINGS;
 		private Actions CURRENT_ACTION = Actions.none;
-		private int MS_PER_FRAME = 16;
+		private int MS_PER_FRAME = 32;
 		private bool EXIT = false;
 		private bool PAUSED = false;
 		private int LIFE_COUNT = 3;
@@ -88,9 +88,10 @@ namespace Explorus_K.Controllers
 
 				if (!PAUSED)
 				{
+					characterActionsManagement(elapsed_time);
+
 					if (lag >= MS_PER_FRAME)
 					{
-						characterActionsManagement(elapsed_time);
 
 						float fps = 1000f / (float)lag;
 
@@ -101,9 +102,9 @@ namespace Explorus_K.Controllers
 						}
 
 						GAME_VIEW.Render();
-
-						Thread.Sleep(1);
 					}
+
+					Thread.Sleep(1);
 				}
 			}
 
