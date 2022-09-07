@@ -15,19 +15,11 @@ namespace Explorus_K.Controllers
 
 		private GameView gameView;
 		private List<Binding> bindings;
-		private Actions currentAction = Actions.none;
-		private bool exit = false;
-		private bool isPaused = false;
 		private int lifeCount = 3;
 		private int bubbleCount = 3;
 		private int gemCount = 3;
-		private int animationCount = 0;
 		Labyrinth labyrinth;
 		ActionManager actionManager;
-
-		//Time space continum related global variables
-		private double start_time = 0;
-		int next_expected_pos = 0;
 
         public GameEngine()
 
