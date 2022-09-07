@@ -13,7 +13,7 @@ namespace Explorus_K.Controllers
 		private GameView GAME_VIEW;
 		private List<Binding> BINDINGS;
 		private Actions CURRENT_ACTION = Actions.none;
-		private int MS_PER_FRAME = 32;
+		private int MS_PER_FRAME = 16;
 		private bool EXIT = false;
 		private bool PAUSED = false;
 		private int LIFE_COUNT = 3;

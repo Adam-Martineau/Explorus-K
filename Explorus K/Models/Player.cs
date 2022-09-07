@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Explorus_K
 {
-    internal class Slimus
+    internal class Player
     {
         private int posX;
         private int posY;
         private ImageType imageType;
 
-        public Slimus(int posX, int posY)
+        public Player(int posX, int posY)
         {
             this.posX = posX;
             this.posY = posY;
@@ -60,7 +60,7 @@ namespace Explorus_K
             posX += stepSize;
         }
 
-        public Image2D refreshSlimus()
+        public Image2D refreshPlayer()
         {
             return new Image2D(0, imageType, posX, posY);  
         }

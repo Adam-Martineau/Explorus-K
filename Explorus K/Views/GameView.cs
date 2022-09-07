@@ -38,7 +38,7 @@ namespace Explorus_K.Views
 		public BubbleBar BUBBLE_BAR = new BubbleBar();
 		public GemBar GEM_BAR = new GemBar();
 
-		public Slimus SLIMUS;
+		public Player SLIMUS;
 		Context KEY_STATE = null;
 		CollisionContext COLLISION_STRAT = null;
 
@@ -245,7 +245,7 @@ namespace Explorus_K.Views
 					}
 					else if(Map.getMap()[i, j] == "s")
 					{
-						SLIMUS = new Slimus(i * LARGE_SPRITE_DIMENSION, j * LARGE_SPRITE_DIMENSION);
+						SLIMUS = new Player(i * LARGE_SPRITE_DIMENSION, j * LARGE_SPRITE_DIMENSION);
 						ALL_SPRITE.Add(new Image2D(SpriteId.SLIMUS, SLIMUS.getImageType(), SLIMUS.getPosX(), SLIMUS.getPosY()));
 					}
 					else if (Map.getMap()[i, j] == "s")
@@ -258,7 +258,7 @@ namespace Explorus_K.Views
 			}
 		}
 
-		public Slimus getSlimusObject()
+		public Player getSlimusObject()
 		{
 			return SLIMUS;
 		}
