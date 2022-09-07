@@ -145,7 +145,7 @@ namespace Explorus_K.Controllers
 			if (CURRENT_ACTION == Actions.none) { }
 			else if (CURRENT_ACTION == Actions.move_left)
 			{
-				if (count < GAME_VIEW.LARGE_SPRITE_DIMENSION)
+				if (count < GAME_VIEW.largeSpriteDimension)
 				{
 					count+=2;
 					GAME_VIEW.getSlimusObject().moveLeft(2);
@@ -170,7 +170,7 @@ namespace Explorus_K.Controllers
 			}
 			else if (CURRENT_ACTION == Actions.move_right)
 			{
-				if (count < GAME_VIEW.LARGE_SPRITE_DIMENSION)
+				if (count < GAME_VIEW.largeSpriteDimension)
 				{
 					count += 2;
 					GAME_VIEW.getSlimusObject().moveRight(2);
@@ -196,7 +196,7 @@ namespace Explorus_K.Controllers
 			}
 			else if (CURRENT_ACTION == Actions.move_up) 
 			{
-				if (count < GAME_VIEW.LARGE_SPRITE_DIMENSION)
+				if (count < GAME_VIEW.largeSpriteDimension)
 				{
 					count += 2;
 					GAME_VIEW.getSlimusObject().moveUp(2);
@@ -221,7 +221,7 @@ namespace Explorus_K.Controllers
 			}
 			else if (CURRENT_ACTION == Actions.move_down) 
 			{
-				if (count < GAME_VIEW.LARGE_SPRITE_DIMENSION)
+				if (count < GAME_VIEW.largeSpriteDimension)
 				{
 					count += 2;
 					GAME_VIEW.getSlimusObject().moveDown(2);
