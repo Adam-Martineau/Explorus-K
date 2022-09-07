@@ -10,23 +10,24 @@ namespace Explorus_K.Controllers
 {
 	public class GameEngine
 	{
-		private GameView GAME_VIEW;
-		private List<Binding> BINDINGS;
-		private Actions CURRENT_ACTION = Actions.none;
-		private int MS_PER_FRAME = 16;
-		private bool EXIT = false;
-		private bool PAUSED = false;
-		private int LIFE_COUNT = 3;
-		private int BUBBLE_COUNT = 3;
-		private int GEM_COUNT = 3;
-		private int ANIMATION_COUNT = 0;
+		private const int MS_PER_FRAME = 16;
+
+		private GameView gameView;
+		private List<Binding> bindings;
+		private Actions currentAction = Actions.none;
+		private bool exit = false;
+		private bool isPaused = false;
+		private int lifeCount = 3;
+		private int bubbleCount = 3;
+		private int gemCount = 3;
+		private int animationCount = 0;
 
 		//Time space continum related global variables
 		private double start_time = 0;
 		private int count = 0;
 		int next_expected_pos = 0;
 
-		private MapCollection MAP = new MapCollection(new string[,]{
+		private MapCollection gameMap = new MapCollection(new string[,]{
             { "w", "w", "w", "w", "w", "w", "w", "w", "w"},
             { "w", "." ,".", ".", ".", ".", ".", ".", "w"},
             { "w", ".", "w", ".", "w", "w", "w", ".", "w"},
@@ -40,18 +41,18 @@ namespace Explorus_K.Controllers
             { "w", "w", "w", "w", "w", "w", "w", "w", "w"}
         });
 
-        private Iterator MAP_ITERATOR = null;
+        private Iterator mapIterator = null;
 
         public GameEngine()
 
 		{
 			//The game engine get passed from contructor to constructor until it reach GameForm.cs
-			GAME_VIEW = new GameView(this);
-			BINDINGS = initiate_bindings();
-            MAP_ITERATOR = MAP.CreateIterator("s");
+			gameView = new GameView(this);
+			bindings = initiate_bindings();
+            mapIterator = gameMap.CreateIterator("s");
             Thread thread = new Thread(new ThreadStart(GameLoop));
 			thread.Start();
-			GAME_VIEW.Show();
+			gameView.Show();
 		}
 
 		private List<Binding> initiate_bindings()
@@ -68,15 +69,15 @@ namespace Explorus_K.Controllers
 
 		private void GameLoop()
 		{
-			GAME_VIEW.InitializeHeaderBar(new HealthBarCreator(), LIFE_COUNT);
-			GAME_VIEW.InitializeHeaderBar(new BubbleBarCreator(), BUBBLE_COUNT);
-			GAME_VIEW.InitializeHeaderBar(new GemBarCreator(), GEM_COUNT);
-			GAME_VIEW.OnLoad(MAP);
+			gameView.InitializeHeaderBar(new HealthBarCreator(), lifeCount);
+			gameView.InitializeHeaderBar(new BubbleBarCreator(), bubbleCount);
+			gameView.InitializeHeaderBar(new GemBarCreator(), gemCount);
+			gameView.OnLoad(gameMap);
 
 			double previous_time = getCurrentTime();
 			double lag = 0.0;
 
-			while (!EXIT)
+			while (!exit)
 			{
 				//Actions state machine
 				systemActionsManagement();
@@ -86,7 +87,7 @@ namespace Explorus_K.Controllers
 				previous_time = current_time;
 				lag += elapsed_time;
 
-				if (!PAUSED)
+				if (!isPaused)
 				{
 					characterActionsManagement(elapsed_time);
 
@@ -97,11 +98,11 @@ namespace Explorus_K.Controllers
 
 						while (lag >= MS_PER_FRAME)
 						{
-							GAME_VIEW.Update(fps, MAP_ITERATOR);
+							gameView.Update(fps, mapIterator);
 							lag -= MS_PER_FRAME;
 						}
 
-						GAME_VIEW.Render();
+						gameView.Render();
 					}
 
 					Thread.Sleep(1);
@@ -113,14 +114,14 @@ namespace Explorus_K.Controllers
 
 		internal void resize()
 		{
-			if (GAME_VIEW != null)
-				GAME_VIEW.resize();
+			if (gameView != null)
+				gameView.resize();
 		}
 
 		//Receving the event from a keypress and checking if we have a action bind to that key
 		internal void KeyEventHandler(KeyEventArgs e)
 		{
-			foreach(Binding binding in BINDINGS)
+			foreach(Binding binding in bindings)
 			{
 				if(binding.Key == e.KeyCode)
 				{
@@ -133,121 +134,121 @@ namespace Explorus_K.Controllers
 		private void actionHandler(Actions action)
         {
             if (action == Actions.pause || action == Actions.exit)
-				CURRENT_ACTION = action;
-			else if (action == Actions.move_left && MAP_ITERATOR.isAbleToMoveLeft() && MAP_ITERATOR.GetLeft() != "w" && MAP_ITERATOR.GetLeft() != "p" && CURRENT_ACTION == Actions.none)
-				CURRENT_ACTION = action;
-			else if (action == Actions.move_right && MAP_ITERATOR.isAbleToMoveRight() && MAP_ITERATOR.GetRight() != "w" && MAP_ITERATOR.GetRight() != "p" && CURRENT_ACTION == Actions.none)
-				CURRENT_ACTION = action;
-			else if (action == Actions.move_up && MAP_ITERATOR.isAbleToMoveUp() && MAP_ITERATOR.GetUp() != "w" && MAP_ITERATOR.GetUp() != "p" && CURRENT_ACTION == Actions.none)
-				CURRENT_ACTION = action;
-			else if (action == Actions.move_down && MAP_ITERATOR.isAbleToMoveDown() && MAP_ITERATOR.GetDown() != "w" && MAP_ITERATOR.GetDown() != "p" && CURRENT_ACTION == Actions.none)
-				CURRENT_ACTION = action;
+				currentAction = action;
+			else if (action == Actions.move_left && mapIterator.isAbleToMoveLeft() && mapIterator.GetLeft() != "w" && mapIterator.GetLeft() != "p" && currentAction == Actions.none)
+				currentAction = action;
+			else if (action == Actions.move_right && mapIterator.isAbleToMoveRight() && mapIterator.GetRight() != "w" && mapIterator.GetRight() != "p" && currentAction == Actions.none)
+				currentAction = action;
+			else if (action == Actions.move_up && mapIterator.isAbleToMoveUp() && mapIterator.GetUp() != "w" && mapIterator.GetUp() != "p" && currentAction == Actions.none)
+				currentAction = action;
+			else if (action == Actions.move_down && mapIterator.isAbleToMoveDown() && mapIterator.GetDown() != "w" && mapIterator.GetDown() != "p" && currentAction == Actions.none)
+				currentAction = action;
 		}
 
 		//If the action can be done, we use a state machine to wait until the action is over
 		private void characterActionsManagement(double elapsed_time)
 		{
 			//Actions state machine
-			if (CURRENT_ACTION == Actions.none) { }
-			else if (CURRENT_ACTION == Actions.move_left)
+			if (currentAction == Actions.none) { }
+			else if (currentAction == Actions.move_left)
 			{
-				if (count < GAME_VIEW.largeSpriteDimension)
+				if (count < gameView.largeSpriteDimension)
 				{
 					count+=2;
-					GAME_VIEW.getSlimusObject().moveLeft(2);
+					gameView.getSlimusObject().moveLeft(2);
           
 					if (count < 8)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_1);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_1);
 					else if (count > 8 && count < 16)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_2);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_2);
 					else if (count > 16 && count < 32)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_3);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_3);
 					else if (count > 32 && count < 40)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_2);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_2);
 					else if (count > 40)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_1);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_1);
 				}
 				else
 				{
 					count = 0;
-					CURRENT_ACTION = Actions.none;
-                    MAP_ITERATOR.MoveLeft();
+					currentAction = Actions.none;
+                    mapIterator.MoveLeft();
                 }
 			}
-			else if (CURRENT_ACTION == Actions.move_right)
+			else if (currentAction == Actions.move_right)
 			{
-				if (count < GAME_VIEW.largeSpriteDimension)
+				if (count < gameView.largeSpriteDimension)
 				{
 					count += 2;
-					GAME_VIEW.getSlimusObject().moveRight(2);
+					gameView.getSlimusObject().moveRight(2);
 
 					if (count < 8)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_1);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_1);
 					else if (count > 8 && count < 16)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_2);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_2);
 					else if (count > 16 && count < 32)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_3);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_3);
 					else if (count > 32 && count < 40)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_2);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_2);
 					else if (count > 40)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_1);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_1);
 				}
 				else
 				{
 					count = 0;
-					CURRENT_ACTION = Actions.none;
-					MAP_ITERATOR.MoveRight();
+					currentAction = Actions.none;
+					mapIterator.MoveRight();
 				}
 
 			}
-			else if (CURRENT_ACTION == Actions.move_up) 
+			else if (currentAction == Actions.move_up) 
 			{
-				if (count < GAME_VIEW.largeSpriteDimension)
+				if (count < gameView.largeSpriteDimension)
 				{
 					count += 2;
-					GAME_VIEW.getSlimusObject().moveUp(2);
+					gameView.getSlimusObject().moveUp(2);
 
 					if (count < 8)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_1);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_1);
 					else if (count > 8 && count < 16)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_2);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_2);
 					else if (count > 16 && count < 32)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_3);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_3);
 					else if (count > 32 && count < 40)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_2);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_2);
 					else if (count > 40)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_1);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_1);
 				}
 				else
 				{
 					count = 0;
-					CURRENT_ACTION = Actions.none;
-                    MAP_ITERATOR.MoveUp();
+					currentAction = Actions.none;
+                    mapIterator.MoveUp();
                 }
 			}
-			else if (CURRENT_ACTION == Actions.move_down) 
+			else if (currentAction == Actions.move_down) 
 			{
-				if (count < GAME_VIEW.largeSpriteDimension)
+				if (count < gameView.largeSpriteDimension)
 				{
 					count += 2;
-					GAME_VIEW.getSlimusObject().moveDown(2);
+					gameView.getSlimusObject().moveDown(2);
 
 					if (count < 8)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_1);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_1);
 					else if (count > 8 && count < 16)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_2);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_2);
 					else if (count > 16 && count < 32)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_3);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_3);
 					else if (count > 32 && count < 40)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_2);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_2);
 					else if (count > 40)
-						GAME_VIEW.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_1);
+						gameView.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_1);
 				}
 				else
 				{
 					count = 0;
-					CURRENT_ACTION = Actions.none;
-                    MAP_ITERATOR.MoveDown();
+					currentAction = Actions.none;
+                    mapIterator.MoveDown();
                 }
 			}
 		}
@@ -255,15 +256,15 @@ namespace Explorus_K.Controllers
 		private void systemActionsManagement()
 		{
 			//Actions state machine
-			if (CURRENT_ACTION == Actions.none) { }
-			else if (CURRENT_ACTION == Actions.pause)
+			if (currentAction == Actions.none) { }
+			else if (currentAction == Actions.pause)
 			{
-				PAUSED = !PAUSED;
-				CURRENT_ACTION = Actions.none;
+				isPaused = !isPaused;
+				currentAction = Actions.none;
 			}
-			else if (CURRENT_ACTION == Actions.exit)
+			else if (currentAction == Actions.exit)
 			{
-				EXIT = true;
+				exit = true;
 			}
 		}
 
