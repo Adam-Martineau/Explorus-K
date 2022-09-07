@@ -11,16 +11,17 @@ namespace Explorus_K.Controllers
 {
 	public class GameEngine
 	{
-		private GameView GAME_VIEW;
-		private Labyrinth labyrinth;
-		private ActionManager actionManager;
-		private List<Binding> BINDINGS;
-		
-		private int MS_PER_FRAME = 16;
-		private int LIFE_COUNT = 3;
-		private int BUBBLE_COUNT = 3;
-		private int GEM_COUNT = 3;
-		private int ANIMATION_COUNT = 0;
+		private const int MS_PER_FRAME = 16;
+
+		private GameView gameView;
+		private List<Binding> bindings;
+		private Actions currentAction = Actions.none;
+		private bool exit = false;
+		private bool isPaused = false;
+		private int lifeCount = 3;
+		private int bubbleCount = 3;
+		private int gemCount = 3;
+		private int animationCount = 0;
 
 		//Time space continum related global variables
 		private double start_time = 0;
@@ -30,13 +31,13 @@ namespace Explorus_K.Controllers
 
 		{
 			//The game engine get passed from contructor to constructor until it reach GameForm.cs
-			GAME_VIEW = new GameView(this);
+			gameView = new GameView(this);
+			bindings = initiate_bindings();
 			labyrinth = new Labyrinth();
 			actionManager = new ActionManager();
-			BINDINGS = initiate_bindings();
             Thread thread = new Thread(new ThreadStart(GameLoop));
 			thread.Start();
-			GAME_VIEW.Show();
+			gameView.Show();
 		}
 
 		private List<Binding> initiate_bindings()
@@ -53,10 +54,10 @@ namespace Explorus_K.Controllers
 
 		private void GameLoop()
 		{
-			GAME_VIEW.InitializeHeaderBar(new HealthBarCreator(), LIFE_COUNT);
-			GAME_VIEW.InitializeHeaderBar(new BubbleBarCreator(), BUBBLE_COUNT);
-			GAME_VIEW.InitializeHeaderBar(new GemBarCreator(), GEM_COUNT);
-			GAME_VIEW.OnLoad(labyrinth.Map);
+			gameView.InitializeHeaderBar(new HealthBarCreator(), lifeCount);
+			gameView.InitializeHeaderBar(new BubbleBarCreator(), bubbleCount);
+			gameView.InitializeHeaderBar(new GemBarCreator(), gemCount);
+			gameView.OnLoad(gameMap);
 
 			double previous_time = getCurrentTime();
 			double lag = 0.0;
@@ -82,11 +83,11 @@ namespace Explorus_K.Controllers
 
 						while (lag >= MS_PER_FRAME)
 						{
-							GAME_VIEW.Update(fps, labyrinth.MapIterator);
+							gameView.Update(fps, labyrinth.MapIterator);
 							lag -= MS_PER_FRAME;
 						}
 
-						GAME_VIEW.Render();
+						gameView.Render();
 					}
 
 					Thread.Sleep(1);
@@ -98,14 +99,14 @@ namespace Explorus_K.Controllers
 
 		internal void resize()
 		{
-			if (GAME_VIEW != null)
-				GAME_VIEW.resize();
+			if (gameView != null)
+				gameView.resize();
 		}
 
 		//Receving the event from a keypress and checking if we have a action bind to that key
 		internal void KeyEventHandler(KeyEventArgs e)
 		{
-			foreach(Binding binding in BINDINGS)
+			foreach(Binding binding in bindings)
 			{
 				if(binding.Key == e.KeyCode)
 				{
