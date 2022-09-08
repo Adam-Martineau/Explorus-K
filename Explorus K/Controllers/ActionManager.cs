@@ -21,6 +21,7 @@ namespace Explorus_K.Game
         //If we have a action bind to that kay, we check if that action can be done
         public void actionHandler(Actions action, Iterator mapIterator)
 		{
+			Console.WriteLine(mapIterator.GetUp());
 			if (action == Actions.pause || action == Actions.exit)
 				currentAction = action;
 			else if (action == Actions.move_left && mapIterator.isAbleToMoveLeft() && mapIterator.GetLeft() != "w" && mapIterator.GetLeft() != "p" && currentAction == Actions.none)

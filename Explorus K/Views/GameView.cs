@@ -10,6 +10,7 @@ using static System.Net.Mime.MediaTypeNames;
 using Application = System.Windows.Forms.Application;
 using Size = System.Drawing.Size;
 using System.Drawing.Imaging;
+using System.Security.Policy;
 
 namespace Explorus_K.Views
 {
@@ -32,15 +33,9 @@ namespace Explorus_K.Views
 		private PictureBox gameLabyrinth = new PictureBox();
 
 		private int screenWidth = 600;
-		private int screenHeight = 600;
+		private int screenHeight = 600;		
 
-		public HealthBar healthBar = new HealthBar();
-		public BubbleBar bubbleBar = new BubbleBar();
-		public GemBar gemBar = new GemBar();
-
-		public LabyrinthImage labyrinthImage;
-		Context keyState = null;
-		CollisionContext collisionStart = null;
+		public LabyrinthImage labyrinthImage;		
 
 		private Size oldsize = new Size(1, 1);
 
@@ -50,8 +45,6 @@ namespace Explorus_K.Views
 			gameForm.Size = new Size(screenWidth, screenHeight);
 			gameForm.MinimumSize = new Size(600, 600);
 			headerHeight = screenHeight * headerRatio;
-			keyState = new Context(new NoKeyState());
-			collisionStart = new CollisionContext();
 
 			gameHeader.Dock = DockStyle.Top;
 			gameLabyrinth.Dock = DockStyle.Fill;
@@ -62,7 +55,7 @@ namespace Explorus_K.Views
 			gameForm.Controls.Add(gameHeader);
 			gameForm.Controls.Add(gameLabyrinth);
 
-			labyrinthImage = new LabyrinthImage(new Labyrinth());
+			labyrinthImage = new LabyrinthImage(gameEngine.GetLabyrinth());
 
 			oldsize = gameForm.Size;
 			resize();
@@ -96,23 +89,14 @@ namespace Explorus_K.Views
 
 		public void Update(double fps, Iterator mapIterator)
 		{
-			setWindowTitle("Explorus-K - FPS " + Math.Round(fps, 1).ToString());
+            gameTitle = "Explorus-K - FPS " + Math.Round(fps, 1).ToString();
 
-			if (IsColliding(SpriteId.GEM))
-			{
-				IncreaseGemBar(mapIterator);
-			}
+            labyrinthImage.IsColliding(SpriteId.GEM);
 
-			if (keyState.CurrentState() == "WithKeyState")
-			{
-				IsColliding(SpriteId.DOOR);
-			}
+			labyrinthImage.IsColliding(SpriteId.DOOR);
 
-			if (IsColliding(SpriteId.MINI_SLIMUS))
-			{
-				Close();
-			}
-		}
+            labyrinthImage.IsColliding(SpriteId.MINI_SLIMUS);
+        }
 
 		private void HeaderRenderer(object sender, PaintEventArgs e)
 		{
@@ -120,7 +104,7 @@ namespace Explorus_K.Views
 			g.Clear(Color.Black);
 			gameForm.Text = gameTitle;
 
-			labyrinthImage.drawHeader(g, healthBar, gemBar, bubbleBar, keyState);
+			labyrinthImage.drawHeader(g);
 		}
 		private void LabyrinthRenderer(object sender, PaintEventArgs e)
 		{
@@ -128,13 +112,6 @@ namespace Explorus_K.Views
 			g.Clear(Color.Black);
 
 			labyrinthImage.drawLabyrinthImage(g);
-		}
-
-		
-
-		public void setWindowTitle(string title)
-		{
-			gameTitle = title;
 		}
 
 		public Player getSlimusObject()
@@ -148,78 +125,16 @@ namespace Explorus_K.Views
 
 			if(creator.GetType() == typeof(HealthBarCreator))
 			{
-				this.healthBar = (HealthBar)bar;
+				this.labyrinthImage.HealthBar = (HealthBar)bar;
 			}
 			else if (creator.GetType() == typeof(BubbleBarCreator))
 			{
-				this.bubbleBar = (BubbleBar)bar;
+                this.labyrinthImage.BubbleBar = (BubbleBar)bar;
 			}
 			else if (creator.GetType() == typeof(GemBarCreator))
 			{
-				this.gemBar = (GemBar)bar;
+                this.labyrinthImage.GemBar = (GemBar)bar;
 			}
-		}
-
-		public int DecreaseHealthBar()
-		{
-			healthBar.Decrease();
-			return healthBar.getCurrent();
-		}
-
-		public int DecreaseBubbleBar()
-		{
-			bubbleBar.Decrease();
-			return bubbleBar.getCurrent();
-		}
-
-		public int DecreaseGemBar()
-		{
-			gemBar.Decrease();
-			return gemBar.getCurrent();
-		}
-
-		public int IncreaseHealthBar()
-		{
-			healthBar.Increase();
-			return healthBar.getCurrent();
-		}
-
-		public int IncreaseBubbleBar()
-		{
-			bubbleBar.Increase();
-			return bubbleBar.getCurrent();
-		}
-
-		public int IncreaseGemBar(Iterator mapIterator)
-		{
-			gemBar.Increase();
-			if (gemBar.getCurrent() == gemBar.getLength())
-			{
-				keyState.RequestChangingState();
-				Point pos = mapIterator.findPosition("p");
-				mapIterator.replaceAt(".", pos.X, pos.Y);
-			}
-			return gemBar.getCurrent();
-		}
-
-		public bool IsColliding(SpriteId sprite)
-		{
-			if(sprite == SpriteId.GEM)
-			{
-				collisionStart.SetStrategy(new GemStrategy());
-			}
-			else if (sprite == SpriteId.DOOR)
-			{
-				collisionStart.SetStrategy(new DoorStrategy());
-			}
-			else if (sprite == SpriteId.MINI_SLIMUS)
-			{
-				collisionStart.SetStrategy(new MiniSlimeStrategy());
-			}
-
-			int pixel = collisionStart.executeStrategy();
-
-			return labyrinthImage.IsColliding(pixel, sprite);
-		}
+		}		
 	}
 }

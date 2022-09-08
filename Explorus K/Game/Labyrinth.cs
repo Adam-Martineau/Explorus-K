@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Explorus_K.Game
 {
-    class Labyrinth
+    public class Labyrinth
     {
         private MapCollection map = new MapCollection(new string[,]{
             { "w", "w", "w", "w", "w", "w", "w", "w", "w"},

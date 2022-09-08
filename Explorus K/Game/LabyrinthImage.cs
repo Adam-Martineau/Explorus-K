@@ -17,6 +17,11 @@ namespace Explorus_K.Game
         Labyrinth labyrinth;
         Player slimus;
         Point labyrinthPosition;
+        CollisionContext collisionStrategy = null;
+        Context keyState = null;
+        HealthBar healthBar = new HealthBar();
+        BubbleBar bubbleBar = new BubbleBar();
+        GemBar gemBar = new GemBar();
 
         private double labyrinthHeight = 48 * 9;
         private double labyrinthWidth = 48 * 11;
@@ -27,11 +32,18 @@ namespace Explorus_K.Game
         private int screenWidth = 600;
         private int screenHeight = 600;
 
+        internal Context KeyState { get => keyState; set => keyState = value; }
+        internal HealthBar HealthBar { get => healthBar; set => healthBar = value; }
+        internal BubbleBar BubbleBar { get => bubbleBar; set => bubbleBar = value; }
+        internal GemBar GemBar { get => gemBar; set => gemBar = value; }
+        internal Labyrinth Labyrinth { get => labyrinth; set => labyrinth = value; }
 
         public LabyrinthImage(Labyrinth labyrinth)
         {
             labyrinthPosition = new Point();
             labyrinthImages = new List<Image2D>();
+            collisionStrategy = new CollisionContext();
+            keyState = new Context(new NoKeyState());
             this.labyrinth = labyrinth;
             headerHeight = screenHeight * headerRatio;
             fillLabyrinthImages();
@@ -45,6 +57,24 @@ namespace Explorus_K.Game
         public Player getSlimus()
         {
             return slimus;
+        }
+
+        public void InitializeHeaderBar(ProgressionBarCreator creator, int count)
+        {
+            IBar bar = creator.InitializeBar(count);
+
+            if (creator.GetType() == typeof(HealthBarCreator))
+            {
+                this.healthBar = (HealthBar)bar;
+            }
+            else if (creator.GetType() == typeof(BubbleBarCreator))
+            {
+                this.bubbleBar = (BubbleBar)bar;
+            }
+            else if (creator.GetType() == typeof(GemBarCreator))
+            {
+                this.gemBar = (GemBar)bar;
+            }
         }
 
         public void drawLabyrinthImage(Graphics g)
@@ -73,7 +103,7 @@ namespace Explorus_K.Game
             }
         }
 
-        public void drawHeader(Graphics g, HealthBar healthBar, GemBar gemBar, BubbleBar bubbleBar, Context keyState)
+        public void drawHeader(Graphics g)
         {
             g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_TITLE), headerOffset, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION * 4, Constant.SMALL_SPRITE_DIMENSION);
 
@@ -102,8 +132,24 @@ namespace Explorus_K.Game
             }
         }
 
-        public bool IsColliding(int pixel, SpriteId sprite)
+        public bool IsColliding(SpriteId sprite)
 		{
+            int pixel = 0;
+            if (sprite == SpriteId.GEM)
+            {
+                collisionStrategy.SetStrategy(new GemStrategy());
+                pixel = 10;
+            }
+            else if (sprite == SpriteId.DOOR)
+            {
+                collisionStrategy.SetStrategy(new DoorStrategy());
+                pixel = 5;
+            }
+            else if (sprite == SpriteId.MINI_SLIMUS)
+            {
+                collisionStrategy.SetStrategy(new MiniSlimeStrategy());
+                pixel = 15;
+            }
 
             float pos = (Constant.LARGE_SPRITE_DIMENSION - Constant.SMALL_SPRITE_DIMENSION) / 2;
 
@@ -123,8 +169,7 @@ namespace Explorus_K.Game
                     slimusY < objectY + Constant.SMALL_SPRITE_DIMENSION - pixel &&
                     slimusY + Constant.LARGE_SPRITE_DIMENSION - pixel > objectY)
                     {
-                        labyrinthImages.RemoveAt(i);
-
+                        collisionStrategy.executeStrategy(this, i);
                         return true;
                     }
                 }

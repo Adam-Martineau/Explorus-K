@@ -18,16 +18,16 @@ namespace Explorus_K.Controllers
 		private int lifeCount = 3;
 		private int bubbleCount = 3;
 		private int gemCount = 3;
-		Labyrinth labyrinth;
+		private Labyrinth labyrinth;
 		ActionManager actionManager;
 
         public GameEngine()
 
 		{
-			//The game engine get passed from contructor to constructor until it reach GameForm.cs
-			gameView = new GameView(this);
+            labyrinth = new Labyrinth();
+            //The game engine get passed from contructor to constructor until it reach GameForm.cs
+            gameView = new GameView(this);
 			bindings = initiate_bindings();
-			labyrinth = new Labyrinth();
 			actionManager = new ActionManager();
             Thread thread = new Thread(new ThreadStart(GameLoop));
 			thread.Start();
@@ -110,6 +110,11 @@ namespace Explorus_K.Controllers
 		private long getCurrentTime()
 		{
 			return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+		}
+
+		public Labyrinth GetLabyrinth()
+		{
+			return this.labyrinth;
 		}
 	}
 }
