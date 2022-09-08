@@ -51,7 +51,6 @@ namespace Explorus_K.Controllers
 			gameView.InitializeHeaderBar(new HealthBarCreator(), lifeCount);
 			gameView.InitializeHeaderBar(new BubbleBarCreator(), bubbleCount);
 			gameView.InitializeHeaderBar(new GemBarCreator(), gemCount);
-			gameView.OnLoad(labyrinth.Map);
 
 			double previous_time = getCurrentTime();
 			double lag = 0.0;

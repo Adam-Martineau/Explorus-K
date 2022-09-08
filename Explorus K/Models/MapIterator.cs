@@ -27,6 +27,8 @@ namespace Explorus_K.Models
         public abstract bool isAbleToMoveDown();
         public abstract void replaceAt(object newValue, int x, int y);
 
+        public abstract object getMapEntryAt(int x, int y);
+
         public abstract Point findPosition(object key);
     }
 
@@ -221,6 +223,15 @@ namespace Explorus_K.Models
             {
                 _collection.getMap()[x, y] = newValue;
             }
+        }
+
+        public override object getMapEntryAt(int x, int y)
+        {
+            if (x < _collection.getLengthX() && x >= 0 && y < _collection.getLengthX() && y >= 0)
+            {
+                return _collection.getMap()[x, y];
+            }
+            return new object();
         }
     }
 

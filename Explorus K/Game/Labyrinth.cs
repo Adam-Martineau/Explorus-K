@@ -32,5 +32,10 @@ namespace Explorus_K.Game
 
         internal Iterator MapIterator { get => mapIterator; set => mapIterator = value; }
         internal MapCollection Map { get => map; set => map = value; }
+
+        public String getMapEntryAt(int x, int y)
+        {
+            return (String)mapIterator.getMapEntryAt(x, y);
+        }
     }
 }
