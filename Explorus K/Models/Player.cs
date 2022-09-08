@@ -13,11 +13,11 @@ namespace Explorus_K
         private int posY;
         private ImageType imageType;
 
-        public Player(int posX, int posY)
+        public Player(int posX, int posY, ImageType imageType)
         {
             this.posX = posX;
             this.posY = posY;
-            imageType = ImageType.SLIMUS_DOWN_ANIMATION_1;
+            this.imageType = imageType;
         }
 
         public ImageType getImageType()
