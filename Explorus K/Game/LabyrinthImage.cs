@@ -22,6 +22,10 @@ namespace Explorus_K.Game
         private double labyrinthWidth = 48 * 11;
         private int headerOffset = 0;
         private double headerHeight = 0;
+        private const double headerRatio = 0.125;
+
+        private int screenWidth = 600;
+        private int screenHeight = 600;
 
 
         public LabyrinthImage(Labyrinth labyrinth)
@@ -29,6 +33,7 @@ namespace Explorus_K.Game
             labyrinthPosition = new Point();
             labyrinthImages = new List<Image2D>();
             this.labyrinth = labyrinth;
+            headerHeight = screenHeight * headerRatio;
             fillLabyrinthImages();
         }
 
@@ -65,6 +70,35 @@ namespace Explorus_K.Game
                 {
                     g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()), (float)(sp.X + labyrinthPosition.X), (float)(sp.Y + labyrinthPosition.Y), Constant.LARGE_SPRITE_DIMENSION, Constant.LARGE_SPRITE_DIMENSION);
                 }
+            }
+        }
+
+        public void drawHeader(Graphics g, HealthBar healthBar, GemBar gemBar, BubbleBar bubbleBar, Context keyState)
+        {
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_TITLE), headerOffset, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION * 4, Constant.SMALL_SPRITE_DIMENSION);
+
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.HEARTH), (int)((screenWidth / 5) * 0.95) + headerOffset, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
+
+            foreach (Image2D image in healthBar.healthBar)
+            {
+                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 5) * 1) + (image.X * Constant.SMALL_SPRITE_DIMENSION) + headerOffset, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
+            }
+
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.BUBBLE_BIG), (int)((screenWidth / 5) * 1.95) + headerOffset, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
+            foreach (Image2D image in bubbleBar.bubbleBar)
+            {
+                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 5) * 2) + (image.X * Constant.SMALL_SPRITE_DIMENSION) + headerOffset, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
+            }
+
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.GEM), (int)((screenWidth / 5) * 2.95) + headerOffset, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
+            foreach (Image2D image in gemBar.gemBar)
+            {
+                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 5) * 3) + (image.X * Constant.SMALL_SPRITE_DIMENSION) + headerOffset, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
+            }
+
+            if (keyState.CurrentState() == "WithKeyState")
+            {
+                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.KEY), ((screenWidth / 5) * 4) + headerOffset, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
             }
         }
 

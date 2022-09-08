@@ -120,31 +120,7 @@ namespace Explorus_K.Views
 			g.Clear(Color.Black);
 			gameForm.Text = gameTitle;
 
-			g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_TITLE), headerOffset, (float)((headerHeight-smallSpriteDimension)/2), smallSpriteDimension*4, smallSpriteDimension);
-
-			g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.HEARTH), (int)((screenWidth/5)*0.95) + headerOffset, (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
-			
-			foreach (Image2D image in healthBar.healthBar)
-			{
-				g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 5) * 1)+(image.X* smallSpriteDimension) + headerOffset, (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
-			}
-
-			g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.BUBBLE_BIG), (int)((screenWidth / 5) * 1.95) + headerOffset, (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
-			foreach (Image2D image in bubbleBar.bubbleBar)
-			{
-				g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 5) * 2) + (image.X * smallSpriteDimension) + headerOffset, (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
-			}
-
-			g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.GEM), (int)((screenWidth / 5) * 2.95) + headerOffset, (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
-			foreach (Image2D image in gemBar.gemBar)
-			{
-				g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 5) * 3) + (image.X * smallSpriteDimension) + headerOffset, (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
-			}
-
-			if(keyState.CurrentState() == "WithKeyState")
-			{
-				g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.KEY), ((screenWidth / 5) * 4) + headerOffset, (float)((headerHeight - smallSpriteDimension) / 2), smallSpriteDimension, smallSpriteDimension);
-			}
+			labyrinthImage.drawHeader(g, healthBar, gemBar, bubbleBar, keyState);
 		}
 		private void LabyrinthRenderer(object sender, PaintEventArgs e)
 		{
