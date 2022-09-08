@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Image2DTest.cs" />
     <Compile Include="MapIteratorTest.cs" />
+    <Compile Include="PlayerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
