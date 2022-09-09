@@ -5,5 +5,4 @@ Etat : KeyState.cs
 Singleton : SpriteContainer.cs
 Fabrique : ProgressionBarCreator.cs
 "Command" de https://gameprogrammingpatterns.com/command.html : /Controlers/Binding.cs & /Controlers/GameEngines.cs
-Commande : Binding.cs
 Strategie : CollisionStrategy.cs
