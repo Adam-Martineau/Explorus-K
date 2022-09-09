@@ -16,7 +16,8 @@ namespace Explorus_K.Game
 		private int count = 0;
 		private bool paused = false;
 
-        public bool Paused { get => paused; set => paused = value; }
+        public bool Paused { get => paused; }
+		public Actions CurrentAction { get => currentAction; }
 
         //If we have a action bind to that kay, we check if that action can be done
         public void actionHandler(Actions action, Iterator mapIterator)
