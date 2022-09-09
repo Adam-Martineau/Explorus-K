@@ -1,10 +1,9 @@
-Mod�le de conception utilis�s :
+Mod�le de conception utilises :
 
-It�rateur : MapIterator.cs
-�tat : KeyState.cs
+Iterateur : MapIterator.cs
+Etat : KeyState.cs
 Singleton : SpriteContainer.cs
 Fabrique : ProgressionBarCreator.cs
-Momento : Fuck le momento
-Binding : /Controlers/Binding.cs & /Controlers/GameEngines.cs
+"Command" de https://gameprogrammingpatterns.com/command.html : /Controlers/Binding.cs & /Controlers/GameEngines.cs
 Commande : Binding.cs
-Strat�gie : CollisionStrategy.cs
+Strategie : CollisionStrategy.cs

@@ -35,8 +35,21 @@ namespace Explorus_K.Game
 				currentAction = action;
 		}
 
-		//If the action can be done, we use a state machine to wait until the action is over
-		public void characterActionsManagement(GameView view, Iterator mapIterator)
+        public void systemActionsManagement()
+        {
+            if (currentAction == Actions.pause)
+            {
+                paused = !paused;
+                currentAction = Actions.none;
+            }
+            else if (currentAction == Actions.exit)
+            {
+                Application.Exit();
+            }
+        }
+
+        //If the action can be done, we use a state machine to wait until the action is over
+        public void characterActionsManagement(GameView view, Iterator mapIterator)
 		{
 			//Actions state machine
 			if (currentAction == Actions.move_left)
@@ -139,19 +152,6 @@ namespace Explorus_K.Game
 					currentAction = Actions.none;
 					mapIterator.MoveDown();
 				}
-			}
-		}
-
-		public void systemActionsManagement()
-		{
-			if (currentAction == Actions.pause)
-			{
-				paused = !paused;
-				currentAction = Actions.none;
-			}
-			else if (currentAction == Actions.exit)
-			{
-				Application.Exit();
 			}
 		}
 	}

@@ -3,30 +3,41 @@ using Explorus_K.Game;
 using Explorus_K.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestExplorus
 {
+    /*
     [TestClass]
-    internal class ActionManagerTest
+    public class ActionManagerTest
     {
-        [TestMethod]
-        public void actiionHandlerTestPause()
-        {
-            ActionManager actionManager = new ActionManager();
-            Iterator mockIterator = createMockIterator();
+        ActionManager actionManager = new ActionManager();
 
-            actionManager.actionHandler(Actions.pause, mockIterator);
-            Assert.AreEqual(actionManager.CurrentAction, Actions.pause);
+        [TestMethod]
+        public void testAllActions()
+        {
+            actionHandlerTest(Actions.pause);
+            actionManager.systemActionsManagement();
+            Assert.AreEqual(actionManager.Paused, true);
+
+            actionHandlerTest(Actions.move_up);
+            actionHandlerTest(Actions.move_down);
+            actionHandlerTest(Actions.move_right);
+            actionHandlerTest(Actions.move_left);
         }
 
-        public Iterator createMockIterator()
+        void actionHandlerTest(Actions action)
+        {
+            Iterator mockIterator = createMockIterator();
+
+            actionManager.actionHandler(action, mockIterator);
+            Assert.AreEqual(actionManager.CurrentAction, action);
+        }
+
+        Iterator createMockIterator()
         {
             Mock<Iterator> mockIterator = new Mock<Iterator>();
+
+            mockIterator.CallBase = true;
 
             mockIterator.Setup(i => i.isAbleToMoveDown()).Returns(true);
             mockIterator.Setup(i => i.isAbleToMoveUp()).Returns(true);
@@ -36,9 +47,15 @@ namespace TestExplorus
             mockIterator.Setup(i => i.GetDown()).Returns(".");
             mockIterator.Setup(i => i.GetUp()).Returns(".");
             mockIterator.Setup(i => i.GetRight()).Returns(".");
-            mockIterator.Setup(i => i.GetDown()).Returns(".");
+            mockIterator.Setup(i => i.GetLeft()).Returns(".");
+
+            mockIterator.Setup(i => i.MoveDown());
+            mockIterator.Setup(i => i.MoveUp());
+            mockIterator.Setup(i => i.MoveRight());
+            mockIterator.Setup(i => i.MoveLeft());
 
             return mockIterator.Object;
         }
     }
+    */
 }
