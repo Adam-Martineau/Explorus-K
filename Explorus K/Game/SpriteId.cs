@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Explorus_K.NewFolder1
 {
-    internal enum SpriteId
+    public enum SpriteId
     {
         WALL,
         GEM,

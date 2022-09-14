@@ -42,7 +42,9 @@ namespace Explorus_K
             this.Name = "GameForm";
             this.Text = "Form1";
             this.SizeChanged += new System.EventHandler(this.GameForm_SizeChanged_1);
+            this.Enter += new System.EventHandler(this.GameForm_Enter);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GameForm_KeyDown);
+            this.Leave += new System.EventHandler(this.GameForm_Leave);
             this.ResumeLayout(false);
 
         }

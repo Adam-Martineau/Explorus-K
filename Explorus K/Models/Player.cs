@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Explorus_K
 {
-    internal class Player
+    public class Player
     {
         private int posX;
         private int posY;

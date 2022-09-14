@@ -11,26 +11,24 @@ using Application = System.Windows.Forms.Application;
 using Size = System.Drawing.Size;
 using System.Drawing.Imaging;
 using System.Security.Policy;
+using System.Windows;
+using Point = System.Drawing.Point;
 
 namespace Explorus_K.Views
 {
-	class GameView
+	public class GameView
 	{
 		public GameForm gameForm;
-		string gameTitle;
+        GameEngine gameEngine;
+        string gameTitle;
 
 		private const double headerRatio = 0.125;
-		private Point headerPosition = new Point();
-		private Point labyrinthPosition = new Point();
 		private double headerHeight = 0;
 		internal int largeSpriteDimension = 52;
-		private int smallSpriteDimension = 26;
-		private double labyrinthHeight = 48 * 9;
-		private double labyrinthWidth = 48 * 11;
-		private int headerOffset = 0;
 
 		private PictureBox gameHeader = new PictureBox();
 		private PictureBox gameLabyrinth = new PictureBox();
+		private PictureBox gamePause = new PictureBox();
 
 		private int screenWidth = 600;
 		private int screenHeight = 600;		
@@ -41,19 +39,23 @@ namespace Explorus_K.Views
 
 		public GameView(GameEngine gameEngine)
 		{
-			gameForm = new GameForm(gameEngine);
+			this.gameEngine = gameEngine;
+			gameForm = new GameForm(this);
 			gameForm.Size = new Size(screenWidth, screenHeight);
 			gameForm.MinimumSize = new Size(600, 600);
-			headerHeight = screenHeight * headerRatio;
 
 			gameHeader.Dock = DockStyle.Top;
 			gameLabyrinth.Dock = DockStyle.Fill;
+			gamePause.Dock = DockStyle.Fill;
 
 			gameHeader.Paint += new PaintEventHandler(this.HeaderRenderer);
 			gameLabyrinth.Paint += new PaintEventHandler(this.LabyrinthRenderer);
+			gamePause.Paint += new PaintEventHandler(this.PauseRenderer);
+
 
 			gameForm.Controls.Add(gameHeader);
 			gameForm.Controls.Add(gameLabyrinth);
+			gameForm.Controls.Add(gamePause);
 
 			labyrinthImage = new LabyrinthImage(gameEngine.GetLabyrinth());
 
@@ -84,7 +86,10 @@ namespace Explorus_K.Views
 
 		public void resize()
 		{
-			labyrinthImage.resize(gameForm);
+			if (labyrinthImage != null)
+			{
+                labyrinthImage.resize(gameForm);
+            }
 		}
 
 		public void Update(double fps, Iterator mapIterator)
@@ -106,12 +111,22 @@ namespace Explorus_K.Views
 
 			labyrinthImage.drawHeader(g);
 		}
+
 		private void LabyrinthRenderer(object sender, PaintEventArgs e)
 		{
 			Graphics g = e.Graphics;
 			g.Clear(Color.Black);
 
 			labyrinthImage.drawLabyrinthImage(g);
+		}
+
+		private void PauseRenderer(object sender, PaintEventArgs e)
+		{
+			Graphics g = e.Graphics;
+			g.Clear(Color.Black);
+
+			//if (gameEngine.Paused)
+			g.DrawString("PAUSE", new Font("Arial", 80), Brushes.White, 0, 0);
 		}
 
 		public Player getSlimusObject()
@@ -135,6 +150,11 @@ namespace Explorus_K.Views
 			{
                 this.labyrinthImage.GemBar = (GemBar)bar;
 			}
-		}		
-	}
+		}
+
+        internal void ReceiveKeyEvent(KeyEventArgs e)
+        {
+			gameEngine.KeyEventHandler(e);
+        }
+    }
 }

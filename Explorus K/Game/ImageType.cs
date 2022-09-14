@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Explorus_K.Models
 {
-    internal enum ImageType
+    public enum ImageType
     {
         WALL,
         SLIMUS_TITLE,
