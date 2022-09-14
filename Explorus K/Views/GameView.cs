@@ -156,5 +156,10 @@ namespace Explorus_K.Views
 			gameEngine.unpause();
 			//ToDo: ajouté un délais de 3 sec
 		}
-	}
+
+        public void UpdateStatusBar(String msg, Color color)
+        {
+            gameForm.UpdateStatusBar(msg, color);
+        }
+    }
 }

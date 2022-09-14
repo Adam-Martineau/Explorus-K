@@ -1,5 +1,6 @@
 ﻿using Explorus_K.Views;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Explorus_K
@@ -34,6 +35,12 @@ namespace Explorus_K
         private void GameForm_Leave(object sender, EventArgs e)
         {
             gameView.GainFocus();
+        }
+
+        public void UpdateStatusBar(String msg, Color color)
+        {
+            statusStrip1.Text = msg;
+            statusStrip1.ForeColor = color;
         }
     }
 }
