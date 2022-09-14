@@ -3,16 +3,10 @@ using Explorus_K.Game;
 using Explorus_K.Models;
 using Explorus_K.NewFolder1;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
 using Application = System.Windows.Forms.Application;
 using Size = System.Drawing.Size;
-using System.Drawing.Imaging;
-using System.Security.Policy;
-using System.Windows;
-using Point = System.Drawing.Point;
 
 namespace Explorus_K.Views
 {
@@ -32,8 +26,6 @@ namespace Explorus_K.Views
 		private int screenHeight = 600;		
 
 		public LabyrinthImage labyrinthImage;		
-
-		private Size oldsize = new Size(1, 1);
 
 		public GameView(GameEngine gameEngine)
 		{
@@ -57,7 +49,6 @@ namespace Explorus_K.Views
 
 			labyrinthImage = new LabyrinthImage(gameEngine.GetLabyrinth());
 
-			oldsize = gameForm.Size;
 			resize();
 		}
 
@@ -123,8 +114,8 @@ namespace Explorus_K.Views
 			Graphics g = e.Graphics;
 			g.Clear(Color.Black);
 
-			//if (gameEngine.Paused)
-			g.DrawString("PAUSE", new Font("Arial", 80), Brushes.White, screenWidth/2, screenHeight/2);
+			if (gameEngine.Paused)
+				g.DrawString("PAUSE", new Font("Arial", 80), Brushes.White, screenWidth/2, screenHeight/2);
 		}
 
 		public Player getSlimusObject()
@@ -163,6 +154,7 @@ namespace Explorus_K.Views
 		internal void GainFocus()
 		{
 			gameEngine.unpause();
+			//ToDo: ajouté un délais de 3 sec
 		}
 	}
 }

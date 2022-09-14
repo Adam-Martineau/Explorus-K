@@ -1,13 +1,5 @@
-﻿using Explorus_K.Controllers;
-using Explorus_K.Views;
+﻿using Explorus_K.Views;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Explorus_K
