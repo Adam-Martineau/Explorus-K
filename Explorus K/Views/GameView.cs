@@ -22,8 +22,6 @@ namespace Explorus_K.Views
         GameEngine gameEngine;
         string gameTitle;
 
-		private const double headerRatio = 0.125;
-		private double headerHeight = 0;
 		internal int largeSpriteDimension = 52;
 
 		private PictureBox gameHeader = new PictureBox();
@@ -46,7 +44,7 @@ namespace Explorus_K.Views
 
 			gameHeader.Dock = DockStyle.Top;
 			gameLabyrinth.Dock = DockStyle.Fill;
-			gamePause.Dock = DockStyle.Fill;
+			gamePause.Dock = DockStyle.Bottom;
 
 			gameHeader.Paint += new PaintEventHandler(this.HeaderRenderer);
 			gameLabyrinth.Paint += new PaintEventHandler(this.LabyrinthRenderer);
@@ -54,8 +52,9 @@ namespace Explorus_K.Views
 
 
 			gameForm.Controls.Add(gameHeader);
-			gameForm.Controls.Add(gameLabyrinth);
-			gameForm.Controls.Add(gamePause);
+            gameForm.Controls.Add(gamePause);
+            gameForm.Controls.Add(gameLabyrinth);
+			
 
 			labyrinthImage = new LabyrinthImage(gameEngine.GetLabyrinth());
 
@@ -126,7 +125,7 @@ namespace Explorus_K.Views
 			g.Clear(Color.Black);
 
 			//if (gameEngine.Paused)
-			g.DrawString("PAUSE", new Font("Arial", 80), Brushes.White, 0, 0);
+			g.DrawString("PAUSE", new Font("Arial", 80), Brushes.White, screenWidth/2, screenHeight/2);
 		}
 
 		public Player getSlimusObject()
