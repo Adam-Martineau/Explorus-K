@@ -52,9 +52,8 @@ namespace Explorus_K.Views
 
 
 			gameForm.Controls.Add(gameHeader);
-            gameForm.Controls.Add(gamePause);
-            gameForm.Controls.Add(gameLabyrinth);
-			
+			gameForm.Controls.Add(gameLabyrinth);
+			gameForm.Controls.Add(gamePause);
 
 			labyrinthImage = new LabyrinthImage(gameEngine.GetLabyrinth());
 
@@ -155,5 +154,15 @@ namespace Explorus_K.Views
         {
 			gameEngine.KeyEventHandler(e);
         }
-    }
+
+		internal void LostFocus()
+		{
+			gameEngine.pause();
+		}
+
+		internal void GainFocus()
+		{
+			gameEngine.unpause();
+		}
+	}
 }

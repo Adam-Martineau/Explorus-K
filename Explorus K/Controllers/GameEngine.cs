@@ -113,5 +113,15 @@ namespace Explorus_K.Controllers
 		{
 			return this.labyrinth;
 		}
+
+		public void pause()
+		{
+			paused = true;
+		}
+
+		public void unpause()
+		{
+			paused = false;
+		}
 	}
 }

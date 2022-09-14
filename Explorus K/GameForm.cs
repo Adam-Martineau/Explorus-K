@@ -36,12 +36,12 @@ namespace Explorus_K
 
         private void GameForm_Enter(object sender, EventArgs e)
         {
-
+            gameView.LostFocus();
         }
 
         private void GameForm_Leave(object sender, EventArgs e)
         {
-
+            gameView.GainFocus();
         }
     }
 }
