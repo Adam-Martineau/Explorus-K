@@ -14,10 +14,15 @@ namespace Explorus_K.Game
     {
 		private Actions currentAction = Actions.none;
 		private int count = 0;
-		private bool paused = false;
-
-        public bool Paused { get => paused; }
+		
 		public Actions CurrentAction { get => currentAction; }
+
+		GameEngine gameEngine;
+
+		public ActionManager(GameEngine gameEngine)
+		{
+			this.gameEngine = gameEngine;
+		}
 
         //If we have a action bind to that kay, we check if that action can be done
         public void actionHandler(Actions action, Iterator mapIterator)
@@ -39,7 +44,7 @@ namespace Explorus_K.Game
         {
             if (currentAction == Actions.pause)
             {
-                paused = !paused;
+                gameEngine.Paused = !gameEngine.Paused;
                 currentAction = Actions.none;
             }
             else if (currentAction == Actions.exit)

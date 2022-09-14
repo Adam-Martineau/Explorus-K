@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Explorus_K.Game
 {
-    internal class LabyrinthImage
+    public class LabyrinthImage
     {
         List<Image2D> labyrinthImages;
         Labyrinth labyrinth;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Explorus_K.Models
 {
-    abstract class ProgressionBarCreator
+    public abstract class ProgressionBarCreator
     {
         public abstract IBar FactoryMethod();
 
@@ -45,7 +45,7 @@ namespace Explorus_K.Models
         }
     }
 
-    interface IBar
+    public interface IBar
     {
         int getCurrent();
         IBar Initialize(int length);

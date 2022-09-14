@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Explorus_K.Models
 {
-    abstract class Iterator
+    public abstract class Iterator
     {
         public abstract Point Current();
         public abstract void MoveLeft();

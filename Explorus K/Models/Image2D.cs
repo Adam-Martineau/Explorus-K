@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Explorus_K.Models
 {
-    internal class Image2D
+    public class Image2D
     {
         private SpriteId id;
         private ImageType type;

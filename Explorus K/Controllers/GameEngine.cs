@@ -3,7 +3,6 @@ using Explorus_K.Models;
 using Explorus_K.Views;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -20,6 +19,9 @@ namespace Explorus_K.Controllers
 		private int gemCount = 3;
 		private Labyrinth labyrinth;
 		ActionManager actionManager;
+        private bool paused = false;
+
+        public bool Paused { get => paused; set => paused = value; }
 
         public GameEngine()
 
@@ -28,7 +30,7 @@ namespace Explorus_K.Controllers
             //The game engine get passed from contructor to constructor until it reach GameForm.cs
             gameView = new GameView(this);
 			bindings = initiate_bindings();
-			actionManager = new ActionManager();
+			actionManager = new ActionManager(this);
             Thread thread = new Thread(new ThreadStart(GameLoop));
 			thread.Start();
 			gameView.Show();
@@ -65,7 +67,7 @@ namespace Explorus_K.Controllers
 				previous_time = current_time;
 				lag += elapsed_time;
 
-				if (!actionManager.Paused)
+				if (!Paused)
 				{
 					actionManager.characterActionsManagement(gameView, labyrinth.MapIterator);
 
@@ -86,12 +88,6 @@ namespace Explorus_K.Controllers
 					Thread.Sleep(1);
 				}
 			}
-		}
-
-		internal void resize()
-		{
-			if (gameView != null)
-				gameView.resize();
 		}
 
 		//Receving the event from a keypress and checking if we have a action bind to that key
@@ -115,6 +111,16 @@ namespace Explorus_K.Controllers
 		public Labyrinth GetLabyrinth()
 		{
 			return this.labyrinth;
+		}
+
+		public void pause()
+		{
+			paused = true;
+		}
+
+		public void unpause()
+		{
+			paused = false;
 		}
 	}
 }
