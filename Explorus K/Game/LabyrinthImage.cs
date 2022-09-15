@@ -29,7 +29,7 @@ namespace Explorus_K.Game
         private double headerHeight = 0;
         private const double headerRatio = 0.125;
 
-        private int screenWidth = 600;
+        private int screenWidth = 1000;
         private int screenHeight = 600;
 
         internal Context KeyState { get => keyState; set => keyState = value; }
@@ -107,31 +107,39 @@ namespace Explorus_K.Game
 
         public void drawHeader(Graphics g)
         {
-            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_TITLE), headerOffset, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION * 4, Constant.SMALL_SPRITE_DIMENSION);
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.SLIMUS_TITLE), getWidthColumn(0, 2) - ((Constant.SMALL_SPRITE_DIMENSION * 4) / 2), (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION * 4, Constant.SMALL_SPRITE_DIMENSION);
 
-            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.HEARTH), (int)((screenWidth / 5) * 0.95) + headerOffset, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
+            int healthBarWidth = (healthBar.getLength()+2) * Constant.SMALL_SPRITE_DIMENSION;
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.HEARTH), getWidthColumn(2, 3) - (healthBarWidth / 2) - Constant.SMALL_SPRITE_DIMENSION, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
 
             foreach (Image2D image in healthBar.healthBar)
             {
-                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 5) * 1) + (image.X * Constant.SMALL_SPRITE_DIMENSION) + headerOffset, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
+                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), getWidthColumn(2, 3) - (healthBarWidth / 2) + (image.X * Constant.SMALL_SPRITE_DIMENSION), (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
             }
 
-            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.BUBBLE_BIG), (int)((screenWidth / 5) * 1.95) + headerOffset, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
+            int bubbleBarWidth = (bubbleBar.getLength() + 2) * Constant.SMALL_SPRITE_DIMENSION;
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.BUBBLE_BIG), getWidthColumn(5, 3) - (bubbleBarWidth / 2) - Constant.SMALL_SPRITE_DIMENSION, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
             foreach (Image2D image in bubbleBar.bubbleBar)
             {
-                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 5) * 2) + (image.X * Constant.SMALL_SPRITE_DIMENSION) + headerOffset, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
+                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), getWidthColumn(5, 3) - (bubbleBarWidth / 2) + (image.X * Constant.SMALL_SPRITE_DIMENSION), (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
             }
 
-            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.GEM), (int)((screenWidth / 5) * 2.95) + headerOffset, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
+            int gemBarWidth = (gemBar.getLength() + 2) * Constant.SMALL_SPRITE_DIMENSION;
+            g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.GEM), getWidthColumn(8, 3) - (gemBarWidth / 2) - Constant.SMALL_SPRITE_DIMENSION, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
             foreach (Image2D image in gemBar.gemBar)
             {
-                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), ((screenWidth / 5) * 3) + (image.X * Constant.SMALL_SPRITE_DIMENSION) + headerOffset, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
+                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(image.getType()), getWidthColumn(8, 3) - (gemBarWidth / 2) + (image.X * Constant.SMALL_SPRITE_DIMENSION), (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
             }
 
             if (keyState.CurrentState() == "WithKeyState")
             {
-                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.KEY), ((screenWidth / 5) * 4) + headerOffset, (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
+                g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(ImageType.KEY), getWidthColumn(11, 1) - (Constant.SMALL_SPRITE_DIMENSION / 2), (float)((headerHeight - Constant.SMALL_SPRITE_DIMENSION) / 2), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
             }
+        }
+
+        private int getWidthColumn(int index, int column)
+        {
+            return (headerOffset * index) + ((headerOffset * column)/2);
         }
 
         public bool IsColliding(SpriteId sprite)
@@ -186,7 +194,7 @@ namespace Explorus_K.Game
             labyrinthPosition = new Point((gameForm.Size.Width / 2) - ((int)labyrinthWidth / 2) - 31,
                                ((gameForm.Size.Height - (int)headerHeight) / 2) - ((int)labyrinthHeight / 2) + 5);
 
-            headerOffset = (gameForm.Size.Width / 2) - 250;
+            headerOffset = (gameForm.Size.Width / 12);
         }
 
         private void fillLabyrinthImages()
