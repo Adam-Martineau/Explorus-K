@@ -23,8 +23,8 @@ namespace Explorus_K.Game
         BubbleBar bubbleBar = new BubbleBar();
         GemBar gemBar = new GemBar();
 
-        private double labyrinthHeight = 48 * 9;
-        private double labyrinthWidth = 48 * 11;
+        private double labyrinthHeight = 0;
+        private double labyrinthWidth = 0;
         private int headerOffset = 0;
         private double headerHeight = 0;
         private const double headerRatio = 0.125;
@@ -47,6 +47,8 @@ namespace Explorus_K.Game
             this.labyrinth = labyrinth;
             headerHeight = screenHeight * headerRatio;
             fillLabyrinthImages();
+            labyrinthHeight = 48 * labyrinth.Map.getLengthY();
+            labyrinthWidth = 48 * labyrinth.Map.getLengthX();
         }
 
         public void removeImageAt(int index)
