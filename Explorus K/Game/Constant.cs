@@ -10,5 +10,9 @@ namespace Explorus_K.Game
     {
         public const int LARGE_SPRITE_DIMENSION = 52;
         public const int SMALL_SPRITE_DIMENSION = 26;
+
+        public const int SLIMUS_LIVES = 6;
+        public const int TOXIC_SLIME_LIVES = 2;
+        public const int INITIAL_BUBBLE_COUNT = 6;
     }
 }

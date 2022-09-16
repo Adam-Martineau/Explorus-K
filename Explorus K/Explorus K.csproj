@@ -83,6 +83,8 @@
     <Compile Include="Game\SpriteContainer.cs" />
     <Compile Include="Game\ImageType.cs" />
     <Compile Include="Game\SpriteId.cs" />
+    <Compile Include="Models\Slimus.cs" />
+    <Compile Include="Models\ToxicSlime.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
