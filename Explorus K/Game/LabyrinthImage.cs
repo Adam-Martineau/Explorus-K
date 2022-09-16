@@ -142,23 +142,28 @@ namespace Explorus_K.Game
             return (headerOffset * index) + ((headerOffset * column)/2);
         }
 
-        public bool IsColliding(SpriteId sprite)
+        public bool IsColliding(SpriteId sprite1, SpriteId sprite2)
 		{
             int pixel = 0;
-            if (sprite == SpriteId.GEM)
+            if (sprite2 == SpriteId.GEM)
             {
                 collisionStrategy.SetStrategy(new GemStrategy());
                 pixel = 10;
             }
-            else if (sprite == SpriteId.DOOR)
+            else if (sprite2 == SpriteId.DOOR)
             {
                 collisionStrategy.SetStrategy(new DoorStrategy());
                 pixel = 5;
             }
-            else if (sprite == SpriteId.MINI_SLIMUS)
+            else if (sprite2 == SpriteId.MINI_SLIMUS)
             {
                 collisionStrategy.SetStrategy(new MiniSlimeStrategy());
                 pixel = 15;
+            }
+            else if (sprite2 == SpriteId.TOXIC_SLIME)
+            {
+                collisionStrategy.SetStrategy(new ToxicSlimeStrategy());
+                pixel = 5;
             }
 
             float pos = (Constant.LARGE_SPRITE_DIMENSION - Constant.SMALL_SPRITE_DIMENSION) / 2;
@@ -169,7 +174,7 @@ namespace Explorus_K.Game
             for (int i = 0; i < labyrinthImages.Count; i++)
             {
                 Image2D sp = labyrinthImages[i];
-                if (sp.getId() == sprite)
+                if (sp.getId() == sprite2)
                 {
                     float objectX = sp.X + pos;
                     float objectY = sp.Y + labyrinthPosition.Y + pos;
@@ -179,7 +184,7 @@ namespace Explorus_K.Game
                     slimusY < objectY + Constant.SMALL_SPRITE_DIMENSION - pixel &&
                     slimusY + Constant.LARGE_SPRITE_DIMENSION - pixel > objectY)
                     {
-                        collisionStrategy.executeStrategy(this, i);
+                        collisionStrategy.executeStrategy(this, i, sprite1);
                         return true;
                     }
                 }

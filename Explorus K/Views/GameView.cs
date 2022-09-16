@@ -85,11 +85,13 @@ namespace Explorus_K.Views
 		{
             gameTitle = "Explorus-K - FPS " + Math.Round(fps, 1).ToString();
 
-            labyrinthImage.IsColliding(SpriteId.GEM);
+            labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.GEM);
 
-			labyrinthImage.IsColliding(SpriteId.DOOR);
+			labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.DOOR);
 
-            labyrinthImage.IsColliding(SpriteId.MINI_SLIMUS);
+            labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.MINI_SLIMUS);
+
+            labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.TOXIC_SLIME);
         }
 
 		private void HeaderRenderer(object sender, PaintEventArgs e)
