@@ -15,8 +15,8 @@ namespace Explorus_K.Controllers
 		private GameView gameView;
 		private List<Binding> bindings;
 		private int lifeCount = 6;
-		private int bubbleCount = 3;
-		private int gemCount = 3;
+		private int bubbleCount = 6;
+		private int gemCount = 6;
 		private Labyrinth labyrinth;
 		ActionManager actionManager;
         private bool paused = false;

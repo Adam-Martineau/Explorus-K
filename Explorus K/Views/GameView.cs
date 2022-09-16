@@ -22,8 +22,8 @@ namespace Explorus_K.Views
 		private PictureBox gameLabyrinth = new PictureBox();
 		private PictureBox gamePause = new PictureBox();
 
-		private int screenWidth = 600;
-		private int screenHeight = 600;		
+		private int screenWidth = 1000;
+		private int screenHeight = 1000;		
 
 		public LabyrinthImage labyrinthImage;		
 
@@ -32,7 +32,7 @@ namespace Explorus_K.Views
 			this.gameEngine = gameEngine;
 			gameForm = new GameForm(this);
 			gameForm.Size = new Size(screenWidth, screenHeight);
-			gameForm.MinimumSize = new Size(600, 600);
+			gameForm.MinimumSize = new Size(800, 1000);
 
 			gameHeader.Dock = DockStyle.Top;
 			gameLabyrinth.Dock = DockStyle.Fill;
