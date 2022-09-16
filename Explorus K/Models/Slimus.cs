@@ -1,4 +1,6 @@
 ﻿using Explorus_K.Game;
+using Explorus_K.NewFolder1;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,7 +88,7 @@ namespace Explorus_K.Models
 
         public Image2D refreshPlayer()
         {
-            return new Image2D(0, imageType, posX, posY);
+            return new Image2D(SpriteId.TOXIC_SLIME, imageType, posX, posY);
         }
     }
 }

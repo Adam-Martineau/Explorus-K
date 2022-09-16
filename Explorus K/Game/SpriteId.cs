@@ -14,6 +14,7 @@ namespace Explorus_K.NewFolder1
         MINI_SLIMUS,
         DOOR,
         BAR,
-        TOXIC_SLIME
+        TOXIC_SLIME,
+        BUBBLE
     }
 }
