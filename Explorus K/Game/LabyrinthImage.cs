@@ -221,7 +221,13 @@ namespace Explorus_K.Game
                         labyrinthImages.Add(new Image2D(0, ImageType.SLIMUS_DOWN_ANIMATION_1, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
                     }
                     else if (labyrinth.getMapEntryAt(i, j) == "p")
+                    {
                         labyrinthImages.Add(new Image2D(SpriteId.DOOR, ImageType.WALL, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
+                    }
+                    else if (labyrinth.getMapEntryAt(i, j) == "t")
+                    {
+                        labyrinthImages.Add(new Image2D(SpriteId.TOXIC_SLIME, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
+                    }
                 }
             }
         }
