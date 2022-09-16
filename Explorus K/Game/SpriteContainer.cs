@@ -19,6 +19,8 @@ namespace Explorus_K.Models
         private const int TILESHEET_FIRST_ROW_SECOND_HALF = 48;
         private const int TILESHEET_SECOND_ROW = 96;
         private const int TILESHEET_THIRD_ROW = 192;
+        private const int TILESHEET_FOURTH_ROW = 288;
+        private const int TILESHEET_FIFTH_ROW = 384;
 
         private Dictionary<ImageType, Bitmap> bitmapsDictionary;
 
@@ -78,6 +80,20 @@ namespace Explorus_K.Models
             bitmapsDictionary.Add(ImageType.SLIMUS_LEFT_ANIMATION_1, cropImage(new Rectangle(BIG_SQUARE_DIM * 3, TILESHEET_THIRD_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
             bitmapsDictionary.Add(ImageType.SLIMUS_LEFT_ANIMATION_2, cropImage(new Rectangle(BIG_SQUARE_DIM * 4, TILESHEET_THIRD_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
             bitmapsDictionary.Add(ImageType.SLIMUS_LEFT_ANIMATION_3, cropImage(new Rectangle(BIG_SQUARE_DIM * 5, TILESHEET_THIRD_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+
+            bitmapsDictionary.Add(ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, cropImage(new Rectangle(0, TILESHEET_FOURTH_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.TOXIC_SLIME_DOWN_ANIMATION_2, cropImage(new Rectangle(BIG_SQUARE_DIM, TILESHEET_FOURTH_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.TOXIC_SLIME_DOWN_ANIMATION_3, cropImage(new Rectangle(BIG_SQUARE_DIM * 2, TILESHEET_FOURTH_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.TOXIC_SLIME_RIGHT_ANIMATION_1, cropImage(new Rectangle(BIG_SQUARE_DIM * 3, TILESHEET_FOURTH_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.TOXIC_SLIME_RIGHT_ANIMATION_2, cropImage(new Rectangle(BIG_SQUARE_DIM * 4, TILESHEET_FOURTH_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.TOXIC_SLIME_RIGHT_ANIMATION_3, cropImage(new Rectangle(BIG_SQUARE_DIM * 5, TILESHEET_FOURTH_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+
+            bitmapsDictionary.Add(ImageType.TOXIC_SLIME_UP_ANIMATION_1, cropImage(new Rectangle(0, TILESHEET_FIFTH_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.TOXIC_SLIME_UP_ANIMATION_2, cropImage(new Rectangle(BIG_SQUARE_DIM, TILESHEET_FIFTH_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.TOXIC_SLIME_UP_ANIMATION_3, cropImage(new Rectangle(BIG_SQUARE_DIM * 2, TILESHEET_FIFTH_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.TOXIC_SLIME_LEFT_ANIMATION_1, cropImage(new Rectangle(BIG_SQUARE_DIM * 3, TILESHEET_FIFTH_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.TOXIC_SLIME_LEFT_ANIMATION_2, cropImage(new Rectangle(BIG_SQUARE_DIM * 4, TILESHEET_FIFTH_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
+            bitmapsDictionary.Add(ImageType.TOXIC_SLIME_LEFT_ANIMATION_3, cropImage(new Rectangle(BIG_SQUARE_DIM * 5, TILESHEET_FIFTH_ROW, BIG_SQUARE_DIM, BIG_SQUARE_DIM)));
 
         }
 

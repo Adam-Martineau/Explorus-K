@@ -81,7 +81,7 @@ namespace Explorus_K.Views
             }
 		}
 
-		public void Update(double fps, Iterator mapIterator)
+		public void Update(double fps)
 		{
             gameTitle = "Explorus-K - FPS " + Math.Round(fps, 1).ToString();
 

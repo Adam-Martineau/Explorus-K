@@ -12,17 +12,29 @@ namespace Explorus_K
         private int posX;
         private int posY;
         private ImageType imageType;
+        private bool invincible;
 
         public Player(int posX, int posY, ImageType imageType)
         {
             this.posX = posX;
             this.posY = posY;
             this.imageType = imageType;
+            invincible = false;
         }
 
         public ImageType getImageType()
         {
             return imageType;
+        }
+
+        public bool getInvincible()
+        {
+            return invincible;
+        }
+
+        public void setInvincible(bool invincible)
+        {
+            this.invincible = invincible;
         }
 
         public int getPosX()
