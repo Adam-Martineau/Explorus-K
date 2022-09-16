@@ -76,6 +76,7 @@
     <Compile Include="Game\Labyrinth.cs" />
     <Compile Include="Game\LabyrinthImage.cs" />
     <Compile Include="Game\CollisionStrategy.cs" />
+    <Compile Include="Models\Bubble.cs" />
     <Compile Include="Models\Image2D.cs" />
     <Compile Include="Models\MapIterator.cs" />
     <Compile Include="Models\Player.cs" />
