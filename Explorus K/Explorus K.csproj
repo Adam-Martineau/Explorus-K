@@ -114,9 +114,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\TileSheet.bmp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\TilesSheet.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
