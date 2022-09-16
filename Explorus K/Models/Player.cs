@@ -4,65 +4,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms.Automation;
 
 namespace Explorus_K
 {
-    public class Player
+    public interface Player
     {
-        private int posX;
-        private int posY;
-        private ImageType imageType;
+        ImageType getImageType();
 
-        public Player(int posX, int posY, ImageType imageType)
-        {
-            this.posX = posX;
-            this.posY = posY;
-            this.imageType = imageType;
-        }
+        int getPosX();
 
-        public ImageType getImageType()
-        {
-            return imageType;
-        }
+        int getPosY();
 
-        public int getPosX()
-        {
-            return posX;
-        }
+        int getLifes();
 
-        public int getPosY()
-        {
-            return posY;
-        }
+        int decreaseLife();
 
-        public void setImageType(ImageType imageType)
-        {
-            this.imageType = imageType;
-        }
+        void setImageType(ImageType imageType);
 
-        public void moveDown(int stepSize)
-        {
-            posY += stepSize;
-        }
+        void moveDown(int stepSize);
 
-        public void moveUp(int stepSize)
-        {
-            posY -= stepSize;
-        }
+        void moveUp(int stepSize);
 
-        public void moveLeft(int stepSize)
-        {
-            posX -= stepSize;
-        }
+        void moveLeft(int stepSize);
 
-        public void moveRight(int stepSize)
-        {
-            posX += stepSize;
-        }
+        void moveRight(int stepSize);
 
-        public Image2D refreshPlayer()
-        {
-            return new Image2D(0, imageType, posX, posY);  
-        }
+        Image2D refreshPlayer();
     }
 }

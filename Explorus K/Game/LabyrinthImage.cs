@@ -213,7 +213,7 @@ namespace Explorus_K.Game
                     }
                     else if (labyrinth.getMapEntryAt(i, j) == "s")
                     {
-                        slimus = new Player(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.SLIMUS_DOWN_ANIMATION_1);
+                        slimus = new Slimus(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.SLIMUS_DOWN_ANIMATION_1, Constant.SLIMUS_LIVES);
                         labyrinthImages.Add(new Image2D(SpriteId.SLIMUS, slimus.getImageType(), slimus.getPosX(), slimus.getPosY()));
                     }
                     else if (labyrinth.getMapEntryAt(i, j) == "s")
