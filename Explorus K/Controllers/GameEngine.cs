@@ -78,7 +78,7 @@ namespace Explorus_K.Controllers
 
 						while (lag >= MS_PER_FRAME)
 						{
-							gameView.Update(fps, labyrinth.MapIterator);
+							gameView.Update(fps);
 							lag -= MS_PER_FRAME;
 						}
 

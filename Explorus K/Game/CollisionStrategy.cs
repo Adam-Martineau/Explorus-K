@@ -1,4 +1,5 @@
 ﻿using Explorus_K.Game;
+using Explorus_K.NewFolder1;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -27,49 +28,74 @@ namespace Explorus_K.Models
             this._strategy = strategy;
         }
 
-        public void executeStrategy(LabyrinthImage labyrinthImage, int imageIndex)
+        public void executeStrategy(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
         {
-            _strategy.execute(labyrinthImage, imageIndex);
+            _strategy.execute(labyrinthImage, imageIndex, type);
         }
     }
 
     interface IStrategy
     {
-        void execute(LabyrinthImage labyrinthImage, int imageIndex);
+        void execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type);
     }
 
     class GemStrategy : IStrategy
     {
-        public void execute(LabyrinthImage labyrinthImage, int imageIndex)
+        public void execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
         {
-            labyrinthImage.GemBar.Increase();
-            if (labyrinthImage.GemBar.getCurrent() == labyrinthImage.GemBar.getLength())
+            if(type == SpriteId.SLIMUS)
             {
-                labyrinthImage.KeyState.RequestChangingState();
-                Point pos = labyrinthImage.Labyrinth.MapIterator.findPosition("p");
-                labyrinthImage.Labyrinth.MapIterator.replaceAt(".", pos.X, pos.Y);
+                labyrinthImage.GemBar.Increase();
+                if (labyrinthImage.GemBar.getCurrent() == labyrinthImage.GemBar.getLength())
+                {
+                    labyrinthImage.KeyState.RequestChangingState();
+                    Point pos = labyrinthImage.Labyrinth.MapIterator.findPosition("p");
+                    labyrinthImage.Labyrinth.MapIterator.replaceAt(".", pos.X, pos.Y);
+                }
+                labyrinthImage.removeImageAt(imageIndex);
             }
-            labyrinthImage.removeImageAt(imageIndex);
         }
     }
 
     class DoorStrategy : IStrategy
     {
-        public void execute(LabyrinthImage labyrinthImage, int imageIndex)
+        public void execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
         {
-            if (labyrinthImage.KeyState.CurrentState() == "WithKeyState")
+            if (type == SpriteId.SLIMUS)
             {
-                labyrinthImage.removeImageAt(imageIndex);
+                if (labyrinthImage.KeyState.CurrentState() == "WithKeyState")
+                {
+                    labyrinthImage.removeImageAt(imageIndex);
+                }
             }
         }
     }
 
     class MiniSlimeStrategy : IStrategy
     {
-        public void execute(LabyrinthImage labyrinthImage, int imageIndex)
+        public void execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
         {
-            Thread.Sleep(3000);
-            Application.Exit();
+            if (type == SpriteId.SLIMUS)
+            {
+                Thread.Sleep(3000);
+                Application.Exit();
+            }
+        }
+    }
+
+    class ToxicSlimeStrategy : IStrategy
+    {
+        public void execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
+        {
+            if (type == SpriteId.SLIMUS)
+            {
+                labyrinthImage.HealthBar.Decrease();
+                //TO DO Faire clignoter slimus
+            }
+            if (type == SpriteId.BUBBLE)
+            {
+                //Perte de vie du toxic slime
+            }
         }
     }
 }

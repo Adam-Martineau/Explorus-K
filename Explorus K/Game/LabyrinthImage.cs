@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Explorus_K.Game
 {
@@ -15,13 +16,17 @@ namespace Explorus_K.Game
     {
         List<Image2D> labyrinthImages;
         Labyrinth labyrinth;
-        Player slimus;
+        Slimus slimus;
         Point labyrinthPosition;
         CollisionContext collisionStrategy = null;
         Context keyState = null;
         HealthBar healthBar = new HealthBar();
         BubbleBar bubbleBar = new BubbleBar();
         GemBar gemBar = new GemBar();
+
+        private static Timer timer;
+        private float slimusOpacity = 1.0f;
+        private int numberOfTrigger = 0;
 
         private double labyrinthHeight = 0;
         private double labyrinthWidth = 0;
@@ -49,6 +54,10 @@ namespace Explorus_K.Game
             fillLabyrinthImages();
             labyrinthHeight = 48 * labyrinth.Map.getLengthY();
             labyrinthWidth = 48 * labyrinth.Map.getLengthX();
+
+            timer = new Timer(100);
+            // Hook up the Elapsed event for the timer. 
+            timer.Elapsed += OnTimedEvent;
         }
 
         public void removeImageAt(int index)
@@ -91,7 +100,8 @@ namespace Explorus_K.Game
                 }
                 else if (spriteId == SpriteId.SLIMUS)
                 {
-                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(slimus.getImageType()), slimus.getPosX() + labyrinthPosition.X, slimus.getPosY() + labyrinthPosition.Y, Constant.LARGE_SPRITE_DIMENSION, Constant.LARGE_SPRITE_DIMENSION);
+                    Bitmap opacityImage = SetOpacity(new Bitmap(SpriteContainer.getInstance().getBitmapByImageType(slimus.getImageType())), slimusOpacity);
+                    g.DrawImage(opacityImage, slimus.getPosX() + labyrinthPosition.X, slimus.getPosY() + labyrinthPosition.Y, Constant.LARGE_SPRITE_DIMENSION, Constant.LARGE_SPRITE_DIMENSION);
                 }
                 else if (spriteId == SpriteId.DOOR)
                 {
@@ -142,23 +152,28 @@ namespace Explorus_K.Game
             return (headerOffset * index) + ((headerOffset * column)/2);
         }
 
-        public bool IsColliding(SpriteId sprite)
+        public bool IsColliding(SpriteId sprite1, SpriteId sprite2)
 		{
             int pixel = 0;
-            if (sprite == SpriteId.GEM)
+            if (sprite2 == SpriteId.GEM)
             {
                 collisionStrategy.SetStrategy(new GemStrategy());
                 pixel = 10;
             }
-            else if (sprite == SpriteId.DOOR)
+            else if (sprite2 == SpriteId.DOOR)
             {
                 collisionStrategy.SetStrategy(new DoorStrategy());
                 pixel = 5;
             }
-            else if (sprite == SpriteId.MINI_SLIMUS)
+            else if (sprite2 == SpriteId.MINI_SLIMUS)
             {
                 collisionStrategy.SetStrategy(new MiniSlimeStrategy());
                 pixel = 15;
+            }
+            else if (sprite2 == SpriteId.TOXIC_SLIME)
+            {
+                collisionStrategy.SetStrategy(new ToxicSlimeStrategy());
+                pixel = 5;
             }
 
             float pos = (Constant.LARGE_SPRITE_DIMENSION - Constant.SMALL_SPRITE_DIMENSION) / 2;
@@ -169,7 +184,7 @@ namespace Explorus_K.Game
             for (int i = 0; i < labyrinthImages.Count; i++)
             {
                 Image2D sp = labyrinthImages[i];
-                if (sp.getId() == sprite)
+                if (sp.getId() == sprite2)
                 {
                     float objectX = sp.X + pos;
                     float objectY = sp.Y + labyrinthPosition.Y + pos;
@@ -179,7 +194,19 @@ namespace Explorus_K.Game
                     slimusY < objectY + Constant.SMALL_SPRITE_DIMENSION - pixel &&
                     slimusY + Constant.LARGE_SPRITE_DIMENSION - pixel > objectY)
                     {
-                        collisionStrategy.executeStrategy(this, i);
+                        if(sprite2 == SpriteId.TOXIC_SLIME)
+                        {
+                            if(slimus.getInvincible() == false)
+                            {
+                                startTimer();
+                                collisionStrategy.executeStrategy(this, i, sprite1);
+                            }
+                        }
+                        else
+                        {
+                            collisionStrategy.executeStrategy(this, i, sprite1);
+                        }
+                        
                         return true;
                     }
                 }
@@ -187,6 +214,35 @@ namespace Explorus_K.Game
 
             return false;
 		}
+
+        private void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            numberOfTrigger += 1;
+            if (numberOfTrigger < 30)
+            {
+                if (slimusOpacity == 1.0f)
+                {
+                    slimusOpacity = 0.4f;
+                }
+                else
+                {
+                    slimusOpacity = 1.0f;
+                }
+            }
+            else
+            {
+                slimusOpacity = 1.0f;
+                timer.Stop();
+                slimus.setInvincible(false);
+            }
+        }
+
+        public void startTimer()
+        {
+            timer.Start();
+            numberOfTrigger = 0;
+            slimus.setInvincible(true);
+        }
 
         public void resize(GameForm gameForm)
         {

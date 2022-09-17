@@ -16,6 +16,7 @@ namespace Explorus_K.Models
         private ImageType imageType;
         private int lifeCount;
         private int bubbleCount;
+        private bool invincible;
 
         public Slimus(int posX, int posY, ImageType imageType, int life)
         {
@@ -24,6 +25,7 @@ namespace Explorus_K.Models
             this.imageType = imageType;
             this.lifeCount = life;
             bubbleCount = Constant.INITIAL_BUBBLE_COUNT;
+            invincible = false;
         }
 
         public ImageType getImageType()
@@ -64,6 +66,16 @@ namespace Explorus_K.Models
         public void setImageType(ImageType imageType)
         {
             this.imageType = imageType;
+        }
+
+        public bool getInvincible()
+        {
+            return invincible;
+        }
+
+        public void setInvincible(bool invincible)
+        {
+            this.invincible = invincible;
         }
 
         public void moveDown(int stepSize)
