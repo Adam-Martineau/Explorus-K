@@ -29,7 +29,9 @@ namespace Explorus_K.Game
 		{
 			if (action == Actions.pause || action == Actions.exit)
 				currentAction = action;
-			else if (action == Actions.move_left && mapIterator.isAbleToMoveLeft() && mapIterator.GetLeft() != "w" && mapIterator.GetLeft() != "p" && currentAction == Actions.none)
+			else if (action == Actions.shoot)
+                currentAction = action;
+            else if (action == Actions.move_left && mapIterator.isAbleToMoveLeft() && mapIterator.GetLeft() != "w" && mapIterator.GetLeft() != "p" && currentAction == Actions.none)
 				currentAction = action;
 			else if (action == Actions.move_right && mapIterator.isAbleToMoveRight() && mapIterator.GetRight() != "w" && mapIterator.GetRight() != "p" && currentAction == Actions.none)
 				currentAction = action;
@@ -55,8 +57,21 @@ namespace Explorus_K.Game
         //If the action can be done, we use a state machine to wait until the action is over
         public void characterActionsManagement(GameView view, Iterator mapIterator)
 		{
-			//Actions state machine
-			if (currentAction == Actions.move_left)
+            //Actions state machine
+            if (currentAction == Actions.shoot)
+            {
+                if (count < view.largeSpriteDimension)
+                {
+                    count += 2;
+                }
+                else
+                {
+                    count = 0;
+                    currentAction = Actions.none;
+                    mapIterator.MoveDown();
+                }
+            }
+            else if (currentAction == Actions.move_left)
 			{
 				if (count < view.largeSpriteDimension)
 				{

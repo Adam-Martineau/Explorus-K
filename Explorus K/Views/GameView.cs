@@ -21,8 +21,9 @@ namespace Explorus_K.Views
 		private PictureBox gameHeader = new PictureBox();
 		private PictureBox gameLabyrinth = new PictureBox();
 		private PictureBox gamePause = new PictureBox();
+        private PictureBox gameOver = new PictureBox();
 
-		private int screenWidth = 1000;
+        private int screenWidth = 1000;
 		private int screenHeight = 1000;		
 
 		public LabyrinthImage labyrinthImage;		
@@ -41,9 +42,9 @@ namespace Explorus_K.Views
 			gameHeader.Paint += new PaintEventHandler(this.HeaderRenderer);
 			gameLabyrinth.Paint += new PaintEventHandler(this.LabyrinthRenderer);
 			gamePause.Paint += new PaintEventHandler(this.PauseRenderer);
+            //gameOver.Paint += new PaintEventHandler(this.GameOverRenderer);
 
-
-			gameForm.Controls.Add(gameHeader);
+            gameForm.Controls.Add(gameHeader);
 			gameForm.Controls.Add(gameLabyrinth);
 			gameForm.Controls.Add(gamePause);
 
@@ -120,12 +121,25 @@ namespace Explorus_K.Views
 				g.DrawString("PAUSE", new Font("Arial", 80), Brushes.White, screenWidth/2, screenHeight/2);
 		}
 
-		public Player getSlimusObject()
+        private void GameOverRenderer(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.Clear(Color.Black);
+
+            //if (gameEngine.Paused)
+            //    g.DrawString("PAUSE", new Font("Arial", 80), Brushes.White, screenWidth / 2, screenHeight / 2);
+        }
+
+        public Player getSlimusObject()
 		{
 			return labyrinthImage.getSlimus();
 		}
+        /*public BubbleBar getBubbleBarObject()
+        {
+            return labyrinthImage.BubbleBar;
+        }*/
 
-		public void InitializeHeaderBar(ProgressionBarCreator creator, int count)
+        public void InitializeHeaderBar(ProgressionBarCreator creator, int count)
 		{
 			IBar bar = creator.InitializeBar(count);
 

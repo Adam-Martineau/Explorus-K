@@ -90,7 +90,13 @@ namespace Explorus_K.Models
             if (type == SpriteId.SLIMUS)
             {
                 labyrinthImage.HealthBar.Decrease();
-                //TO DO Faire clignoter slimus
+                
+                if(labyrinthImage.HealthBar.getCurrent() == 0)
+                {
+                    //labyrinthImage.gameOver();
+                    Thread.Sleep(3000);
+                    Application.Exit();
+                }
             }
             if (type == SpriteId.BUBBLE)
             {
