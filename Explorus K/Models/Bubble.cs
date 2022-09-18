@@ -9,9 +9,11 @@ namespace Explorus_K.Models
 {
     internal class Bubble
     {
-        int posX;
-        int posY;
-        ImageType imageType;
+        private int posX;
+        private int posY;
+        private ImageType imageType;
+        private bool popped = false;
+
 
         Bubble(int posX, int posY, ImageType imageType)
         {
@@ -34,6 +36,22 @@ namespace Explorus_K.Models
         {
             return imageType;
         }
+
+        public void setImageType(ImageType imageType)
+        {
+            this.imageType=imageType;   
+        }
+
+        public bool isPopped()
+        {
+            return popped;
+        }
+
+        public void popBubble()
+        {
+            popped = true;
+        }
+
         public void moveDown(int stepSize)
         {
             posY += stepSize;

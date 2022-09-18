@@ -1,4 +1,5 @@
-﻿using Explorus_K.Models;
+﻿using Explorus_K.Game;
+using Explorus_K.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,10 @@ namespace Explorus_K
 
         int decreaseLife();
 
+        MovementDirection getMovementDirection();
+
+        void setMovementDirection(MovementDirection direction);
+
         void setImageType(ImageType imageType);
 
         void moveDown(int stepSize);
@@ -31,5 +36,15 @@ namespace Explorus_K
         void moveRight(int stepSize);
 
         Image2D refreshPlayer();
+
+        ImageType getAnimationDictValue(MovementDirection key, int value);
+
+        int getAnimationCount();
+
+        void setAnimationCount(int count);
+
+        void setLabyrinthName(string name);
+
+        string getLabyrinthName();
     }
 }

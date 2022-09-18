@@ -14,14 +14,17 @@ namespace Explorus_K.Game
     {
 		private Actions currentAction = Actions.none;
 		private int count = 0;
+		private bool isMovementInitialized = false;
 		
 		public Actions CurrentAction { get => currentAction; }
 
 		GameEngine gameEngine;
+		PlayerMovement movePlayer;
 
-		public ActionManager(GameEngine gameEngine)
+		public ActionManager(GameEngine gameEngine, PlayerMovement playerMovement)
 		{
 			this.gameEngine = gameEngine;
+			movePlayer = playerMovement;	
 		}
 
         //If we have a action bind to that kay, we check if that action can be done
@@ -31,13 +34,13 @@ namespace Explorus_K.Game
 				currentAction = action;
 			else if (action == Actions.shoot)
                 currentAction = action;
-            else if (action == Actions.move_left && mapIterator.isAbleToMoveLeft() && mapIterator.GetLeft() != "w" && mapIterator.GetLeft() != "p" && currentAction == Actions.none)
+            else if (action == Actions.move_left && movePlayer.canPlayerMove(MovementDirection.left, mapIterator.Current()) && currentAction == Actions.none)
 				currentAction = action;
-			else if (action == Actions.move_right && mapIterator.isAbleToMoveRight() && mapIterator.GetRight() != "w" && mapIterator.GetRight() != "p" && currentAction == Actions.none)
+			else if (action == Actions.move_right && movePlayer.canPlayerMove(MovementDirection.right, mapIterator.Current()) && currentAction == Actions.none)
 				currentAction = action;
-			else if (action == Actions.move_up && mapIterator.isAbleToMoveUp() && mapIterator.GetUp() != "w" && mapIterator.GetUp() != "p" && currentAction == Actions.none)
+			else if (action == Actions.move_up && movePlayer.canPlayerMove(MovementDirection.up, mapIterator.Current()) && currentAction == Actions.none)
 				currentAction = action;
-			else if (action == Actions.move_down && mapIterator.isAbleToMoveDown() && mapIterator.GetDown() != "w" && mapIterator.GetDown() != "p" && currentAction == Actions.none)
+			else if (action == Actions.move_down && movePlayer.canPlayerMove(MovementDirection.down, mapIterator.Current()) && currentAction == Actions.none)
 				currentAction = action;
 		}
 
@@ -68,110 +71,70 @@ namespace Explorus_K.Game
                 {
                     count = 0;
                     currentAction = Actions.none;
-                    mapIterator.MoveDown();
                 }
             }
             else if (currentAction == Actions.move_left)
 			{
-				if (count < view.largeSpriteDimension)
+				if(!isMovementInitialized)
 				{
-					count += 2;
-					view.getSlimusObject().moveLeft(2);
-
-					if (count < 8)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_1);
-					else if (count > 8 && count < 16)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_2);
-					else if (count > 16 && count < 32)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_3);
-					else if (count > 32 && count < 40)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_2);
-					else if (count > 40)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_1);
+					isMovementInitialized = true;
+					view.getSlimusObject().setMovementDirection(MovementDirection.left);
 				}
-				else
+
+				if (view.getSlimusObject().getMovementDirection() == MovementDirection.none)
 				{
-					count = 0;
 					currentAction = Actions.none;
 					mapIterator.MoveLeft();
-				}
+                    isMovementInitialized = false;
+                }
 			}
 			else if (currentAction == Actions.move_right)
 			{
-				if (count < view.largeSpriteDimension)
-				{
-					count += 2;
-					view.getSlimusObject().moveRight(2);
+                if (!isMovementInitialized)
+                {
+                    isMovementInitialized = true;
+                    view.getSlimusObject().setMovementDirection(MovementDirection.right);
+                }
 
-					if (count < 8)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_1);
-					else if (count > 8 && count < 16)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_2);
-					else if (count > 16 && count < 32)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_3);
-					else if (count > 32 && count < 40)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_2);
-					else if (count > 40)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_1);
-				}
-				else
-				{
-					count = 0;
+                if (view.getSlimusObject().getMovementDirection() == MovementDirection.none)
+                {
 					currentAction = Actions.none;
 					mapIterator.MoveRight();
-				}
+                    isMovementInitialized = false;
+                }
 
 			}
 			else if (currentAction == Actions.move_up)
 			{
-				if (count < view.largeSpriteDimension)
-				{
-					count += 2;
-					view.getSlimusObject().moveUp(2);
 
-					if (count < 8)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_1);
-					else if (count > 8 && count < 16)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_2);
-					else if (count > 16 && count < 32)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_3);
-					else if (count > 32 && count < 40)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_2);
-					else if (count > 40)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_1);
-				}
-				else
-				{
-					count = 0;
+                if (!isMovementInitialized)
+                {
+                    isMovementInitialized = true;
+                    view.getSlimusObject().setMovementDirection(MovementDirection.up);
+                }
+
+                if (view.getSlimusObject().getMovementDirection() == MovementDirection.none)
+                {
 					currentAction = Actions.none;
 					mapIterator.MoveUp();
-				}
+                    isMovementInitialized = false;
+                }
 			}
 			else if (currentAction == Actions.move_down)
 			{
-				if (count < view.largeSpriteDimension)
-				{
-					count += 2;
-					view.getSlimusObject().moveDown(2);
+                if (!isMovementInitialized)
+                {
+                    isMovementInitialized = true;
+                    view.getSlimusObject().setMovementDirection(MovementDirection.down);
+                }
 
-					if (count < 8)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_1);
-					else if (count > 8 && count < 16)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_2);
-					else if (count > 16 && count < 32)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_3);
-					else if (count > 32 && count < 40)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_2);
-					else if (count > 40)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_1);
-				}
-				else
-				{
-					count = 0;
-					currentAction = Actions.none;
-					mapIterator.MoveDown();
-				}
-			}
+                if (view.getSlimusObject().getMovementDirection() == MovementDirection.none)
+                {
+                    currentAction = Actions.none;
+                    mapIterator.MoveDown();
+                    isMovementInitialized = false;
+                }
+            }
 		}
 	}
 }

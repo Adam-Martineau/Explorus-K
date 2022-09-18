@@ -20,6 +20,7 @@ namespace Explorus_K.Controllers
 		private Labyrinth labyrinth;
 		ActionManager actionManager;
         private bool paused = false;
+		PlayerMovement playerMovement;
 
         public bool Paused { get => paused; set => paused = value; }
 
@@ -30,7 +31,8 @@ namespace Explorus_K.Controllers
             //The game engine get passed from contructor to constructor until it reach GameForm.cs
             gameView = new GameView(this);
 			bindings = initiate_bindings();
-			actionManager = new ActionManager(this);
+            playerMovement = new PlayerMovement(labyrinth.MapIterator);
+            actionManager = new ActionManager(this, playerMovement);
             Thread thread = new Thread(new ThreadStart(GameLoop));
 			thread.Start();
 			gameView.Show();
@@ -70,6 +72,7 @@ namespace Explorus_K.Controllers
 				if (!Paused)
 				{
 					actionManager.characterActionsManagement(gameView, labyrinth.MapIterator);
+					playerMovement.moveAndAnimatePlayer(gameView.getLabyrinthImage().getPlayerList());
 
 					if (lag >= MS_PER_FRAME)
 					{
@@ -81,7 +84,7 @@ namespace Explorus_K.Controllers
 							gameView.Update(fps);
 							lag -= MS_PER_FRAME;
 						}
-
+						
 						gameView.Render();
 					}
 

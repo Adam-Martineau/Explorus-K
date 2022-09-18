@@ -71,11 +71,14 @@
     <Compile Include="GameForm.Designer.cs">
       <DependentUpon>GameForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Game\AnimationEnum.cs" />
     <Compile Include="Game\Constant.cs" />
     <Compile Include="Game\KeyState.cs" />
     <Compile Include="Game\Labyrinth.cs" />
     <Compile Include="Game\LabyrinthImage.cs" />
     <Compile Include="Game\CollisionStrategy.cs" />
+    <Compile Include="Game\MovementDirection.cs" />
+    <Compile Include="Game\PlayerMovement.cs" />
     <Compile Include="Models\Bubble.cs" />
     <Compile Include="Models\Image2D.cs" />
     <Compile Include="Models\MapIterator.cs" />
