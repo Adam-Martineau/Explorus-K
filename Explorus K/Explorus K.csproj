@@ -72,6 +72,7 @@
       <DependentUpon>GameForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Game\Constant.cs" />
+    <Compile Include="Game\GameState.cs" />
     <Compile Include="Game\KeyState.cs" />
     <Compile Include="Game\Labyrinth.cs" />
     <Compile Include="Game\LabyrinthImage.cs" />
