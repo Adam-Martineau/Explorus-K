@@ -134,10 +134,10 @@ namespace Explorus_K.Views
 		{
 			return labyrinthImage.getSlimus();
 		}
-        /*public BubbleBar getBubbleBarObject()
+		public BubbleBar getBubbleBarObject()
         {
             return labyrinthImage.BubbleBar;
-        }*/
+        }
 
         public void InitializeHeaderBar(ProgressionBarCreator creator, int count)
 		{

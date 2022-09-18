@@ -24,7 +24,8 @@ namespace Explorus_K.Game
         BubbleBar bubbleBar = new BubbleBar();
         GemBar gemBar = new GemBar();
 
-        private static Timer timer;
+        private static Timer invincibilityTimer;
+        private static Timer bubbleTimer;
         private float slimusOpacity = 1.0f;
         private int numberOfTrigger = 0;
 
@@ -55,9 +56,13 @@ namespace Explorus_K.Game
             labyrinthHeight = 48 * labyrinth.Map.getLengthY();
             labyrinthWidth = 48 * labyrinth.Map.getLengthX();
 
-            timer = new Timer(100);
-            // Hook up the Elapsed event for the timer. 
-            timer.Elapsed += OnTimedEvent;
+            invincibilityTimer = new Timer(100);
+            invincibilityTimer.Elapsed += OnTimedEventInvincible;
+
+            bubbleTimer = new Timer(500);
+            bubbleTimer.Elapsed += OnTimedEventBubble;
+            bubbleTimer.AutoReset = true;
+            bubbleTimer.Enabled = true;
         }
 
         public void removeImageAt(int index)
@@ -198,7 +203,7 @@ namespace Explorus_K.Game
                         {
                             if(slimus.getInvincible() == false)
                             {
-                                startTimer();
+                                startInvincibilityTimer();
                                 collisionStrategy.executeStrategy(this, i, sprite1);
                             }
                         }
@@ -215,7 +220,7 @@ namespace Explorus_K.Game
             return false;
 		}
 
-        private void OnTimedEvent(Object source, ElapsedEventArgs e)
+        private void OnTimedEventInvincible(Object source, ElapsedEventArgs e)
         {
             numberOfTrigger += 1;
             if (numberOfTrigger < 30)
@@ -232,16 +237,29 @@ namespace Explorus_K.Game
             else
             {
                 slimusOpacity = 1.0f;
-                timer.Stop();
+                invincibilityTimer.Stop();
                 slimus.setInvincible(false);
             }
         }
 
-        public void startTimer()
+        public void startInvincibilityTimer()
         {
-            timer.Start();
+            invincibilityTimer.Start();
             numberOfTrigger = 0;
             slimus.setInvincible(true);
+        }
+
+        private void OnTimedEventBubble(Object source, ElapsedEventArgs e)
+        {
+            if(bubbleBar.getCurrent() != bubbleBar.getLength())
+            {
+                bubbleBar.Increase();
+            }
+        }
+
+        public void startBubbleTimer()
+        {
+            bubbleTimer.Start();
         }
 
         public void resize(GameForm gameForm)

@@ -54,7 +54,7 @@ namespace Explorus_K.Models
         int getLength();
     }
 
-    class HealthBar : IBar
+    public class HealthBar : IBar
     {
         public List<Image2D> healthBar = new List<Image2D>();
         private int current;
@@ -105,7 +105,7 @@ namespace Explorus_K.Models
         }
     }
 
-    class BubbleBar : IBar
+    public class BubbleBar : IBar
     {
         public List<Image2D> bubbleBar = new List<Image2D>();
         private int current;
@@ -138,8 +138,9 @@ namespace Explorus_K.Models
         {
             if (current <= length)
             {
-                bubbleBar[current].setType(ImageType.BUBBLE_BAR_FULL);
                 current++;
+                bubbleBar[current].setType(ImageType.BUBBLE_BAR_FULL);
+                
                 //gemBar[current].setType(ImageType.GEM_BAR_HALF);
             }
         }
@@ -154,7 +155,7 @@ namespace Explorus_K.Models
         }
     }
 
-    class GemBar : IBar
+    public class GemBar : IBar
     {
         public List<Image2D> gemBar = new List<Image2D>();
         private int current;
