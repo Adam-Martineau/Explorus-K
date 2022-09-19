@@ -158,7 +158,7 @@ namespace Explorus_K.Controllers
             labyrinth = new Labyrinth();
             gameView = new GameView(this);
             bindings = initiate_bindings();
-            actionManager = new ActionManager(this);
+            //actionManager = new ActionManager(this);
             thread = new Thread(new ThreadStart(GameLoop));
             thread.Start();
 			resume();
