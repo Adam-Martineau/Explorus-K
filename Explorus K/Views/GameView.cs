@@ -103,7 +103,7 @@ namespace Explorus_K.Views
 
 			if (gameEngine.State == GameState.PLAY)
 			{
-				labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.GEM);
+				labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.GEM);
 
 				labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.DOOR);
 

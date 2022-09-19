@@ -82,6 +82,7 @@
     <Compile Include="Game\MovementDirection.cs" />
     <Compile Include="Game\PhysicsThread.cs" />
     <Compile Include="Game\PlayerMovement.cs" />
+    <Compile Include="Game\SpriteType.cs" />
     <Compile Include="Models\Bubble.cs" />
     <Compile Include="Models\Image2D.cs" />
     <Compile Include="Models\MapIterator.cs" />
@@ -89,7 +90,6 @@
     <Compile Include="Models\ProgressionBarCreator.cs" />
     <Compile Include="Game\SpriteContainer.cs" />
     <Compile Include="Game\ImageType.cs" />
-    <Compile Include="Game\SpriteId.cs" />
     <Compile Include="Models\Slimus.cs" />
     <Compile Include="Models\Sprite.cs" />
     <Compile Include="Models\ToxicSlime.cs" />
