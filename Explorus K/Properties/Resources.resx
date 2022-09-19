@@ -118,7 +118,70 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="beepBoop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\beepBoop.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="boom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\boom.WAV;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="bubbleHit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubbleHit.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="gameMusic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gameMusic.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="gettingCoin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gettingCoin.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="gettingHit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gettingHit.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="moving" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\moving.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="shootingBubble" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\shootingBubble.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sound02" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sound02.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sound04" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sound04.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sound05" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sound05.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sound06" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sound06.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sound07" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sound07.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sound09" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sound09.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sound10" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sound10.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sound11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sound11.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sound13" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sound13.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sound14" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sound14.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sound17" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sound17.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="TilesSheet" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TilesSheet.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="VERYLOUDCLAPPING" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\VERYLOUDCLAPPING.WAV;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="windowsDing" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\windowsDing.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

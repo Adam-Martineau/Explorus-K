@@ -44,6 +44,7 @@
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.2.2.10\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
@@ -72,6 +73,9 @@
       <DependentUpon>GameForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Game\AnimationEnum.cs" />
+    <Compile Include="Game\Audio\AudioBabillard.cs" />
+    <Compile Include="Game\Audio\IListener.cs" />
+    <Compile Include="Game\Audio\Message.cs" />
     <Compile Include="Game\BubbleManager.cs" />
     <Compile Include="Game\Constant.cs" />
     <Compile Include="Game\GameState.cs" />
@@ -80,7 +84,8 @@
     <Compile Include="Game\LabyrinthImage.cs" />
     <Compile Include="Game\CollisionStrategy.cs" />
     <Compile Include="Game\MovementDirection.cs" />
-    <Compile Include="Game\PhysicsThread.cs" />
+    <Compile Include="Threads\AudioThread.cs" />
+    <Compile Include="Threads\PhysicsThread.cs" />
     <Compile Include="Game\PlayerMovement.cs" />
     <Compile Include="Models\Bubble.cs" />
     <Compile Include="Models\Image2D.cs" />
@@ -125,6 +130,69 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\TilesSheet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\beepBoop.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\boom.WAV" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bubbleHit.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gettingCoin.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gettingHit.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\moving.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shootingBubble.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sound02.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sound04.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sound05.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sound06.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sound07.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sound09.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sound10.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sound11.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sound13.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sound14.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sound17.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VERYLOUDCLAPPING.WAV" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\windowsDing.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gameMusic.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

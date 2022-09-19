@@ -1,5 +1,7 @@
 ﻿using Explorus_K.Game;
+using Explorus_K.Game.Audio;
 using Explorus_K.Models;
+using Explorus_K.Threads;
 using Explorus_K.Views;
 using System;
 using System.Collections.Generic;
@@ -40,6 +42,8 @@ namespace Explorus_K.Controllers
             actionManager = new ActionManager(this, playerMovement);
             Thread thread = new Thread(new ThreadStart(GameLoop));
 			thread.Start();
+			Thread audioThread = new Thread(new ThreadStart(new AudioThread(new AudioBabillard()).Run));
+			audioThread.Start();
 			gameView.Show();
 		}
 
