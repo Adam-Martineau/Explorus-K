@@ -49,7 +49,7 @@ namespace Explorus_K.Views
 			gameForm.Controls.Add(gameLabyrinth);
 			gameForm.Controls.Add(gamePause);
 
-			labyrinthImage = new LabyrinthImage(gameEngine.GetLabyrinth());
+			labyrinthImage = new LabyrinthImage(gameEngine.GetLabyrinth(), gameEngine.getBubbleManager());
 
 			resize();
 		}

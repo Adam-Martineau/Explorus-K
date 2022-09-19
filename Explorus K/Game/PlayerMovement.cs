@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,6 +18,7 @@ namespace Explorus_K.Game
         private Random r = new Random();
 
         private const int playerStepSize = 2;
+        private const int bubbleStepSize = 4;
 
         public PlayerMovement(Iterator iterator)
         {
@@ -37,6 +39,16 @@ namespace Explorus_K.Game
                     return isWallOrDoor((String)iterator.getMapEntryAt(position.X + 1, position.Y));
                 default:
                     return false;
+            }
+        }
+
+        public void moveAndAnimateBubbles(BubbleManager bubbleManager)
+        {
+            List<Bubble> bubbles = new List<Bubble>(bubbleManager.getBubbleList());
+
+            foreach (Bubble bubble in bubbles)
+            {
+                animateBubble(bubble, bubbleManager);
             }
         }
 
@@ -176,6 +188,127 @@ namespace Explorus_K.Game
                     break;
                 default:
                     break;
+            }
+        }
+
+        private void moveBubbleIterator(Bubble bubble, MovementDirection movementDirection)
+        {
+            int bubbleIteratorX = bubble.getIteratorPosition().X;
+            int bubbleIteratorY = bubble.getIteratorPosition().Y;
+
+            switch (movementDirection)
+            {
+                case MovementDirection.down:
+                    bubble.setIteratorPosition(new Point(bubbleIteratorX, bubbleIteratorY + 1));
+                    break;
+                case MovementDirection.up:
+                    bubble.setIteratorPosition(new Point(bubbleIteratorX, bubbleIteratorY - 1));
+                    break;
+                case MovementDirection.left:
+                    bubble.setIteratorPosition(new Point(bubbleIteratorX - 1, bubbleIteratorY));
+                    break;
+                case MovementDirection.right:
+                    bubble.setIteratorPosition(new Point(bubbleIteratorX + 1, bubbleIteratorY));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void moveBubble(Bubble bubble)
+        {
+            MovementDirection movementDirection = bubble.getMovementDirection();
+
+            switch (movementDirection)
+            {
+                case MovementDirection.down:
+                    if(canPlayerMove(movementDirection, bubble.getIteratorPosition()))
+                    {
+                        bubble.moveDown(bubbleStepSize);
+                    }
+                    else
+                    {
+                        bubble.popBubble();
+                    }                    
+                    break;
+                case MovementDirection.up:
+                    if (canPlayerMove(movementDirection, bubble.getIteratorPosition()))
+                    {
+                        bubble.moveUp(bubbleStepSize);
+                    }
+                    else
+                    {
+                        bubble.popBubble();
+                    }
+                    break;
+                case MovementDirection.left:
+                    if (canPlayerMove(movementDirection, bubble.getIteratorPosition()))
+                    {
+                        bubble.moveLeft(bubbleStepSize);
+                    }
+                    else
+                    {
+                        bubble.popBubble();
+                    }
+                    break;
+                case MovementDirection.right:
+                    if (canPlayerMove(movementDirection, bubble.getIteratorPosition()))
+                    {
+                        bubble.moveRight(bubbleStepSize);
+                    }
+                    else
+                    {
+                        bubble.popBubble();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void animateBubble(Bubble bubble, BubbleManager bubbleManager)
+        {
+            int count = bubble.getAnimationCount();
+
+            if(bubble.isPopped())
+            {
+                if (count < Constant.LARGE_SPRITE_DIMENSION)
+                {
+                    count += bubbleStepSize;
+                }
+                else
+                {
+                    bubbleManager.removeBubble(bubble);
+                }
+
+                bubble.setAnimationCount(count);
+            }
+            else
+            {
+                if (count < Constant.LARGE_SPRITE_DIMENSION)
+                {
+                    count += bubbleStepSize;
+
+                    if (count < 8)
+                        bubble.setImageType(ImageType.BUBBLE_BIG);
+                    else if (count > 8 && count < 16)
+                        bubble.setImageType(ImageType.BUBBLE_SMALL);
+                    else if (count > 16 && count < 32)
+                        bubble.setImageType(ImageType.BUBBLE_BIG);
+                    else if (count > 32 && count < 40)
+                        bubble.setImageType(ImageType.BUBBLE_SMALL);
+                    else if (count > 40)
+                        bubble.setImageType(ImageType.BUBBLE_BIG);
+
+                    moveBubble(bubble);
+                }
+                else
+                {
+                    moveBubbleIterator(bubble, bubble.getMovementDirection());
+                    count = 0;
+                }
+
+                bubble.setAnimationCount(count);
             }
         }
     }
