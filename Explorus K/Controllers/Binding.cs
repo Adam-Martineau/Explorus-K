@@ -15,6 +15,7 @@ namespace Explorus_K.Controllers
         move_left,
         move_right,
         pause,
+        resume,
         exit,
         shoot
     }

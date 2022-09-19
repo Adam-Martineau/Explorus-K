@@ -28,20 +28,20 @@ namespace Explorus_K.Models
             this._strategy = strategy;
         }
 
-        public void executeStrategy(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
+        public GameState executeStrategy(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
         {
-            _strategy.execute(labyrinthImage, imageIndex, type);
+            return _strategy.execute(labyrinthImage, imageIndex, type);
         }
     }
 
     interface IStrategy
     {
-        void execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type);
+        GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type);
     }
 
     class GemStrategy : IStrategy
     {
-        public void execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
         {
             if(type == SpriteType.SLIMUS)
             {
@@ -49,17 +49,19 @@ namespace Explorus_K.Models
                 if (labyrinthImage.GemBar.getCurrent() == labyrinthImage.GemBar.getLength())
                 {
                     labyrinthImage.KeyState.RequestChangingState();
-                    Point pos = labyrinthImage.Labyrinth.MapIterator.findPosition("p");
-                    labyrinthImage.Labyrinth.MapIterator.replaceAt(".", pos.X, pos.Y);
+                    Point pos = labyrinthImage.getSlimus().getIterator().findPosition("p");
+                    labyrinthImage.getSlimus().getIterator().replaceAt(".", pos.X, pos.Y);
                 }
                 labyrinthImage.removeImageAt(imageIndex);
             }
+
+            return GameState.PLAY;
         }
     }
 
     class DoorStrategy : IStrategy
     {
-        public void execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
         {
             if (type == SpriteType.SLIMUS)
             {
@@ -68,24 +70,29 @@ namespace Explorus_K.Models
                     labyrinthImage.removeImageAt(imageIndex);
                 }
             }
+
+            return GameState.PLAY;
         }
     }
 
     class MiniSlimeStrategy : IStrategy
     {
-        public void execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
         {
             if (type == SpriteType.SLIMUS)
             {
-                Thread.Sleep(3000);
-                Application.Exit();
+                return GameState.RESTART;
+            }
+            else
+            {
+                return GameState.PLAY;
             }
         }
     }
 
     class ToxicSlimeStrategy : IStrategy
     {
-        public void execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
         {
             if (type == SpriteType.SLIMUS)
             {
@@ -93,15 +100,15 @@ namespace Explorus_K.Models
                 
                 if(labyrinthImage.HealthBar.getCurrent() == 0)
                 {
-                    //labyrinthImage.gameOver();
-                    Thread.Sleep(3000);
-                    Application.Exit();
+                    return GameState.STOP;
                 }
             }
             if (type == SpriteType.BUBBLE)
             {
                 //Perte de vie du toxic slime
             }
+
+            return GameState.PLAY;
         }
     }
 }

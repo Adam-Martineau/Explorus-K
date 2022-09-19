@@ -3,6 +3,7 @@ using Explorus_K.Models;
 using Explorus_K.Views;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,30 +15,34 @@ namespace Explorus_K.Game
     {
 		private Actions currentAction = Actions.none;
 		private int count = 0;
+		private bool isMovementInitialized = false;
+        private MovementDirection oldDirection;
 		
 		public Actions CurrentAction { get => currentAction; }
 
 		GameEngine gameEngine;
+		PlayerMovement movePlayer;
 
-		public ActionManager(GameEngine gameEngine)
+		public ActionManager(GameEngine gameEngine, PlayerMovement playerMovement)
 		{
 			this.gameEngine = gameEngine;
+			movePlayer = playerMovement;	
 		}
 
         //If we have a action bind to that kay, we check if that action can be done
-        public void actionHandler(Actions action, Iterator mapIterator)
+        public void actionHandler(Actions action, Iterator slimusIterator)
 		{
-			if (action == Actions.pause || action == Actions.exit)
+			if (action == Actions.pause || action == Actions.resume || action == Actions.exit)
 				currentAction = action;
-			else if (action == Actions.shoot)
+			else if (action == Actions.shoot && currentAction == Actions.none)
                 currentAction = action;
-            else if (action == Actions.move_left && mapIterator.isAbleToMoveLeft() && mapIterator.GetLeft() != "w" && mapIterator.GetLeft() != "p" && currentAction == Actions.none)
+            else if (action == Actions.move_left && movePlayer.canPlayerMove(MovementDirection.left, slimusIterator.Current()) && currentAction == Actions.none)
 				currentAction = action;
-			else if (action == Actions.move_right && mapIterator.isAbleToMoveRight() && mapIterator.GetRight() != "w" && mapIterator.GetRight() != "p" && currentAction == Actions.none)
+			else if (action == Actions.move_right && movePlayer.canPlayerMove(MovementDirection.right, slimusIterator.Current()) && currentAction == Actions.none)
 				currentAction = action;
-			else if (action == Actions.move_up && mapIterator.isAbleToMoveUp() && mapIterator.GetUp() != "w" && mapIterator.GetUp() != "p" && currentAction == Actions.none)
+			else if (action == Actions.move_up && movePlayer.canPlayerMove(MovementDirection.up, slimusIterator.Current()) && currentAction == Actions.none)
 				currentAction = action;
-			else if (action == Actions.move_down && mapIterator.isAbleToMoveDown() && mapIterator.GetDown() != "w" && mapIterator.GetDown() != "p" && currentAction == Actions.none)
+			else if (action == Actions.move_down && movePlayer.canPlayerMove(MovementDirection.down, slimusIterator.Current()) && currentAction == Actions.none)
 				currentAction = action;
 		}
 
@@ -45,7 +50,14 @@ namespace Explorus_K.Game
         {
             if (currentAction == Actions.pause)
             {
-                gameEngine.Paused = !gameEngine.Paused;
+                Console.WriteLine("pause");
+                gameEngine.pause();
+                currentAction = Actions.none;
+            }
+            else if (currentAction == Actions.resume)
+            {
+                Console.WriteLine("resume");
+                gameEngine.resume();
                 currentAction = Actions.none;
             }
             else if (currentAction == Actions.exit)
@@ -55,123 +67,120 @@ namespace Explorus_K.Game
         }
 
         //If the action can be done, we use a state machine to wait until the action is over
-        public void characterActionsManagement(GameView view, Iterator mapIterator)
+        public void characterActionsManagement(GameView view, BubbleManager bubbleManager)
 		{
             //Actions state machine
             if (currentAction == Actions.shoot)
             {
-                if (count < view.largeSpriteDimension)
+                if(view.getBubbleBarObject().getCurrent() > 0)
                 {
-                    count += 2;
-                }
-                else
-                {
-                    count = 0;
+                    Slimus slimus = (Slimus)view.getSlimusObject();
+                    Iterator tempSlimusIterator = slimus.getIterator();
+                    Point posBubble = tempSlimusIterator.Current();
+                    Bubble bubble;
+
+                    switch(oldDirection)
+                    {
+                        case MovementDirection.up:
+                            if(movePlayer.canPlayerMove(oldDirection, posBubble))
+                            {
+                                bubble = new Bubble(slimus.getPosX(), slimus.getPosY() - Constant.LARGE_SPRITE_DIMENSION, ImageType.BUBBLE_BIG, oldDirection, new Point(posBubble.X, posBubble.Y - 1));
+                                bubbleManager.addBubble(bubble);
+                                view.getBubbleBarObject().Decrease();
+                            }
+                            break;
+                        case MovementDirection.down:
+                            if (movePlayer.canPlayerMove(oldDirection, posBubble))
+                            {
+                                bubble = new Bubble(slimus.getPosX(), slimus.getPosY() + Constant.LARGE_SPRITE_DIMENSION, ImageType.BUBBLE_BIG, oldDirection, new Point(posBubble.X, posBubble.Y + 1));
+                                bubbleManager.addBubble(bubble);
+                                view.getBubbleBarObject().Decrease();
+                            }
+                            break;
+                        case MovementDirection.left:
+                            if (movePlayer.canPlayerMove(oldDirection, posBubble))
+                            {
+                                bubble = new Bubble(slimus.getPosX() - Constant.LARGE_SPRITE_DIMENSION, slimus.getPosY(), ImageType.BUBBLE_BIG, oldDirection, new Point(posBubble.X - 1, posBubble.Y));
+                                bubbleManager.addBubble(bubble);
+                                view.getBubbleBarObject().Decrease();
+                            }
+                            break;
+                        case MovementDirection.right:
+                            if (movePlayer.canPlayerMove(oldDirection, posBubble))
+                            {
+                                bubble = new Bubble(slimus.getPosX() + Constant.LARGE_SPRITE_DIMENSION, slimus.getPosY(), ImageType.BUBBLE_BIG, oldDirection, new Point(posBubble.X + 1, posBubble.Y));
+                                bubbleManager.addBubble(bubble);
+                                view.getBubbleBarObject().Decrease();
+                            }
+                            break;
+                    }
                     currentAction = Actions.none;
-                    view.getBubbleBarObject().Decrease();
                 }
+                    
+
             }
             else if (currentAction == Actions.move_left)
 			{
-				if (count < view.largeSpriteDimension)
+				if(!isMovementInitialized)
 				{
-					count += 2;
-					view.getSlimusObject().moveLeft(2);
+					isMovementInitialized = true;
+					view.getSlimusObject().setMovementDirection(MovementDirection.left);
+				}
 
-					if (count < 8)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_1);
-					else if (count > 8 && count < 16)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_2);
-					else if (count > 16 && count < 32)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_3);
-					else if (count > 32 && count < 40)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_2);
-					else if (count > 40)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_LEFT_ANIMATION_1);
-				}
-				else
+				if (view.getSlimusObject().getMovementDirection() == MovementDirection.none)
 				{
-					count = 0;
-					currentAction = Actions.none;
-					mapIterator.MoveLeft();
-				}
+                    oldDirection = MovementDirection.left;
+                    currentAction = Actions.none;
+                    isMovementInitialized = false;
+                }
 			}
 			else if (currentAction == Actions.move_right)
 			{
-				if (count < view.largeSpriteDimension)
-				{
-					count += 2;
-					view.getSlimusObject().moveRight(2);
+                if (!isMovementInitialized)
+                {
+                    isMovementInitialized = true;
+                    view.getSlimusObject().setMovementDirection(MovementDirection.right);
+                }
 
-					if (count < 8)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_1);
-					else if (count > 8 && count < 16)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_2);
-					else if (count > 16 && count < 32)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_3);
-					else if (count > 32 && count < 40)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_2);
-					else if (count > 40)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_RIGHT_ANIMATION_1);
-				}
-				else
-				{
-					count = 0;
-					currentAction = Actions.none;
-					mapIterator.MoveRight();
-				}
+                if (view.getSlimusObject().getMovementDirection() == MovementDirection.none)
+                {
+                    oldDirection = MovementDirection.right;
+                    currentAction = Actions.none;
+                    isMovementInitialized = false;
+                }
 
 			}
 			else if (currentAction == Actions.move_up)
 			{
-				if (count < view.largeSpriteDimension)
-				{
-					count += 2;
-					view.getSlimusObject().moveUp(2);
 
-					if (count < 8)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_1);
-					else if (count > 8 && count < 16)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_2);
-					else if (count > 16 && count < 32)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_3);
-					else if (count > 32 && count < 40)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_2);
-					else if (count > 40)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_UP_ANIMATION_1);
-				}
-				else
-				{
-					count = 0;
-					currentAction = Actions.none;
-					mapIterator.MoveUp();
-				}
+                if (!isMovementInitialized)
+                {
+                    isMovementInitialized = true;
+                    view.getSlimusObject().setMovementDirection(MovementDirection.up);
+                }
+
+                if (view.getSlimusObject().getMovementDirection() == MovementDirection.none)
+                {
+                    oldDirection = MovementDirection.up;
+                    currentAction = Actions.none;
+                    isMovementInitialized = false;
+                }
 			}
 			else if (currentAction == Actions.move_down)
 			{
-				if (count < view.largeSpriteDimension)
-				{
-					count += 2;
-					view.getSlimusObject().moveDown(2);
+                if (!isMovementInitialized)
+                {
+                    isMovementInitialized = true;
+                    view.getSlimusObject().setMovementDirection(MovementDirection.down);
+                }
 
-					if (count < 8)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_1);
-					else if (count > 8 && count < 16)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_2);
-					else if (count > 16 && count < 32)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_3);
-					else if (count > 32 && count < 40)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_2);
-					else if (count > 40)
-						view.getSlimusObject().setImageType(ImageType.SLIMUS_DOWN_ANIMATION_1);
-				}
-				else
-				{
-					count = 0;
-					currentAction = Actions.none;
-					mapIterator.MoveDown();
-				}
-			}
+                if (view.getSlimusObject().getMovementDirection() == MovementDirection.none)
+                {
+                    oldDirection = MovementDirection.down;
+                    currentAction = Actions.none;
+                    isMovementInitialized = false;
+                }
+            }
 		}
 	}
 }

@@ -1,10 +1,12 @@
 ﻿using Explorus_K.Models;
-using Explorus_K.Game;
+using Explorus_K.NewFolder1;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Numerics;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +25,9 @@ namespace Explorus_K.Game
         HealthBar healthBar = new HealthBar();
         BubbleBar bubbleBar = new BubbleBar();
         GemBar gemBar = new GemBar();
+        List<Player> playerList = new List<Player>();
+
+        private BubbleManager bubbleManager;
 
         private static Timer invincibilityTimer;
         private static Timer bubbleTimer;
@@ -38,13 +43,15 @@ namespace Explorus_K.Game
         private int screenWidth = 1000;
         private int screenHeight = 600;
 
+        private int labyrintNameCount = 0;
+
         internal Context KeyState { get => keyState; set => keyState = value; }
         internal HealthBar HealthBar { get => healthBar; set => healthBar = value; }
         internal BubbleBar BubbleBar { get => bubbleBar; set => bubbleBar = value; }
         internal GemBar GemBar { get => gemBar; set => gemBar = value; }
         internal Labyrinth Labyrinth { get => labyrinth; set => labyrinth = value; }
 
-        public LabyrinthImage(Labyrinth labyrinth)
+        public LabyrinthImage(Labyrinth labyrinth, BubbleManager bubbleManager)
         {
             labyrinthPosition = new Point();
             labyrinthImages = new List<Image2D>();
@@ -63,6 +70,8 @@ namespace Explorus_K.Game
             bubbleTimer.Elapsed += OnTimedEventBubble;
             bubbleTimer.AutoReset = true;
             bubbleTimer.Enabled = true;
+
+            this.bubbleManager = bubbleManager;
         }
 
         public void removeImageAt(int index)
@@ -72,7 +81,15 @@ namespace Explorus_K.Game
 
         public Player getSlimus()
         {
-            return slimus;
+            foreach(Player player in playerList)
+            {
+                if(player.GetType() == typeof(Slimus))
+                {
+                    return player;
+                }
+            }
+
+            return null;
         }
 
         public void InitializeHeaderBar(ProgressionBarCreator creator, int count)
@@ -95,23 +112,29 @@ namespace Explorus_K.Game
 
         public void drawLabyrinthImage(Graphics g)
         {
+            refreshPlayerSprite();
+
             foreach (Image2D sp in labyrinthImages.ToArray())
             {
-                SpriteType spriteId = sp.getId();
-                if (spriteId == SpriteType.MINI_SLIMUS || spriteId == SpriteType.GEM)
+                SpriteId spriteId = sp.getId();
+                if (spriteId == SpriteId.MINI_SLIMUS || spriteId == SpriteId.GEM)
                 {
                     float pos = (Constant.LARGE_SPRITE_DIMENSION - Constant.SMALL_SPRITE_DIMENSION) / 2;
                     g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()), (float)(sp.X + labyrinthPosition.X + pos), (float)(sp.Y + labyrinthPosition.Y + pos), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
                 }
-                else if (spriteId == SpriteType.SLIMUS)
+                else if (spriteId == SpriteId.SLIMUS)
                 {
                     Bitmap opacityImage = SetOpacity(new Bitmap(SpriteContainer.getInstance().getBitmapByImageType(slimus.getImageType())), slimusOpacity);
                     g.DrawImage(opacityImage, slimus.getPosX() + labyrinthPosition.X, slimus.getPosY() + labyrinthPosition.Y, Constant.LARGE_SPRITE_DIMENSION, Constant.LARGE_SPRITE_DIMENSION);
                 }
-                else if (spriteId == SpriteType.DOOR)
+                else if (spriteId == SpriteId.DOOR)
                 {
                     Bitmap opacityImage = SetOpacity(new Bitmap(SpriteContainer.getInstance().getBitmapByImageType(sp.getType())), 0.4f);
                     g.DrawImage(opacityImage, (float)(sp.X + labyrinthPosition.X), (float)(sp.Y + labyrinthPosition.Y), Constant.LARGE_SPRITE_DIMENSION, Constant.LARGE_SPRITE_DIMENSION);
+                }
+                else if(spriteId == SpriteId.TOXIC_SLIME)
+                {
+                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()), (float)(sp.X + labyrinthPosition.X), (float)(sp.Y + labyrinthPosition.Y), Constant.LARGE_SPRITE_DIMENSION, Constant.LARGE_SPRITE_DIMENSION);
                 }
                 else
                 {
@@ -157,25 +180,25 @@ namespace Explorus_K.Game
             return (headerOffset * index) + ((headerOffset * column)/2);
         }
 
-        public bool IsColliding(SpriteType sprite1, SpriteType sprite2)
+        public GameState IsColliding(SpriteId sprite1, SpriteId sprite2)
 		{
             int pixel = 0;
-            if (sprite2 == SpriteType.GEM)
+            if (sprite2 == SpriteId.GEM)
             {
                 collisionStrategy.SetStrategy(new GemStrategy());
                 pixel = 10;
             }
-            else if (sprite2 == SpriteType.DOOR)
+            else if (sprite2 == SpriteId.DOOR)
             {
                 collisionStrategy.SetStrategy(new DoorStrategy());
                 pixel = 5;
             }
-            else if (sprite2 == SpriteType.MINI_SLIMUS)
+            else if (sprite2 == SpriteId.MINI_SLIMUS)
             {
                 collisionStrategy.SetStrategy(new MiniSlimeStrategy());
                 pixel = 15;
             }
-            else if (sprite2 == SpriteType.TOXIC_SLIME)
+            else if (sprite2 == SpriteId.TOXIC_SLIME)
             {
                 collisionStrategy.SetStrategy(new ToxicSlimeStrategy());
                 pixel = 5;
@@ -189,6 +212,7 @@ namespace Explorus_K.Game
             for (int i = 0; i < labyrinthImages.Count; i++)
             {
                 Image2D sp = labyrinthImages[i];
+                
                 if (sp.getId() == sprite2)
                 {
                     float objectX = sp.X + pos;
@@ -199,26 +223,26 @@ namespace Explorus_K.Game
                     slimusY < objectY + Constant.SMALL_SPRITE_DIMENSION - pixel &&
                     slimusY + Constant.LARGE_SPRITE_DIMENSION - pixel > objectY)
                     {
-                        if(sprite2 == SpriteType.TOXIC_SLIME)
+                        if(sprite2 == SpriteId.TOXIC_SLIME)
                         {
-                            if(slimus.getInvincible() == false)
+                            if (slimus.getInvincible() == false)
                             {
                                 startInvincibilityTimer();
-                                collisionStrategy.executeStrategy(this, i, sprite1);
+                                return collisionStrategy.executeStrategy(this, i, sprite1);
                             }
                         }
                         else
                         {
-                            collisionStrategy.executeStrategy(this, i, sprite1);
+                            return collisionStrategy.executeStrategy(this, i, sprite1);
                         }
                         
-                        return true;
+                        return GameState.PLAY;
                     }
                 }
             }
 
-            return false;
-		}
+            return GameState.PLAY;
+        }
 
         private void OnTimedEventInvincible(Object source, ElapsedEventArgs e)
         {
@@ -271,6 +295,11 @@ namespace Explorus_K.Game
             headerOffset = (gameForm.Size.Width / 12);
         }
 
+        public List<Player> getPlayerList()
+        {
+            return playerList;
+        }    
+
         private void fillLabyrinthImages()
         {
             for (int i = 0; i < labyrinth.Map.getLengthX(); i++)
@@ -278,29 +307,31 @@ namespace Explorus_K.Game
                 for (int j = 0; j < labyrinth.Map.getLengthY(); j++)
                 {
                     if (labyrinth.getMapEntryAt(i, j) == "w")
-                        labyrinthImages.Add(new Image2D(SpriteType.WALL, ImageType.WALL, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
+                        labyrinthImages.Add(new Image2D(SpriteId.WALL, ImageType.WALL, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
                     else if (labyrinth.getMapEntryAt(i, j) == "g")
-                        labyrinthImages.Add(new Image2D(SpriteType.GEM, ImageType.GEM, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
+                        labyrinthImages.Add(new Image2D(SpriteId.GEM, ImageType.GEM, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
                     else if (labyrinth.getMapEntryAt(i, j) == "m")
                     {
-                        labyrinthImages.Add(new Image2D(SpriteType.MINI_SLIMUS, ImageType.SMALL_SLIMUS, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
+                        labyrinthImages.Add(new Image2D(SpriteId.MINI_SLIMUS, ImageType.SMALL_SLIMUS, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
                     }
                     else if (labyrinth.getMapEntryAt(i, j) == "s")
                     {
-                        slimus = new Slimus(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.SLIMUS_DOWN_ANIMATION_1, Constant.SLIMUS_LIVES);
-                        labyrinthImages.Add(new Image2D(SpriteType.SLIMUS, slimus.getImageType(), slimus.getPosX(), slimus.getPosY()));
-                    }
-                    else if (labyrinth.getMapEntryAt(i, j) == "s")
-                    {
-                        labyrinthImages.Add(new Image2D(0, ImageType.SLIMUS_DOWN_ANIMATION_1, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
+                        slimus = new Slimus(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.SLIMUS_DOWN_ANIMATION_1, Constant.SLIMUS_LIVES, Labyrinth.Map.CreateIterator("s"));
+                        labyrinthImages.Add(new Image2D(SpriteId.SLIMUS, slimus.getImageType(), slimus.getPosX(), slimus.getPosY()));
+                        playerList.Add(slimus);
                     }
                     else if (labyrinth.getMapEntryAt(i, j) == "p")
                     {
-                        labyrinthImages.Add(new Image2D(SpriteType.DOOR, ImageType.WALL, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
+                        labyrinthImages.Add(new Image2D(SpriteId.DOOR, ImageType.WALL, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
                     }
-                    else if (labyrinth.getMapEntryAt(i, j) == "t")
+                    else if (labyrinth.getMapEntryAt(i, j) != ".")
                     {
-                        labyrinthImages.Add(new Image2D(SpriteType.TOXIC_SLIME, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
+                        string tempLabyrinthName = "t" + labyrintNameCount.ToString();
+                        ToxicSlime tempToxicSlime = new ToxicSlime(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, Constant.TOXIC_SLIME_LIVES, Labyrinth.Map.CreateIterator(tempLabyrinthName));
+                        tempToxicSlime.setLabyrinthName(tempLabyrinthName);
+                        labyrintNameCount++;
+                        playerList.Add(tempToxicSlime);
+                        labyrinthImages.Add(new Image2D(SpriteId.TOXIC_SLIME, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
                     }
                 }
             }
@@ -323,6 +354,29 @@ namespace Explorus_K.Game
                 gr.DrawImage(image, rect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, attributes);
             }
             return output;
+        }
+
+        private void refreshPlayerSprite()
+        {
+            List<Image2D> tempSpriteList = new List<Image2D>(labyrinthImages);
+
+            foreach(Image2D image in tempSpriteList)
+            {
+                if(image.getId() == SpriteId.SLIMUS || image.getId() == SpriteId.TOXIC_SLIME || image.getId() == SpriteId.BUBBLE)
+                {
+                    labyrinthImages.Remove(image);
+                }
+            }
+
+            foreach(Player player in playerList)
+            {
+                labyrinthImages.Add(player.refreshPlayer());
+            }
+
+            foreach (Bubble bubble in bubbleManager.getBubbleList())
+            {
+                labyrinthImages.Add(bubble.refreshBubble());
+            }
         }
     }
 }
