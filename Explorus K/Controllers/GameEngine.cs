@@ -24,15 +24,16 @@ namespace Explorus_K.Controllers
 		BubbleManager bubbleManager;
 		private GameState gameState;
 
+        public static object gameStatelock = new object();
         Thread physicsThread;
-		Thread thread;
+
+		Thread mainThread;
 
         public static EventWaitHandle physicsWaitHandle;
 
         public GameState State { get => gameState; set => gameState = value; }
 
         public GameEngine()
-
 		{
             bubbleManager = new BubbleManager();
             labyrinth = new Labyrinth();
@@ -43,8 +44,8 @@ namespace Explorus_K.Controllers
             playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
             actionManager = new ActionManager(this, playerMovement);
             
-			thread = new Thread(new ThreadStart(GameLoop));
-			thread.Start();
+			mainThread = new Thread(new ThreadStart(GameLoop));
+			mainThread.Start();
 			
 			Physics physics = new Physics(this);
             physicsWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);

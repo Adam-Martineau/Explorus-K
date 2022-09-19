@@ -1,5 +1,6 @@
 ﻿using Explorus_K.Controllers;
 using Explorus_K.Models;
+using Microsoft.VisualBasic.Devices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,8 +42,6 @@ namespace Explorus_K.Game
                             newCollision(slimus, sprite);
 
                 }
-
-                Thread.Sleep(10);
             }
         }
 
@@ -74,10 +73,18 @@ namespace Explorus_K.Game
                 else
                     collidingSprite = sprite_A;
 
-                gameEngine.State = collidingSprite.collisionStrategy.executeStrategy(
-                    gameEngine.gameView.labyrinthImage,
-                    gameEngine.gameView.labyrinthImage.labyrinthImages.IndexOf(collidingSprite),
-                    collidingSprite.getId());
+                try
+                {
+                    gameEngine.State = collidingSprite.collisionStrategy.executeStrategy(
+                        gameEngine.gameView.labyrinthImage,
+                        gameEngine.gameView.labyrinthImage.labyrinthImages.IndexOf(collidingSprite),
+                        collidingSprite.getId());
+                }
+
+                finally
+                {
+                    Monitor.Exit(GameEngine.gameStatelock);
+                }
             }
         }
 
