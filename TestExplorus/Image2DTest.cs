@@ -1,5 +1,5 @@
 ﻿using Explorus_K.Models;
-using Explorus_K.NewFolder1;
+using Explorus_K.Game;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Drawing;
@@ -18,14 +18,14 @@ namespace TestExplorus
         {
             int expectedX = 4;
             int expectedY = 5;
-            SpriteId expectedSpriteId = SpriteId.GEM;
+            SpriteType expectedSpriteType = SpriteType.GEM;
             ImageType expectedImageType = ImageType.WALL;
 
-            Image2D image2D = new Image2D(expectedSpriteId, expectedImageType, expectedX, expectedY);
+            Image2D image2D = new Image2D(expectedSpriteType, expectedImageType, expectedX, expectedY);
 
             Assert.AreEqual(expectedX, image2D.X);
             Assert.AreEqual(expectedY, image2D.Y);
-            Assert.AreEqual(expectedSpriteId, image2D.getId());
+            Assert.AreEqual(expectedSpriteType, image2D.getId());
             Assert.AreEqual(expectedImageType, image2D.getType());
 
         }
@@ -41,7 +41,7 @@ namespace TestExplorus
 
         private Image2D givenValidImage2D()
         {
-            return new Image2D().withId(SpriteId.GEM).withId(SpriteId.GEM).withX(someX).withY(someY);
+            return new Image2D().withId(SpriteType.GEM).withId(SpriteType.GEM).withX(someX).withY(someY);
         }
     }
 }

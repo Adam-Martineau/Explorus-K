@@ -1,5 +1,5 @@
 ﻿using Explorus_K.Game;
-using Explorus_K.NewFolder1;
+using Explorus_K.Game;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -28,7 +28,7 @@ namespace Explorus_K.Models
             this._strategy = strategy;
         }
 
-        public GameState executeStrategy(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
+        public GameState executeStrategy(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
         {
             return _strategy.execute(labyrinthImage, imageIndex, type);
         }
@@ -36,14 +36,14 @@ namespace Explorus_K.Models
 
     interface IStrategy
     {
-        GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type);
+        GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type);
     }
 
     class GemStrategy : IStrategy
     {
-        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
         {
-            if(type == SpriteId.SLIMUS)
+            if(type == SpriteType.SLIMUS)
             {
                 labyrinthImage.GemBar.Increase();
                 if (labyrinthImage.GemBar.getCurrent() == labyrinthImage.GemBar.getLength())
@@ -61,9 +61,9 @@ namespace Explorus_K.Models
 
     class DoorStrategy : IStrategy
     {
-        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
         {
-            if (type == SpriteId.SLIMUS)
+            if (type == SpriteType.SLIMUS)
             {
                 if (labyrinthImage.KeyState.CurrentState() == "WithKeyState")
                 {
@@ -77,9 +77,9 @@ namespace Explorus_K.Models
 
     class MiniSlimeStrategy : IStrategy
     {
-        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
         {
-            if (type == SpriteId.SLIMUS)
+            if (type == SpriteType.SLIMUS)
             {
                 return GameState.RESTART;
             }
@@ -92,9 +92,9 @@ namespace Explorus_K.Models
 
     class ToxicSlimeStrategy : IStrategy
     {
-        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
         {
-            if (type == SpriteId.SLIMUS)
+            if (type == SpriteType.SLIMUS)
             {
                 labyrinthImage.HealthBar.Decrease();
                 
@@ -103,7 +103,7 @@ namespace Explorus_K.Models
                     return GameState.STOP;
                 }
             }
-            if (type == SpriteId.BUBBLE)
+            if (type == SpriteType.BUBBLE)
             {
                 //Perte de vie du toxic slime
             }

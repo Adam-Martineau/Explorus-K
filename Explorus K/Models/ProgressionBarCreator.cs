@@ -1,5 +1,5 @@
 ﻿using Explorus_K.Game;
-using Explorus_K.NewFolder1;
+using Explorus_K.Game;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,12 +65,12 @@ namespace Explorus_K.Models
             this.current = length;
             this.length = length;
 
-            healthBar.Add(new Image2D(SpriteId.BAR, ImageType.LEFT_SIDE_BAR, 0, 1));
+            healthBar.Add(new Image2D(SpriteType.BAR, ImageType.LEFT_SIDE_BAR, 0, 1));
             for (int i = 1; i < length + 1; i++)
             {
-                healthBar.Add(new Image2D(SpriteId.BAR, ImageType.HEALTH_BAR_FULL, i, 1));
+                healthBar.Add(new Image2D(SpriteType.BAR, ImageType.HEALTH_BAR_FULL, i, 1));
             }
-            healthBar.Add(new Image2D(SpriteId.BAR, ImageType.RIGHT_SIDE_BAR, length + 1, 1));
+            healthBar.Add(new Image2D(SpriteType.BAR, ImageType.RIGHT_SIDE_BAR, length + 1, 1));
 
             return this;
         }
@@ -119,9 +119,9 @@ namespace Explorus_K.Models
             bubbleBar.Add(new Image2D(0, ImageType.LEFT_SIDE_BAR, 0, 1));
             for (int i = 1; i < length + 1; i++)
             {
-                bubbleBar.Add(new Image2D(SpriteId.BAR, ImageType.BUBBLE_BAR_FULL, i, 1));
+                bubbleBar.Add(new Image2D(SpriteType.BAR, ImageType.BUBBLE_BAR_FULL, i, 1));
             }
-            bubbleBar.Add(new Image2D(SpriteId.BAR, ImageType.RIGHT_SIDE_BAR, length + 1, 1));
+            bubbleBar.Add(new Image2D(SpriteType.BAR, ImageType.RIGHT_SIDE_BAR, length + 1, 1));
 
             return this;
         }
@@ -169,9 +169,9 @@ namespace Explorus_K.Models
             gemBar.Add(new Image2D(0, ImageType.LEFT_SIDE_BAR, 0, 1));
             for (int i = 1; i < length + 1; i++)
             {
-                gemBar.Add(new Image2D(SpriteId.BAR, ImageType.EMPTY_BAR, i, 1));
+                gemBar.Add(new Image2D(SpriteType.BAR, ImageType.EMPTY_BAR, i, 1));
             }
-            gemBar.Add(new Image2D(SpriteId.BAR, ImageType.RIGHT_SIDE_BAR, length + 1, 1));
+            gemBar.Add(new Image2D(SpriteType.BAR, ImageType.RIGHT_SIDE_BAR, length + 1, 1));
 
             return this;
         }

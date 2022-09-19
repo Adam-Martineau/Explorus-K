@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Explorus_K.NewFolder1
+namespace Explorus_K.Game
 {
-    public enum SpriteId
+    public enum SpriteType
     {
         WALL,
         GEM,

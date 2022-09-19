@@ -1,11 +1,6 @@
 ﻿using Explorus_K.Game;
-using Explorus_K.NewFolder1;
-
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Explorus_K.Models
 {
@@ -94,7 +89,7 @@ namespace Explorus_K.Models
 
         public Image2D refreshPlayer()
         {
-            return new Image2D(SpriteId.TOXIC_SLIME, imageType, posX, posY);
+            return new Image2D(SpriteType.TOXIC_SLIME, imageType, posX, posY);
         }
 
         public ImageType getAnimationDictValue(MovementDirection key, int value)
