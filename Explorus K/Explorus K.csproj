@@ -76,6 +76,7 @@
     <Compile Include="Game\Labyrinth.cs" />
     <Compile Include="Game\LabyrinthImage.cs" />
     <Compile Include="Game\CollisionStrategy.cs" />
+    <Compile Include="Game\PhysicsThread.cs" />
     <Compile Include="Models\Bubble.cs" />
     <Compile Include="Models\Image2D.cs" />
     <Compile Include="Models\MapIterator.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Game\ImageType.cs" />
     <Compile Include="Game\SpriteId.cs" />
     <Compile Include="Models\Slimus.cs" />
+    <Compile Include="Models\Sprite.cs" />
     <Compile Include="Models\ToxicSlime.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

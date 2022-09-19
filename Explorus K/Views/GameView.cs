@@ -1,7 +1,7 @@
 ﻿using Explorus_K.Controllers;
 using Explorus_K.Game;
 using Explorus_K.Models;
-using Explorus_K.NewFolder1;
+using Explorus_K.Game;
 using System;
 using System.Drawing;
 using System.Windows.Forms;

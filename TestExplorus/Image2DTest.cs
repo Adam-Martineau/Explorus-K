@@ -1,5 +1,5 @@
 ﻿using Explorus_K.Models;
-using Explorus_K.NewFolder1;
+using Explorus_K.Game;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Drawing;
