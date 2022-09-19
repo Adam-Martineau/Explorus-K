@@ -73,18 +73,10 @@ namespace Explorus_K.Game
                 else
                     collidingSprite = sprite_A;
 
-                try
-                {
-                    gameEngine.State = collidingSprite.collisionStrategy.executeStrategy(
-                        gameEngine.gameView.labyrinthImage,
-                        gameEngine.gameView.labyrinthImage.labyrinthImages.IndexOf(collidingSprite),
-                        collidingSprite.getId());
-                }
-
-                finally
-                {
-                    Monitor.Exit(GameEngine.gameStatelock);
-                }
+                gameEngine.State = collidingSprite.collisionStrategy.executeStrategy(
+                    gameEngine.gameView.labyrinthImage,
+                    gameEngine.gameView.labyrinthImage.labyrinthImages.IndexOf(collidingSprite),
+                    SpriteType.SLIMUS);
             }
         }
 
