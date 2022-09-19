@@ -159,11 +159,11 @@ namespace Explorus_K.Views
 			}
 			else if (gameEngine.State == GameState.STOP)
 			{
-                showMenu(g, "GAME OVER");
+                showMenu(g, "YOU DIED");
             }
             else if (gameEngine.State == GameState.RESTART)
             {
-                showMenu(g, "GG WELL PLAYED");
+                showMenu(g, "YOU WIN");
             }
             gameForm.UpdateStatusBar(gameEngine.State.ToString(), Color.Red);
         }

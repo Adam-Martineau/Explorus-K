@@ -58,7 +58,7 @@ namespace Explorus_K.Game
             {
                 if(player.GetType() == typeof(ToxicSlime) && player.getMovementDirection() == MovementDirection.none)
                 {
-                    //setToxicSlimeMovementDirection(player);
+                    setToxicSlimeMovementDirection(player);
                 }
 
                 if(player.getMovementDirection() != MovementDirection.none)
@@ -131,7 +131,7 @@ namespace Explorus_K.Game
         private void setToxicSlimeMovementDirection(Player player)
         {
 
-            int randomInt = r.Next(0, 3);
+            int randomInt = r.Next(0, 4);
 
             MovementDirection movementDirection;
 
