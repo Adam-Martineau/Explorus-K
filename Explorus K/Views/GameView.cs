@@ -4,6 +4,7 @@ using Explorus_K.Models;
 using Explorus_K.NewFolder1;
 using System;
 using System.Drawing;
+using System.Reflection.Emit;
 using System.Windows.Forms;
 using Application = System.Windows.Forms.Application;
 using Size = System.Drawing.Size;
@@ -177,5 +178,10 @@ namespace Explorus_K.Views
         {
             gameForm.UpdateStatusBar(msg, color);
         }
+
+		public LabyrinthImage getLabyrinthImage()
+		{
+			return labyrinthImage;
+		}
     }
 }

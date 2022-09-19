@@ -49,8 +49,8 @@ namespace Explorus_K.Models
                 if (labyrinthImage.GemBar.getCurrent() == labyrinthImage.GemBar.getLength())
                 {
                     labyrinthImage.KeyState.RequestChangingState();
-                    Point pos = labyrinthImage.Labyrinth.MapIterator.findPosition("p");
-                    labyrinthImage.Labyrinth.MapIterator.replaceAt(".", pos.X, pos.Y);
+                    Point pos = labyrinthImage.getSlimus().getIterator().findPosition("p");
+                    labyrinthImage.getSlimus().getIterator().replaceAt(".", pos.X, pos.Y);
                 }
                 labyrinthImage.removeImageAt(imageIndex);
             }
