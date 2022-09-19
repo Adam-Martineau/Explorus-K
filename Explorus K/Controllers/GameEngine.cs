@@ -27,6 +27,7 @@ namespace Explorus_K.Controllers
         Thread physicsThread;
 		Thread thread;
 
+        public static EventWaitHandle physicsWaitHandle;
 
         public GameState State { get => gameState; set => gameState = value; }
 
@@ -46,6 +47,7 @@ namespace Explorus_K.Controllers
 			thread.Start();
 			
 			Physics physics = new Physics(this);
+            physicsWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
             physicsThread = new Thread(new ThreadStart(physics.startThread));
 			physicsThread.Start();
 
@@ -103,6 +105,7 @@ namespace Explorus_K.Controllers
 						}
 						
 						gameView.Render();
+						physicsWaitHandle.Set();
 					}
 
 					Thread.Sleep(1);

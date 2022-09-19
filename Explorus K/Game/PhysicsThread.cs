@@ -5,8 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+
 
 namespace Explorus_K.Game
 {
@@ -27,6 +26,8 @@ namespace Explorus_K.Game
 
             while (true)
             {
+                GameEngine.physicsWaitHandle.WaitOne();
+
                 foreach (Image2D sprite in sprites.ToList())
                 {
                     if (sprite.getId() == SpriteType.SLIMUS)

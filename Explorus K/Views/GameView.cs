@@ -3,6 +3,7 @@ using Explorus_K.Game;
 using Explorus_K.Models;
 using System;
 using System.Drawing;
+using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
 using Application = System.Windows.Forms.Application;
@@ -14,23 +15,22 @@ namespace Explorus_K.Views
 	public class GameView
 	{
 		public GameForm gameForm;
-        GameEngine gameEngine;
-        string gameTitle;
+		GameEngine gameEngine;
+		string gameTitle;
 
 		internal int largeSpriteDimension = 52;
 
 		private PictureBox gameHeader = new PictureBox();
 		private PictureBox gameLabyrinth = new PictureBox();
 
-        private int screenWidth = 1000;
+		private int screenWidth = 1000;
 		private int screenHeight = 1000;
 		private int menuHeight = 250;
 
-        private static Timer resumeTimer;
-        private int countdown = 3;
+		private static Timer resumeTimer;
+		private int countdown = 3;
 
-
-		public LabyrinthImage labyrinthImage;	
+		public LabyrinthImage labyrinthImage;
 
 		public GameView(GameEngine gameEngine)
 		{
@@ -45,15 +45,15 @@ namespace Explorus_K.Views
 			gameHeader.Paint += new PaintEventHandler(this.HeaderRenderer);
 			gameLabyrinth.Paint += new PaintEventHandler(this.LabyrinthRenderer);
 
-            gameForm.Controls.Add(gameHeader);
+			gameForm.Controls.Add(gameHeader);
 			gameForm.Controls.Add(gameLabyrinth);
 
 			labyrinthImage = new LabyrinthImage(gameEngine.GetLabyrinth(), gameEngine.getBubbleManager());
 
-            resumeTimer = new Timer(1000);
-            resumeTimer.Elapsed += OnTimedEventResume;
+			resumeTimer = new Timer(1000);
+			resumeTimer.Elapsed += OnTimedEventResume;
 
-            resize();
+			resize();
 		}
 
 		public void Show() 
@@ -61,7 +61,7 @@ namespace Explorus_K.Views
 			Application.Run(gameForm); 
 		}
 
-        public void Render()
+		public void Render()
 		{
 			if (gameForm.Visible)
 				gameForm.BeginInvoke((MethodInvoker)delegate {
@@ -69,15 +69,15 @@ namespace Explorus_K.Views
 				});
 		}
 
-        public void Restart(GameEngine gameEngine)
-        {
+		public void Restart(GameEngine gameEngine)
+		{
 			this.gameEngine = gameEngine;
-            labyrinthImage = new LabyrinthImage(gameEngine.GetLabyrinth(), gameEngine.getBubbleManager());
-            resize();
-            Render();
-        }
+			labyrinthImage = new LabyrinthImage(gameEngine.GetLabyrinth(), gameEngine.getBubbleManager());
+			resize();
+			Render();
+		}
 
-        public void Close()
+		public void Close()
 		{
 			if (gameForm.Visible)
 				gameForm.BeginInvoke((MethodInvoker)delegate {
@@ -88,33 +88,33 @@ namespace Explorus_K.Views
 		public void resize()
 		{
 			screenWidth = gameForm.Width;
-            screenHeight = gameForm.Height;
-            if (labyrinthImage != null)
+			screenHeight = gameForm.Height;
+			if (labyrinthImage != null)
 			{
-                labyrinthImage.resize(gameForm);
-            }
+				labyrinthImage.resize(gameForm);
+			}
 		}
 
-        public void Update(double fps)
-        {
-            gameTitle = "Explorus-K - FPS " + Math.Round(fps, 1).ToString();
-        }
+		public void Update(double fps)
+		{
+			gameTitle = "Explorus-K - FPS " + Math.Round(fps, 1).ToString();
+		}
 
-        public void oldUpdate(double fps)
-        {
-            GameState state = GameState.PLAY;
+		public void oldUpdate(double fps)
+		{
+			GameState state = GameState.PLAY;
 
-            gameTitle = "Explorus-K - FPS " + Math.Round(fps, 1).ToString();
+			gameTitle = "Explorus-K - FPS " + Math.Round(fps, 1).ToString();
 
-            labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.GEM);
+			labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.GEM);
 
-            labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.DOOR);
+			labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.DOOR);
 
-            state = labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.MINI_SLIMUS);
-            if (state == GameState.RESTART)
-            {
-                gameEngine.State = state;
-            }
+			state = labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.MINI_SLIMUS);
+			if (state == GameState.RESTART)
+			{
+				gameEngine.State = state;
+			}
 			if (gameEngine.State == GameState.PLAY)
 			{
 				labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.GEM);
@@ -133,19 +133,19 @@ namespace Explorus_K.Views
 					gameEngine.State = state;
 				}
 			}
-        }
+		}
 
-        private void showMenu(Graphics g ,string text)
+		private void showMenu(Graphics g ,string text)
 		{
-            StringFormat stringFormat = new StringFormat();
-            stringFormat.Alignment = StringAlignment.Center;
-            stringFormat.LineAlignment = StringAlignment.Center;
-            Brush brush = new SolidBrush(Color.FromArgb(64, 255, 255, 255));
+			StringFormat stringFormat = new StringFormat();
+			stringFormat.Alignment = StringAlignment.Center;
+			stringFormat.LineAlignment = StringAlignment.Center;
+			Brush brush = new SolidBrush(Color.FromArgb(64, 255, 255, 255));
 
-            Rectangle menu = new Rectangle(0, (screenHeight / 2) - (menuHeight / 2), screenWidth, menuHeight);
-            g.DrawString(text, new Font("Arial", 80), Brushes.Red, menu, stringFormat);
-            g.FillRectangle(brush, Rectangle.Round(menu));
-        }
+			Rectangle menu = new Rectangle(0, (screenHeight / 2) - (menuHeight / 2), screenWidth, menuHeight);
+			g.DrawString(text, new Font("Arial", 80), Brushes.Red, menu, stringFormat);
+			g.FillRectangle(brush, Rectangle.Round(menu));
+		}
 
 		private void HeaderRenderer(object sender, PaintEventArgs e)
 		{
@@ -163,35 +163,35 @@ namespace Explorus_K.Views
 
 			labyrinthImage.drawLabyrinthImage(g);
 
-            if (gameEngine.State == GameState.PAUSE)
+			if (gameEngine.State == GameState.PAUSE)
 			{
 				showMenu(g, "PAUSE");
-            }
+			}
 			else if (gameEngine.State == GameState.RESUME)
 			{
 				showMenu(g, countdown.ToString());
 			}
 			else if (gameEngine.State == GameState.STOP)
 			{
-                showMenu(g, "YOU DIED");
-            }
-            else if (gameEngine.State == GameState.RESTART)
-            {
-                showMenu(g, "YOU WIN");
-            }
-            gameForm.UpdateStatusBar(gameEngine.State.ToString(), Color.Red);
-        }
+				showMenu(g, "YOU DIED");
+			}
+			else if (gameEngine.State == GameState.RESTART)
+			{
+				showMenu(g, "YOU WIN");
+			}
+			gameForm.UpdateStatusBar(gameEngine.State.ToString(), Color.Red);
+		}
 
-        public Player getSlimusObject()
+		public Player getSlimusObject()
 		{
 			return labyrinthImage.getSlimus();
 		}
 		public BubbleBar getBubbleBarObject()
-        {
-            return labyrinthImage.BubbleBar;
-        }
+		{
+			return labyrinthImage.BubbleBar;
+		}
 
-        public void InitializeHeaderBar(ProgressionBarCreator creator, int count)
+		public void InitializeHeaderBar(ProgressionBarCreator creator, int count)
 		{
 			IBar bar = creator.InitializeBar(count);
 
@@ -201,18 +201,18 @@ namespace Explorus_K.Views
 			}
 			else if (creator.GetType() == typeof(BubbleBarCreator))
 			{
-                this.labyrinthImage.BubbleBar = (BubbleBar)bar;
+				this.labyrinthImage.BubbleBar = (BubbleBar)bar;
 			}
 			else if (creator.GetType() == typeof(GemBarCreator))
 			{
-                this.labyrinthImage.GemBar = (GemBar)bar;
+				this.labyrinthImage.GemBar = (GemBar)bar;
 			}
 		}
 
-        internal void ReceiveKeyEvent(KeyEventArgs e)
-        {
+		internal void ReceiveKeyEvent(KeyEventArgs e)
+		{
 			gameEngine.KeyEventHandler(e);
-        }
+		}
 
 		internal void LostFocus()
 		{
@@ -226,23 +226,23 @@ namespace Explorus_K.Views
 
 		public void Resume()
 		{
-            resumeTimer.Start();
-            countdown = 3;
-        }
+			resumeTimer.Start();
+			countdown = 3;
+		}
 
-        private void OnTimedEventResume(Object source, ElapsedEventArgs e)
-        {
-            countdown -= 1;
-            if (countdown == 0)
-            {
-                resumeTimer.Stop();
-                gameEngine.play();
-            }
-        }
+		private void OnTimedEventResume(Object source, ElapsedEventArgs e)
+		{
+			countdown -= 1;
+			if (countdown == 0)
+			{
+				resumeTimer.Stop();
+				gameEngine.play();
+			}
+		}
 
 		public LabyrinthImage getLabyrinthImage()
 		{
 			return labyrinthImage;
 		}
-    }
+	}
 }
