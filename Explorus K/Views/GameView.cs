@@ -72,7 +72,15 @@ namespace Explorus_K.Views
 				});
 		}
 
-		public void Close()
+        public void Restart(GameEngine gameEngine)
+        {
+			this.gameEngine = gameEngine;
+            labyrinthImage = new LabyrinthImage(gameEngine.GetLabyrinth(), gameEngine.getBubbleManager());
+            resize();
+            Render();
+        }
+
+        public void Close()
 		{
 			if (gameForm.Visible)
 				gameForm.BeginInvoke((MethodInvoker)delegate {
@@ -96,20 +104,23 @@ namespace Explorus_K.Views
 
             gameTitle = "Explorus-K - FPS " + Math.Round(fps, 1).ToString();
 
-            labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.GEM);
-
-			labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.DOOR);
-
-            state = labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.MINI_SLIMUS);
-			if (state == GameState.RESTART)
+			if (gameEngine.State == GameState.PLAY)
 			{
-				gameEngine.State = state;
-            }
+                labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.GEM);
 
-            state = labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.TOXIC_SLIME);
-            if (state == GameState.STOP)
-            {
-                gameEngine.State = state;
+                labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.DOOR);
+
+                state = labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.MINI_SLIMUS);
+                if (state == GameState.RESTART)
+                {
+                    gameEngine.State = state;
+                }
+
+                state = labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.TOXIC_SLIME);
+                if (state == GameState.STOP)
+                {
+                    gameEngine.State = state;
+                }
             }
         }
 
