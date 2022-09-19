@@ -29,18 +29,18 @@ namespace Explorus_K
 
         private void GameForm_Enter(object sender, EventArgs e)
         {
-            gameView.LostFocus();
+            gameView.GainFocus();
         }
 
         private void GameForm_Leave(object sender, EventArgs e)
         {
-            gameView.GainFocus();
+            gameView.LostFocus();
         }
 
-        public void UpdateStatusBar(String msg, Color color)
+        public void UpdateStatusBar(string msg, Color color)
         {
-            statusStrip1.Text = msg;
-            statusStrip1.ForeColor = color;
+            statusLabel.Text = msg;
+            statusLabel.ForeColor = color;
         }
     }
 }
