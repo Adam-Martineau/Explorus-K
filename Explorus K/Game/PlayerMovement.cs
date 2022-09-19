@@ -58,7 +58,7 @@ namespace Explorus_K.Game
             {
                 if(player.GetType() == typeof(ToxicSlime) && player.getMovementDirection() == MovementDirection.none)
                 {
-                    setToxicSlimeMovementDirection(player);
+                    //setToxicSlimeMovementDirection(player);
                 }
 
                 if(player.getMovementDirection() != MovementDirection.none)
