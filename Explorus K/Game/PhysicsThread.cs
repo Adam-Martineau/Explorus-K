@@ -13,16 +13,22 @@ namespace Explorus_K.Game
 
         public void startThread()
         {
-            Sprite slimus;
+            Sprite slimus = null;
 
             while (true)
             {
                 foreach (Sprite sprite in sprites)
                     if (sprite.spriteId == SpriteType.SLIMUS)
                         slimus = sprite;
+
+                foreach (Sprite sprite in sprites)
+                {
+                    areSpriteColliding(slimus, sprite);
+                }
             }
         }
 
+        // Checking if two sprite are colliding using circular hitbox
         public bool areSpriteColliding(Sprite sprite_A, Sprite sprite_B)
         {
             if (sprite_A == null || sprite_B == null)
@@ -37,6 +43,7 @@ namespace Explorus_K.Game
                 return false;
         }
 
+        // Return the distance between the center of two sprites
         private double getDiff(Sprite sprite_A, Sprite sprite_B)
         {
             int x = Math.Abs(sprite_A.x_pos - sprite_B.x_pos);
