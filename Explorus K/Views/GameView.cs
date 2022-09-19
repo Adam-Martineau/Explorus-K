@@ -51,7 +51,7 @@ namespace Explorus_K.Views
             gameForm.Controls.Add(gameHeader);
 			gameForm.Controls.Add(gameLabyrinth);
 
-			labyrinthImage = new LabyrinthImage(gameEngine.GetLabyrinth());
+			labyrinthImage = new LabyrinthImage(gameEngine.GetLabyrinth(), gameEngine.getBubbleManager());
 
             resumeTimer = new Timer(1000);
             resumeTimer.Elapsed += OnTimedEventResume;

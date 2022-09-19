@@ -27,6 +27,8 @@ namespace Explorus_K.Game
         GemBar gemBar = new GemBar();
         List<Player> playerList = new List<Player>();
 
+        private BubbleManager bubbleManager;
+
         private static Timer invincibilityTimer;
         private static Timer bubbleTimer;
         private float slimusOpacity = 1.0f;
@@ -49,7 +51,7 @@ namespace Explorus_K.Game
         internal GemBar GemBar { get => gemBar; set => gemBar = value; }
         internal Labyrinth Labyrinth { get => labyrinth; set => labyrinth = value; }
 
-        public LabyrinthImage(Labyrinth labyrinth)
+        public LabyrinthImage(Labyrinth labyrinth, BubbleManager bubbleManager)
         {
             labyrinthPosition = new Point();
             labyrinthImages = new List<Image2D>();
@@ -68,6 +70,8 @@ namespace Explorus_K.Game
             bubbleTimer.Elapsed += OnTimedEventBubble;
             bubbleTimer.AutoReset = true;
             bubbleTimer.Enabled = true;
+
+            this.bubbleManager = bubbleManager;
         }
 
         public void removeImageAt(int index)
@@ -294,7 +298,7 @@ namespace Explorus_K.Game
         public List<Player> getPlayerList()
         {
             return playerList;
-        }
+        }    
 
         private void fillLabyrinthImages()
         {
@@ -358,7 +362,7 @@ namespace Explorus_K.Game
 
             foreach(Image2D image in tempSpriteList)
             {
-                if(image.getId() == SpriteId.SLIMUS || image.getId() == SpriteId.TOXIC_SLIME)
+                if(image.getId() == SpriteId.SLIMUS || image.getId() == SpriteId.TOXIC_SLIME || image.getId() == SpriteId.BUBBLE)
                 {
                     labyrinthImages.Remove(image);
                 }
@@ -367,6 +371,11 @@ namespace Explorus_K.Game
             foreach(Player player in playerList)
             {
                 labyrinthImages.Add(player.refreshPlayer());
+            }
+
+            foreach (Bubble bubble in bubbleManager.getBubbleList())
+            {
+                labyrinthImages.Add(bubble.refreshBubble());
             }
         }
     }
