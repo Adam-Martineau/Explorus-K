@@ -69,7 +69,15 @@ namespace Explorus_K.Views
 				});
 		}
 
-		public void Close()
+        public void Restart(GameEngine gameEngine)
+        {
+			this.gameEngine = gameEngine;
+            labyrinthImage = new LabyrinthImage(gameEngine.GetLabyrinth(), gameEngine.getBubbleManager());
+            resize();
+            Render();
+        }
+
+        public void Close()
 		{
 			if (gameForm.Visible)
 				gameForm.BeginInvoke((MethodInvoker)delegate {
@@ -107,12 +115,24 @@ namespace Explorus_K.Views
             {
                 gameEngine.State = state;
             }
+			if (gameEngine.State == GameState.PLAY)
+			{
+				labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.GEM);
 
-            state = labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.TOXIC_SLIME);
-            if (state == GameState.STOP)
-            {
-                gameEngine.State = state;
-            }
+				labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.DOOR);
+
+				state = labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.MINI_SLIMUS);
+				if (state == GameState.RESTART)
+				{
+					gameEngine.State = state;
+				}
+
+				state = labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.TOXIC_SLIME);
+				if (state == GameState.STOP)
+				{
+					gameEngine.State = state;
+				}
+			}
         }
 
         private void showMenu(Graphics g ,string text)
@@ -153,11 +173,11 @@ namespace Explorus_K.Views
 			}
 			else if (gameEngine.State == GameState.STOP)
 			{
-                showMenu(g, "GAME OVER");
+                showMenu(g, "YOU DIED");
             }
             else if (gameEngine.State == GameState.RESTART)
             {
-                showMenu(g, "GG WELL PLAYED");
+                showMenu(g, "YOU WIN");
             }
             gameForm.UpdateStatusBar(gameEngine.State.ToString(), Color.Red);
         }

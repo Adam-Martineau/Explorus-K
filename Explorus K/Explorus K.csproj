@@ -82,6 +82,7 @@
     <Compile Include="Game\MovementDirection.cs" />
     <Compile Include="Game\PhysicsThread.cs" />
     <Compile Include="Game\PlayerMovement.cs" />
+    <Compile Include="Game\SpriteType.cs" />
     <Compile Include="Models\Bubble.cs" />
     <Compile Include="Models\Image2D.cs" />
     <Compile Include="Models\MapIterator.cs" />
