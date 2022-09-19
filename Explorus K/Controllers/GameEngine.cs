@@ -21,12 +21,14 @@ namespace Explorus_K.Controllers
 		ActionManager actionManager;
         private bool paused = false;
 		PlayerMovement playerMovement;
+		BubbleManager bubbleManager;
 
         public bool Paused { get => paused; set => paused = value; }
 
         public GameEngine()
 
 		{
+            bubbleManager = new BubbleManager();
             labyrinth = new Labyrinth();
             //The game engine get passed from contructor to constructor until it reach GameForm.cs
             gameView = new GameView(this);
@@ -72,8 +74,9 @@ namespace Explorus_K.Controllers
 
 				if (!Paused)
 				{
-					actionManager.characterActionsManagement(gameView);
+					actionManager.characterActionsManagement(gameView, bubbleManager);
 					playerMovement.moveAndAnimatePlayer(gameView.getLabyrinthImage().getPlayerList());
+					playerMovement.moveAndAnimateBubbles(bubbleManager);
 
 					if (lag >= MS_PER_FRAME)
 					{
@@ -115,6 +118,11 @@ namespace Explorus_K.Controllers
 		public Labyrinth GetLabyrinth()
 		{
 			return this.labyrinth;
+		}
+
+		public BubbleManager getBubbleManager()
+		{
+			return this.bubbleManager;
 		}
 
 		public void pause()
