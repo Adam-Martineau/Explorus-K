@@ -47,7 +47,8 @@ namespace Explorus_K.Controllers
 			bindings.Add(new Binding(Keys.Right, Actions.move_right));
 			bindings.Add(new Binding(Keys.P, Actions.pause));
 			bindings.Add(new Binding(Keys.Escape, Actions.exit));
-			return bindings;
+            bindings.Add(new Binding(Keys.Space, Actions.shoot));
+            return bindings;
 		}
 
 		private void GameLoop()

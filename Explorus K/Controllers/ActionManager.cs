@@ -71,6 +71,7 @@ namespace Explorus_K.Game
                 {
                     count = 0;
                     currentAction = Actions.none;
+                    view.getBubbleBarObject().Decrease();
                 }
             }
             else if (currentAction == Actions.move_left)
