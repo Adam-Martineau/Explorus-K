@@ -21,6 +21,7 @@ namespace Explorus_K.Controllers
 		private Labyrinth labyrinth;
 		ActionManager actionManager;
 		private GameState gameState;
+		Thread thread;
 
         public GameState State { get => gameState; set => gameState = value; }
 
@@ -33,7 +34,7 @@ namespace Explorus_K.Controllers
 			bindings = initiate_bindings();
 			gameState = GameState.RESUME;
             actionManager = new ActionManager(this);
-            Thread thread = new Thread(new ThreadStart(GameLoop));
+            thread = new Thread(new ThreadStart(GameLoop));
             thread.Start();
 			gameView.Show();
 		}
@@ -63,6 +64,7 @@ namespace Explorus_K.Controllers
 
 			while (true)
 			{
+				Console.WriteLine(gameState);
 				//Actions state machine
 				actionManager.systemActionsManagement();
 
@@ -94,7 +96,13 @@ namespace Explorus_K.Controllers
 				else
 				{
                     gameView.Render();
-					Thread.Sleep(1);
+                    Thread.Sleep(1);
+
+                    if (gameState == GameState.STOP)
+                    {
+						Thread.Sleep(3000);
+						restart();
+                    }
                 }
 			}
 		}
@@ -141,6 +149,17 @@ namespace Explorus_K.Controllers
         public void stop()
         {
             gameState = GameState.STOP;
+        }
+
+		public void restart()
+		{
+            labyrinth = new Labyrinth();
+            gameView = new GameView(this);
+            bindings = initiate_bindings();
+            actionManager = new ActionManager(this);
+            thread = new Thread(new ThreadStart(GameLoop));
+            thread.Start();
+			resume();
         }
     }
 }

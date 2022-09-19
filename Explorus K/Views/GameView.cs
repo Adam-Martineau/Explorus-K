@@ -4,6 +4,7 @@ using Explorus_K.Models;
 using Explorus_K.NewFolder1;
 using System;
 using System.Drawing;
+using System.Threading;
 using System.Timers;
 using System.Windows;
 using System.Windows.Forms;
@@ -64,7 +65,7 @@ namespace Explorus_K.Views
 			Application.Run(gameForm); 
 		}
 
-		public void Render()
+        public void Render()
 		{
 			if (gameForm.Visible)
 				gameForm.BeginInvoke((MethodInvoker)delegate {
@@ -194,7 +195,6 @@ namespace Explorus_K.Views
 
 		internal void LostFocus()
 		{
-			Console.WriteLine("yooo");
 			gameEngine.pause();
 		}
 
