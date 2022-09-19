@@ -32,7 +32,7 @@ namespace Explorus_K.Game
         //If we have a action bind to that kay, we check if that action can be done
         public void actionHandler(Actions action, Iterator slimusIterator)
 		{
-			if (action == Actions.pause || action == Actions.exit)
+			if (action == Actions.pause || action == Actions.resume || action == Actions.exit)
 				currentAction = action;
 			else if (action == Actions.shoot && currentAction == Actions.none)
                 currentAction = action;
@@ -50,7 +50,14 @@ namespace Explorus_K.Game
         {
             if (currentAction == Actions.pause)
             {
-                gameEngine.Paused = !gameEngine.Paused;
+                Console.WriteLine("pause");
+                gameEngine.pause();
+                currentAction = Actions.none;
+            }
+            else if (currentAction == Actions.resume)
+            {
+                Console.WriteLine("resume");
+                gameEngine.resume();
                 currentAction = Actions.none;
             }
             else if (currentAction == Actions.exit)

@@ -4,6 +4,7 @@ using Explorus_K.Views;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace Explorus_K.Controllers
@@ -19,11 +20,12 @@ namespace Explorus_K.Controllers
 		private int gemCount = 6;
 		private Labyrinth labyrinth;
 		ActionManager actionManager;
-        private bool paused = false;
 		PlayerMovement playerMovement;
 		BubbleManager bubbleManager;
+		private GameState gameState;
+		Thread thread;
 
-        public bool Paused { get => paused; set => paused = value; }
+        public GameState State { get => gameState; set => gameState = value; }
 
         public GameEngine()
 
@@ -33,6 +35,7 @@ namespace Explorus_K.Controllers
             //The game engine get passed from contructor to constructor until it reach GameForm.cs
             gameView = new GameView(this);
 			bindings = initiate_bindings();
+            gameState = GameState.RESUME;
             playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
             actionManager = new ActionManager(this, playerMovement);
             Thread thread = new Thread(new ThreadStart(GameLoop));
@@ -48,7 +51,8 @@ namespace Explorus_K.Controllers
 			bindings.Add(new Binding(Keys.Left, Actions.move_left));
 			bindings.Add(new Binding(Keys.Right, Actions.move_right));
 			bindings.Add(new Binding(Keys.P, Actions.pause));
-			bindings.Add(new Binding(Keys.Escape, Actions.exit));
+            bindings.Add(new Binding(Keys.R, Actions.resume));
+            bindings.Add(new Binding(Keys.Escape, Actions.exit));
             bindings.Add(new Binding(Keys.Space, Actions.shoot));
             return bindings;
 		}
@@ -72,7 +76,7 @@ namespace Explorus_K.Controllers
 				previous_time = current_time;
 				lag += elapsed_time;
 
-				if (!Paused)
+				if (gameState == GameState.PLAY)
 				{
 					actionManager.characterActionsManagement(gameView, bubbleManager);
 					playerMovement.moveAndAnimatePlayer(gameView.getLabyrinthImage().getPlayerList());
@@ -94,6 +98,17 @@ namespace Explorus_K.Controllers
 
 					Thread.Sleep(1);
 				}
+				else
+				{
+                    gameView.Render();
+                    Thread.Sleep(1);
+
+                    if (gameState == GameState.STOP)
+                    {
+						Thread.Sleep(3000);
+						restart();
+                    }
+                }
 			}
 		}
 
@@ -127,12 +142,34 @@ namespace Explorus_K.Controllers
 
 		public void pause()
 		{
-			paused = true;
+			gameState = GameState.PAUSE;
 		}
 
-		public void unpause()
+		public void resume()
 		{
-			paused = false;
-		}
-	}
+            gameState = GameState.RESUME;
+			gameView.Resume();
+        }
+
+        public void play()
+        {
+            gameState = GameState.PLAY;
+        }
+
+        public void stop()
+        {
+            gameState = GameState.STOP;
+        }
+
+		public void restart()
+		{
+            labyrinth = new Labyrinth();
+            gameView = new GameView(this);
+            bindings = initiate_bindings();
+            //actionManager = new ActionManager(this);
+            thread = new Thread(new ThreadStart(GameLoop));
+            thread.Start();
+			resume();
+        }
+    }
 }
