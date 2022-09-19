@@ -79,6 +79,7 @@ namespace Explorus_K.Game
                             {
                                 bubble = new Bubble(slimus.getPosX(), slimus.getPosY() - Constant.LARGE_SPRITE_DIMENSION, ImageType.BUBBLE_BIG, oldDirection, new Point(posBubble.X, posBubble.Y - 1));
                                 bubbleManager.addBubble(bubble);
+                                view.getBubbleBarObject().Decrease();
                             }
                             break;
                         case MovementDirection.down:
@@ -86,6 +87,7 @@ namespace Explorus_K.Game
                             {
                                 bubble = new Bubble(slimus.getPosX(), slimus.getPosY() + Constant.LARGE_SPRITE_DIMENSION, ImageType.BUBBLE_BIG, oldDirection, new Point(posBubble.X, posBubble.Y + 1));
                                 bubbleManager.addBubble(bubble);
+                                view.getBubbleBarObject().Decrease();
                             }
                             break;
                         case MovementDirection.left:
@@ -93,6 +95,7 @@ namespace Explorus_K.Game
                             {
                                 bubble = new Bubble(slimus.getPosX() - Constant.LARGE_SPRITE_DIMENSION, slimus.getPosY(), ImageType.BUBBLE_BIG, oldDirection, new Point(posBubble.X - 1, posBubble.Y));
                                 bubbleManager.addBubble(bubble);
+                                view.getBubbleBarObject().Decrease();
                             }
                             break;
                         case MovementDirection.right:
@@ -100,11 +103,11 @@ namespace Explorus_K.Game
                             {
                                 bubble = new Bubble(slimus.getPosX() + Constant.LARGE_SPRITE_DIMENSION, slimus.getPosY(), ImageType.BUBBLE_BIG, oldDirection, new Point(posBubble.X + 1, posBubble.Y));
                                 bubbleManager.addBubble(bubble);
+                                view.getBubbleBarObject().Decrease();
                             }
                             break;
                     }
                     currentAction = Actions.none;
-                    view.getBubbleBarObject().Decrease();
                 }
                     
 
