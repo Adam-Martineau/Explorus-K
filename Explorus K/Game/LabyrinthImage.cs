@@ -11,7 +11,7 @@ namespace Explorus_K.Game
     {
         public List<Image2D> labyrinthImages;
         Labyrinth labyrinth;
-        Slimus slimus;
+        public Slimus slimus;
         Point labyrinthPosition;
         CollisionContext collisionStrategy = null;
         Context keyState = null;
@@ -254,6 +254,12 @@ namespace Explorus_K.Game
             invincibilityTimer.Start();
             numberOfTrigger = 0;
             slimus.setInvincible(true);
+        }
+
+        public void stopInvincibilityTimer()
+        {
+            invincibilityTimer.Stop();
+            slimus.setInvincible(false);
         }
 
         private void OnTimedEventBubble(Object source, ElapsedEventArgs e)

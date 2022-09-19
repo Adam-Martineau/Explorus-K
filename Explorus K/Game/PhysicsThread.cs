@@ -60,6 +60,16 @@ namespace Explorus_K.Game
                 return false;
         }
 
+        // Return the distance between the center of two sprites
+        private double getDiff(Image2D sprite_A, Image2D sprite_B)
+        {
+            int x = Math.Abs(sprite_A.X - sprite_B.X);
+            int y = Math.Abs(sprite_A.Y - sprite_B.Y);
+
+            return Math.Sqrt(y * y + x * x);
+        }
+
+        // the logic for a collision
         private void newCollision(Image2D sprite_A, Image2D sprite_B)
         {
             // If the collision is with the slimus
@@ -73,20 +83,38 @@ namespace Explorus_K.Game
                 else
                     collidingSprite = sprite_A;
 
-                gameEngine.State = collidingSprite.collisionStrategy.executeStrategy(
-                    gameEngine.gameView.labyrinthImage,
-                    gameEngine.gameView.labyrinthImage.labyrinthImages.IndexOf(collidingSprite),
-                    SpriteType.SLIMUS);
+                // executing the collision is there's someting to do
+                if (collidingSprite.getId() != SpriteType.TOXIC_SLIME)
+                    executeCollision(collidingSprite);
+
+                else if(!gameEngine.gameView.labyrinthImage.slimus.getInvincible())
+                    executeToxicSlimeCollision(collidingSprite);
             }
         }
 
-        // Return the distance between the center of two sprites
-        private double getDiff(Image2D sprite_A, Image2D sprite_B)
+        private void executeCollision(Image2D collidingSprite)
         {
-            int x = Math.Abs(sprite_A.X - sprite_B.X);
-            int y = Math.Abs(sprite_A.Y - sprite_B.Y);
+            gameEngine.State = collidingSprite.collisionStrategy.executeStrategy(
+                gameEngine.gameView.labyrinthImage,
+                gameEngine.gameView.labyrinthImage.labyrinthImages.IndexOf(collidingSprite),
+                SpriteType.SLIMUS);
+        }
 
-            return Math.Sqrt(y * y + x * x);
+        private void executeToxicSlimeCollision(Image2D toxicSlime)
+        {
+            gameEngine.gameView.labyrinthImage.startInvincibilityTimer();
+
+            if (gameEngine.State == GameState.STOP)
+            {
+                gameEngine.gameView.labyrinthImage.stopInvincibilityTimer();
+            }
+            else
+            {
+                gameEngine.State = toxicSlime.collisionStrategy.executeStrategy(
+                    gameEngine.gameView.labyrinthImage,
+                    gameEngine.gameView.labyrinthImage.labyrinthImages.IndexOf(toxicSlime),
+                    SpriteType.SLIMUS);
+            }
         }
     }
 }
