@@ -1,11 +1,5 @@
 ﻿using Explorus_K.Game;
-using Explorus_K.NewFolder1;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Explorus_K.Models
 {
@@ -83,7 +77,7 @@ namespace Explorus_K.Models
 
         public Image2D refreshBubble()
         {
-            return new Image2D(SpriteId.BUBBLE, imageType, posX, posY);
+            return new Image2D(SpriteType.BUBBLE, imageType, posX, posY);
         }
 
         public MovementDirection getMovementDirection()

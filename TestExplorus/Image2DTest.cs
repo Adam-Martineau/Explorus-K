@@ -18,14 +18,14 @@ namespace TestExplorus
         {
             int expectedX = 4;
             int expectedY = 5;
-            SpriteType expectedSpriteId = SpriteType.GEM;
+            SpriteType expectedSpriteType = SpriteType.GEM;
             ImageType expectedImageType = ImageType.WALL;
 
-            Image2D image2D = new Image2D(expectedSpriteId, expectedImageType, expectedX, expectedY);
+            Image2D image2D = new Image2D(expectedSpriteType, expectedImageType, expectedX, expectedY);
 
             Assert.AreEqual(expectedX, image2D.X);
             Assert.AreEqual(expectedY, image2D.Y);
-            Assert.AreEqual(expectedSpriteId, image2D.getId());
+            Assert.AreEqual(expectedSpriteType, image2D.getId());
             Assert.AreEqual(expectedImageType, image2D.getType());
 
         }

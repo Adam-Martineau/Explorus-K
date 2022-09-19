@@ -28,7 +28,7 @@ namespace Explorus_K.Models
             this._strategy = strategy;
         }
 
-        public GameState executeStrategy(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
+        public GameState executeStrategy(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
         {
             return _strategy.execute(labyrinthImage, imageIndex, type);
         }
@@ -36,12 +36,12 @@ namespace Explorus_K.Models
 
     interface IStrategy
     {
-        GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type);
+        GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type);
     }
 
     class GemStrategy : IStrategy
     {
-        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
         {
             if(type == SpriteType.SLIMUS)
             {
@@ -61,7 +61,7 @@ namespace Explorus_K.Models
 
     class DoorStrategy : IStrategy
     {
-        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
         {
             if (type == SpriteType.SLIMUS)
             {
@@ -77,7 +77,7 @@ namespace Explorus_K.Models
 
     class MiniSlimeStrategy : IStrategy
     {
-        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
         {
             if (type == SpriteType.SLIMUS)
             {
@@ -92,7 +92,7 @@ namespace Explorus_K.Models
 
     class ToxicSlimeStrategy : IStrategy
     {
-        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteId type)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
         {
             if (type == SpriteType.SLIMUS)
             {

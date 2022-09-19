@@ -1,13 +1,10 @@
 ﻿using Explorus_K.Controllers;
 using Explorus_K.Game;
 using Explorus_K.Models;
-using Explorus_K.NewFolder1;
 using System;
 using System.Drawing;
-using System.Reflection.Emit;
 using System.Timers;
 using System.Windows.Forms;
-using System.Windows.Interop;
 using Application = System.Windows.Forms.Application;
 using Size = System.Drawing.Size;
 using Timer = System.Timers.Timer;
@@ -96,17 +93,17 @@ namespace Explorus_K.Views
 
             gameTitle = "Explorus-K - FPS " + Math.Round(fps, 1).ToString();
 
-            labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.GEM);
+            labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.GEM);
 
-			labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.DOOR);
+			labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.DOOR);
 
-            state = labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.MINI_SLIMUS);
+            state = labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.MINI_SLIMUS);
 			if (state == GameState.RESTART)
 			{
 				gameEngine.State = state;
             }
 
-            state = labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.TOXIC_SLIME);
+            state = labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.TOXIC_SLIME);
             if (state == GameState.STOP)
             {
                 gameEngine.State = state;
