@@ -119,7 +119,7 @@ namespace Explorus_K.Models
 
         public Image2D refreshPlayer()
         {
-            return new Image2D(SpriteId.TOXIC_SLIME, imageType, posX, posY);
+            return new Image2D(SpriteId.SLIMUS, imageType, posX, posY);
         }
 
         public ImageType getAnimationDictValue(MovementDirection key, int value)
