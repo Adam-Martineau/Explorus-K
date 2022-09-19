@@ -97,18 +97,18 @@ namespace Explorus_K.Game
         {
             foreach (Image2D sp in labyrinthImages.ToArray())
             {
-                SpriteId spriteId = sp.getId();
-                if (spriteId == SpriteId.MINI_SLIMUS || spriteId == SpriteId.GEM)
+                SpriteType spriteId = sp.getId();
+                if (spriteId == SpriteType.MINI_SLIMUS || spriteId == SpriteType.GEM)
                 {
                     float pos = (Constant.LARGE_SPRITE_DIMENSION - Constant.SMALL_SPRITE_DIMENSION) / 2;
                     g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()), (float)(sp.X + labyrinthPosition.X + pos), (float)(sp.Y + labyrinthPosition.Y + pos), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
                 }
-                else if (spriteId == SpriteId.SLIMUS)
+                else if (spriteId == SpriteType.SLIMUS)
                 {
                     Bitmap opacityImage = SetOpacity(new Bitmap(SpriteContainer.getInstance().getBitmapByImageType(slimus.getImageType())), slimusOpacity);
                     g.DrawImage(opacityImage, slimus.getPosX() + labyrinthPosition.X, slimus.getPosY() + labyrinthPosition.Y, Constant.LARGE_SPRITE_DIMENSION, Constant.LARGE_SPRITE_DIMENSION);
                 }
-                else if (spriteId == SpriteId.DOOR)
+                else if (spriteId == SpriteType.DOOR)
                 {
                     Bitmap opacityImage = SetOpacity(new Bitmap(SpriteContainer.getInstance().getBitmapByImageType(sp.getType())), 0.4f);
                     g.DrawImage(opacityImage, (float)(sp.X + labyrinthPosition.X), (float)(sp.Y + labyrinthPosition.Y), Constant.LARGE_SPRITE_DIMENSION, Constant.LARGE_SPRITE_DIMENSION);
@@ -157,25 +157,25 @@ namespace Explorus_K.Game
             return (headerOffset * index) + ((headerOffset * column)/2);
         }
 
-        public bool IsColliding(SpriteId sprite1, SpriteId sprite2)
+        public bool IsColliding(SpriteType sprite1, SpriteType sprite2)
 		{
             int pixel = 0;
-            if (sprite2 == SpriteId.GEM)
+            if (sprite2 == SpriteType.GEM)
             {
                 collisionStrategy.SetStrategy(new GemStrategy());
                 pixel = 10;
             }
-            else if (sprite2 == SpriteId.DOOR)
+            else if (sprite2 == SpriteType.DOOR)
             {
                 collisionStrategy.SetStrategy(new DoorStrategy());
                 pixel = 5;
             }
-            else if (sprite2 == SpriteId.MINI_SLIMUS)
+            else if (sprite2 == SpriteType.MINI_SLIMUS)
             {
                 collisionStrategy.SetStrategy(new MiniSlimeStrategy());
                 pixel = 15;
             }
-            else if (sprite2 == SpriteId.TOXIC_SLIME)
+            else if (sprite2 == SpriteType.TOXIC_SLIME)
             {
                 collisionStrategy.SetStrategy(new ToxicSlimeStrategy());
                 pixel = 5;
@@ -199,7 +199,7 @@ namespace Explorus_K.Game
                     slimusY < objectY + Constant.SMALL_SPRITE_DIMENSION - pixel &&
                     slimusY + Constant.LARGE_SPRITE_DIMENSION - pixel > objectY)
                     {
-                        if(sprite2 == SpriteId.TOXIC_SLIME)
+                        if(sprite2 == SpriteType.TOXIC_SLIME)
                         {
                             if(slimus.getInvincible() == false)
                             {
@@ -278,17 +278,17 @@ namespace Explorus_K.Game
                 for (int j = 0; j < labyrinth.Map.getLengthY(); j++)
                 {
                     if (labyrinth.getMapEntryAt(i, j) == "w")
-                        labyrinthImages.Add(new Image2D(SpriteId.WALL, ImageType.WALL, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
+                        labyrinthImages.Add(new Image2D(SpriteType.WALL, ImageType.WALL, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
                     else if (labyrinth.getMapEntryAt(i, j) == "g")
-                        labyrinthImages.Add(new Image2D(SpriteId.GEM, ImageType.GEM, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
+                        labyrinthImages.Add(new Image2D(SpriteType.GEM, ImageType.GEM, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
                     else if (labyrinth.getMapEntryAt(i, j) == "m")
                     {
-                        labyrinthImages.Add(new Image2D(SpriteId.MINI_SLIMUS, ImageType.SMALL_SLIMUS, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
+                        labyrinthImages.Add(new Image2D(SpriteType.MINI_SLIMUS, ImageType.SMALL_SLIMUS, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
                     }
                     else if (labyrinth.getMapEntryAt(i, j) == "s")
                     {
                         slimus = new Slimus(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.SLIMUS_DOWN_ANIMATION_1, Constant.SLIMUS_LIVES);
-                        labyrinthImages.Add(new Image2D(SpriteId.SLIMUS, slimus.getImageType(), slimus.getPosX(), slimus.getPosY()));
+                        labyrinthImages.Add(new Image2D(SpriteType.SLIMUS, slimus.getImageType(), slimus.getPosX(), slimus.getPosY()));
                     }
                     else if (labyrinth.getMapEntryAt(i, j) == "s")
                     {
@@ -296,11 +296,11 @@ namespace Explorus_K.Game
                     }
                     else if (labyrinth.getMapEntryAt(i, j) == "p")
                     {
-                        labyrinthImages.Add(new Image2D(SpriteId.DOOR, ImageType.WALL, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
+                        labyrinthImages.Add(new Image2D(SpriteType.DOOR, ImageType.WALL, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
                     }
                     else if (labyrinth.getMapEntryAt(i, j) == "t")
                     {
-                        labyrinthImages.Add(new Image2D(SpriteId.TOXIC_SLIME, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
+                        labyrinthImages.Add(new Image2D(SpriteType.TOXIC_SLIME, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
                     }
                 }
             }

@@ -10,12 +10,12 @@ namespace Explorus_K.Models
 {
     internal class Sprite
     {
-        public SpriteId spriteId { get; set; }
+        public SpriteType spriteId { get; set; }
         public int x_pos { get; set; }
         public int y_pos { get; set; }
         public int radius { get; set; }
 
-        public Sprite (SpriteId spriteId, int x_pos, int y_pos, int radius)
+        public Sprite (SpriteType spriteId, int x_pos, int y_pos, int radius)
         {
             this.spriteId = spriteId;
             this.x_pos = x_pos;

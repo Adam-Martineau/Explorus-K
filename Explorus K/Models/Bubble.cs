@@ -56,7 +56,7 @@ namespace Explorus_K.Models
 
         public Image2D refreshBubble()
         {
-            return new Image2D(SpriteId.BUBBLE, imageType, posX, posY);
+            return new Image2D(SpriteType.BUBBLE, imageType, posX, posY);
         }
     }
 }

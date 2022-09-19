@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Explorus_K.Game
 {
-    public enum SpriteId
+    public enum SpriteType
     {
         WALL,
         GEM,

@@ -18,7 +18,7 @@ namespace TestExplorus
         {
             int expectedX = 4;
             int expectedY = 5;
-            SpriteId expectedSpriteId = SpriteId.GEM;
+            SpriteType expectedSpriteId = SpriteType.GEM;
             ImageType expectedImageType = ImageType.WALL;
 
             Image2D image2D = new Image2D(expectedSpriteId, expectedImageType, expectedX, expectedY);
@@ -41,7 +41,7 @@ namespace TestExplorus
 
         private Image2D givenValidImage2D()
         {
-            return new Image2D().withId(SpriteId.GEM).withId(SpriteId.GEM).withX(someX).withY(someY);
+            return new Image2D().withId(SpriteType.GEM).withId(SpriteType.GEM).withX(someX).withY(someY);
         }
     }
 }

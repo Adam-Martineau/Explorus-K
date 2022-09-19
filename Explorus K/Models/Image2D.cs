@@ -10,7 +10,7 @@ namespace Explorus_K.Models
 {
     public class Image2D
     {
-        private SpriteId id;
+        private SpriteType id;
         private ImageType type;
         private int x;
         private int y;
@@ -20,13 +20,13 @@ namespace Explorus_K.Models
 
         public Image2D() { }
 
-        public Image2D(SpriteId id, ImageType type)
+        public Image2D(SpriteType id, ImageType type)
         {
             this.id = id;
             this.type = type;
         }
 
-        public Image2D(SpriteId id, ImageType type, int x, int y)
+        public Image2D(SpriteType id, ImageType type, int x, int y)
         {
             this.id = id;
             this.type = type;
@@ -34,17 +34,17 @@ namespace Explorus_K.Models
             this.y = y;
         }
 
-        public SpriteId getId()
+        public SpriteType getId()
         {
             return id;
         }
 
-        public void setId(SpriteId id)
+        public void setId(SpriteType id)
         {
             this.id = id;
         }
 
-        public Image2D withId(SpriteId id)
+        public Image2D withId(SpriteType id)
         {
             setId(id);
             return this;

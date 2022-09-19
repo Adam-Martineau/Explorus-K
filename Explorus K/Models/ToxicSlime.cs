@@ -76,7 +76,7 @@ namespace Explorus_K.Models
 
         public Image2D refreshPlayer()
         {
-            return new Image2D(SpriteId.SLIMUS, imageType, posX, posY);
+            return new Image2D(SpriteType.SLIMUS, imageType, posX, posY);
         }
     }
 }

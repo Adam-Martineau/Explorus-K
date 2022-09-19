@@ -9,6 +9,20 @@ namespace Explorus_K.Game
 {
     internal class PhysicsThread
     {
+        public List<Sprite> sprites { get; set; } = new List<Sprite>();
+
+        public void startThread()
+        {
+            Sprite slimus;
+
+            while (true)
+            {
+                foreach (Sprite sprite in sprites)
+                    if (sprite.spriteId == SpriteType.SLIMUS)
+                        slimus = sprite;
+            }
+        }
+
         public bool areSpriteColliding(Sprite sprite_A, Sprite sprite_B)
         {
             if (sprite_A == null || sprite_B == null)
