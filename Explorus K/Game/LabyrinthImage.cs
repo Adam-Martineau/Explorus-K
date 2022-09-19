@@ -157,7 +157,7 @@ namespace Explorus_K.Game
             return (headerOffset * index) + ((headerOffset * column)/2);
         }
 
-        public bool IsColliding(SpriteId sprite1, SpriteId sprite2)
+        public GameState IsColliding(SpriteId sprite1, SpriteId sprite2)
 		{
             int pixel = 0;
             if (sprite2 == SpriteId.GEM)
@@ -204,21 +204,21 @@ namespace Explorus_K.Game
                             if(slimus.getInvincible() == false)
                             {
                                 startInvincibilityTimer();
-                                collisionStrategy.executeStrategy(this, i, sprite1);
+                                return collisionStrategy.executeStrategy(this, i, sprite1);
                             }
                         }
                         else
                         {
-                            collisionStrategy.executeStrategy(this, i, sprite1);
+                            return collisionStrategy.executeStrategy(this, i, sprite1);
                         }
                         
-                        return true;
+                        return GameState.PLAY;
                     }
                 }
             }
 
-            return false;
-		}
+            return GameState.PLAY;
+        }
 
         private void OnTimedEventInvincible(Object source, ElapsedEventArgs e)
         {

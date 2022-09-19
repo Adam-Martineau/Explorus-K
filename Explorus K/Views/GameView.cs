@@ -92,15 +92,25 @@ namespace Explorus_K.Views
 
 		public void Update(double fps)
 		{
+			GameState state = GameState.PLAY;
+
             gameTitle = "Explorus-K - FPS " + Math.Round(fps, 1).ToString();
 
             labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.GEM);
 
 			labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.DOOR);
 
-            labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.MINI_SLIMUS);
+            state = labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.MINI_SLIMUS);
+			if (state == GameState.RESTART)
+			{
+				gameEngine.State = state;
+            }
 
-            labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.TOXIC_SLIME);
+            state = labyrinthImage.IsColliding(SpriteId.SLIMUS, SpriteId.TOXIC_SLIME);
+            if (state == GameState.STOP)
+            {
+                gameEngine.State = state;
+            }
         }
 
 		private void showMenu(Graphics g ,string text)
@@ -139,6 +149,14 @@ namespace Explorus_K.Views
 			{
 				showMenu(g, countdown.ToString());
 			}
+			else if (gameEngine.State == GameState.STOP)
+			{
+                showMenu(g, "GAME OVER");
+            }
+            else if (gameEngine.State == GameState.RESTART)
+            {
+                showMenu(g, "GG WELL PLAYED");
+            }
             gameForm.UpdateStatusBar(gameEngine.State.ToString(), Color.Red);
         }
 
