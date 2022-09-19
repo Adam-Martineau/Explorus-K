@@ -28,19 +28,19 @@ namespace Explorus_K.Game
 		}
 
         //If we have a action bind to that kay, we check if that action can be done
-        public void actionHandler(Actions action, Iterator mapIterator)
+        public void actionHandler(Actions action, Iterator slimusIterator)
 		{
 			if (action == Actions.pause || action == Actions.exit)
 				currentAction = action;
 			else if (action == Actions.shoot)
                 currentAction = action;
-            else if (action == Actions.move_left && movePlayer.canPlayerMove(MovementDirection.left, mapIterator.Current()) && currentAction == Actions.none)
+            else if (action == Actions.move_left && movePlayer.canPlayerMove(MovementDirection.left, slimusIterator.Current()) && currentAction == Actions.none)
 				currentAction = action;
-			else if (action == Actions.move_right && movePlayer.canPlayerMove(MovementDirection.right, mapIterator.Current()) && currentAction == Actions.none)
+			else if (action == Actions.move_right && movePlayer.canPlayerMove(MovementDirection.right, slimusIterator.Current()) && currentAction == Actions.none)
 				currentAction = action;
-			else if (action == Actions.move_up && movePlayer.canPlayerMove(MovementDirection.up, mapIterator.Current()) && currentAction == Actions.none)
+			else if (action == Actions.move_up && movePlayer.canPlayerMove(MovementDirection.up, slimusIterator.Current()) && currentAction == Actions.none)
 				currentAction = action;
-			else if (action == Actions.move_down && movePlayer.canPlayerMove(MovementDirection.down, mapIterator.Current()) && currentAction == Actions.none)
+			else if (action == Actions.move_down && movePlayer.canPlayerMove(MovementDirection.down, slimusIterator.Current()) && currentAction == Actions.none)
 				currentAction = action;
 		}
 
@@ -58,7 +58,7 @@ namespace Explorus_K.Game
         }
 
         //If the action can be done, we use a state machine to wait until the action is over
-        public void characterActionsManagement(GameView view, Iterator mapIterator)
+        public void characterActionsManagement(GameView view)
 		{
             //Actions state machine
             if (currentAction == Actions.shoot)
@@ -84,7 +84,6 @@ namespace Explorus_K.Game
 				if (view.getSlimusObject().getMovementDirection() == MovementDirection.none)
 				{
 					currentAction = Actions.none;
-					mapIterator.MoveLeft();
                     isMovementInitialized = false;
                 }
 			}
@@ -99,7 +98,6 @@ namespace Explorus_K.Game
                 if (view.getSlimusObject().getMovementDirection() == MovementDirection.none)
                 {
 					currentAction = Actions.none;
-					mapIterator.MoveRight();
                     isMovementInitialized = false;
                 }
 
@@ -116,7 +114,6 @@ namespace Explorus_K.Game
                 if (view.getSlimusObject().getMovementDirection() == MovementDirection.none)
                 {
 					currentAction = Actions.none;
-					mapIterator.MoveUp();
                     isMovementInitialized = false;
                 }
 			}
@@ -131,7 +128,6 @@ namespace Explorus_K.Game
                 if (view.getSlimusObject().getMovementDirection() == MovementDirection.none)
                 {
                     currentAction = Actions.none;
-                    mapIterator.MoveDown();
                     isMovementInitialized = false;
                 }
             }

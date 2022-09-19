@@ -46,5 +46,7 @@ namespace Explorus_K
         void setLabyrinthName(string name);
 
         string getLabyrinthName();
+
+        Iterator getIterator();
     }
 }

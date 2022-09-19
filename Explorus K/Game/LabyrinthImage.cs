@@ -288,7 +288,7 @@ namespace Explorus_K.Game
                     }
                     else if (labyrinth.getMapEntryAt(i, j) == "s")
                     {
-                        slimus = new Slimus(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.SLIMUS_DOWN_ANIMATION_1, Constant.SLIMUS_LIVES);
+                        slimus = new Slimus(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.SLIMUS_DOWN_ANIMATION_1, Constant.SLIMUS_LIVES, Labyrinth.Map.CreateIterator("s"));
                         labyrinthImages.Add(new Image2D(SpriteId.SLIMUS, slimus.getImageType(), slimus.getPosX(), slimus.getPosY()));
                         playerList.Add(slimus);
                     }
@@ -302,8 +302,9 @@ namespace Explorus_K.Game
                     }
                     else if (labyrinth.getMapEntryAt(i, j) != ".")
                     {
-                        ToxicSlime tempToxicSlime = new ToxicSlime(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, Constant.TOXIC_SLIME_LIVES);
-                        tempToxicSlime.setLabyrinthName("t" + labyrintNameCount.ToString());
+                        string tempLabyrinthName = "t" + labyrintNameCount.ToString();
+                        ToxicSlime tempToxicSlime = new ToxicSlime(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, Constant.TOXIC_SLIME_LIVES, Labyrinth.Map.CreateIterator(tempLabyrinthName));
+                        tempToxicSlime.setLabyrinthName(tempLabyrinthName);
                         labyrintNameCount++;
                         playerList.Add(tempToxicSlime);
                         labyrinthImages.Add(new Image2D(SpriteId.TOXIC_SLIME, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));

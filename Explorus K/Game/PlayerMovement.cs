@@ -14,6 +14,7 @@ namespace Explorus_K.Game
     internal class PlayerMovement
     {
         private Iterator iterator;
+        private Random r = new Random();
 
         private const int playerStepSize = 2;
 
@@ -22,28 +23,20 @@ namespace Explorus_K.Game
             this.iterator = iterator;
         }
 
-        public bool canPlayerMove(MovementDirection MovementDirectionDirection, Point position)
+        public bool canPlayerMove(MovementDirection movementDirection, Point position)
         {
-            try
+            switch(movementDirection)
             {
-                switch (MovementDirectionDirection)
-                {
-                    case MovementDirection.down:
-                        return isWallOrDoor((String)iterator.getMapEntryAt(position.X, position.Y + 1));
-                    case MovementDirection.up:
-                        return isWallOrDoor((String)iterator.getMapEntryAt(position.X, position.Y - 1));
-                    case MovementDirection.left:
-                        return isWallOrDoor((String)iterator.getMapEntryAt(position.X - 1, position.Y));
-                    case MovementDirection.right:
-                        return isWallOrDoor((String)iterator.getMapEntryAt(position.X + 1, position.Y));
-                    default:
-                        return false;
-                }
-            }
-            catch
-            {
-                Console.WriteLine(position);
-                return false;
+                case MovementDirection.down:
+                    return isWallOrDoor((String)iterator.getMapEntryAt(position.X, position.Y + 1));
+                case MovementDirection.up:
+                    return isWallOrDoor((String)iterator.getMapEntryAt(position.X, position.Y - 1));
+                case MovementDirection.left:
+                    return isWallOrDoor((String)iterator.getMapEntryAt(position.X - 1, position.Y));
+                case MovementDirection.right:
+                    return isWallOrDoor((String)iterator.getMapEntryAt(position.X + 1, position.Y));
+                default:
+                    return false;
             }
         }
 
@@ -63,9 +56,9 @@ namespace Explorus_K.Game
             }
         }
 
-        private void movePlayer(Player player, MovementDirection movementDirectionDirection, int stepSize)
+        private void movePlayer(Player player, MovementDirection movementDirection, int stepSize)
         {
-            switch (movementDirectionDirection)
+            switch (movementDirection)
             {
                 case MovementDirection.down:
                     player.moveDown(stepSize);
@@ -82,7 +75,7 @@ namespace Explorus_K.Game
                 default:
                     break;
             }
-            player.setMovementDirection(movementDirectionDirection);
+            player.setMovementDirection(movementDirection);
         }
 
         private void animatePlayer(Player player, int count, int stepSize)
@@ -107,6 +100,7 @@ namespace Explorus_K.Game
             }
             else
             {
+                movePlayerIterator(player, movementDirection);
                 player.setMovementDirection(MovementDirection.none);
                 count = 0;
             }
@@ -124,49 +118,39 @@ namespace Explorus_K.Game
 
         private void setToxicSlimeMovementDirection(Player player)
         {
-            Random r = new Random();
+
             int randomInt = r.Next(0, 3);
 
             MovementDirection movementDirection;
-
-            Point iteratorPosition = iterator.findPosition(player.getLabyrinthName());
 
             switch (randomInt)
             {
                 case 0:
                     movementDirection = MovementDirection.up;
-                    if (canPlayerMove(movementDirection, iteratorPosition))
+                    if (canPlayerMove(movementDirection, player.getIterator().Current()))
                     {
                         player.setMovementDirection(movementDirection);
-                        iterator.replaceAt(".", iteratorPosition.X, iteratorPosition.Y);
-                        iterator.replaceAt(player.getLabyrinthName(), iteratorPosition.X, iteratorPosition.Y - 1);
                     }
                     break;
                 case 1:
                     movementDirection = MovementDirection.down;
-                    if (canPlayerMove(movementDirection, iteratorPosition))
+                    if (canPlayerMove(movementDirection, player.getIterator().Current()))
                     {
                         player.setMovementDirection(movementDirection);
-                        iterator.replaceAt(".", iteratorPosition.X, iteratorPosition.Y);
-                        iterator.replaceAt(player.getLabyrinthName(), iteratorPosition.X, iteratorPosition.Y + 1);
                     }
                     break;
                 case 2:
                     movementDirection = MovementDirection.left;
-                    if (canPlayerMove(movementDirection, iteratorPosition))
+                    if (canPlayerMove(movementDirection, player.getIterator().Current()))
                     {
                         player.setMovementDirection(movementDirection);
-                        iterator.replaceAt(".", iteratorPosition.X, iteratorPosition.Y);
-                        iterator.replaceAt(player.getLabyrinthName(), iteratorPosition.X - 1, iteratorPosition.Y);
                     }
                     break;
                 case 3:
                     movementDirection = MovementDirection.right;
-                    if (canPlayerMove(movementDirection, iteratorPosition))
+                    if (canPlayerMove(movementDirection, player.getIterator().Current()))
                     {
                         player.setMovementDirection(movementDirection);
-                        iterator.replaceAt(".", iteratorPosition.X, iteratorPosition.Y);
-                        iterator.replaceAt(player.getLabyrinthName(), iteratorPosition.X + 1, iteratorPosition.Y);
                     }
                     break;
                 default:
@@ -174,5 +158,25 @@ namespace Explorus_K.Game
             }
         }
 
+        private void movePlayerIterator(Player player, MovementDirection movementDirection)
+        {
+            switch (movementDirection)
+            {
+                case MovementDirection.down:
+                    player.getIterator().MoveDown();
+                    break;
+                case MovementDirection.up:
+                    player.getIterator().MoveUp();
+                    break;
+                case MovementDirection.left:
+                    player.getIterator().MoveLeft();
+                    break;
+                case MovementDirection.right:
+                    player.getIterator().MoveRight();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

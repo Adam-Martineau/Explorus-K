@@ -19,8 +19,9 @@ namespace Explorus_K.Models
         private Dictionary<MovementDirection, List<ImageType>> animationDict;
         private int animationCount = 0;
         private string labyrinthName;
+        private Iterator iterator;
 
-        public ToxicSlime(int posX, int posY, ImageType imageType, int life)
+        public ToxicSlime(int posX, int posY, ImageType imageType, int life, Iterator iterator)
         {
             this.posX = posX;
             this.posY = posY;
@@ -28,6 +29,7 @@ namespace Explorus_K.Models
             this.lifeCount = life;
             movementDirection = MovementDirection.none;
             fillAnimationDict();
+            this.iterator = iterator;
         }
 
         public ImageType getImageType()
@@ -118,6 +120,11 @@ namespace Explorus_K.Models
         public string getLabyrinthName()
         {
             return labyrinthName;
+        }
+
+        public Iterator getIterator()
+        {
+            return iterator;
         }
 
         private void fillAnimationDict()

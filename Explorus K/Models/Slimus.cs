@@ -22,8 +22,9 @@ namespace Explorus_K.Models
         private Dictionary<MovementDirection, List<ImageType>> animationDict;
         private int animationCount = 0;
         private string labyrinthName = "s";
+        private Iterator iterator;
 
-        public Slimus(int posX, int posY, ImageType imageType, int life)
+        public Slimus(int posX, int posY, ImageType imageType, int life, Iterator iterator)
         {
             this.posX = posX;
             this.posY = posY;
@@ -33,6 +34,7 @@ namespace Explorus_K.Models
             invincible = false;
             movementDirection = MovementDirection.none;
             fillAnimationDict();
+            this.iterator = iterator;
         }
 
         public ImageType getImageType()
@@ -145,6 +147,10 @@ namespace Explorus_K.Models
             return labyrinthName;
         }
 
+        public Iterator getIterator()
+        {
+            return iterator;
+        }
         private void fillAnimationDict()
         {
             animationDict = new Dictionary<MovementDirection, List<ImageType>>();
