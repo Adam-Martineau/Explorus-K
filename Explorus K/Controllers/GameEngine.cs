@@ -13,7 +13,7 @@ namespace Explorus_K.Controllers
 	{
 		private const int MS_PER_FRAME = 16;
 
-		private GameView gameView;
+		public GameView gameView { get; set; }
 		private List<Binding> bindings;
 		private int lifeCount = 6;
 		private int bubbleCount = 6;
@@ -23,6 +23,7 @@ namespace Explorus_K.Controllers
 		PlayerMovement playerMovement;
 		BubbleManager bubbleManager;
 		private GameState gameState;
+        Thread physicsThread;
 		Thread thread;
 
         public GameState State { get => gameState; set => gameState = value; }
@@ -38,10 +39,16 @@ namespace Explorus_K.Controllers
             gameState = GameState.RESUME;
             playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
             actionManager = new ActionManager(this, playerMovement);
-            Thread thread = new Thread(new ThreadStart(GameLoop));
+            
+			thread = new Thread(new ThreadStart(GameLoop));
 			thread.Start();
-			gameView.Show();
-		}
+			
+			Physics physics = new Physics(this);
+            physicsThread = new Thread(new ThreadStart(physics.startThread));
+			physicsThread.Start();
+
+            gameView.Show();
+        }
 
 		private List<Binding> initiate_bindings()
 		{
@@ -66,7 +73,7 @@ namespace Explorus_K.Controllers
 			double previous_time = getCurrentTime();
 			double lag = 0.0;
 
-			while (true)
+            while (true)
 			{
 				//Actions state machine
 				actionManager.systemActionsManagement();

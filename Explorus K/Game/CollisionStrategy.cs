@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace Explorus_K.Models
 {
-    class CollisionContext
+    public class CollisionContext
     {
         private IStrategy _strategy;
 
@@ -34,7 +34,7 @@ namespace Explorus_K.Models
         }
     }
 
-    interface IStrategy
+    public interface IStrategy
     {
         GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type);
     }

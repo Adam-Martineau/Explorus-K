@@ -1,40 +1,54 @@
-﻿using Explorus_K.Models;
+﻿using Explorus_K.Controllers;
+using Explorus_K.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Explorus_K.Game
 {
-    internal class PhysicsThread
+    internal class Physics
     {
-        public List<Sprite> sprites { get; set; } = new List<Sprite>();
-        CollisionContext collisionStrategy = new CollisionContext();
+        GameEngine gameEngine;
+        public List<Image2D> sprites { get; set; } = new List<Image2D>();
+
+        public Physics(GameEngine gameEngine)
+        {
+            this.gameEngine = gameEngine;
+        }
 
         public void startThread()
         {
-            Sprite slimus = null;
+            sprites = gameEngine.gameView.labyrinthImage.labyrinthImages;
+            Image2D slimus = null;
 
             while (true)
             {
-                foreach (Sprite sprite in sprites)
-                    if (sprite.spriteType == SpriteType.SLIMUS)
-                        slimus = sprite;
-
-                foreach (Sprite sprite in sprites)
+                foreach (Image2D sprite in sprites.ToList())
                 {
-                    if (areSpriteColliding(slimus, sprite)) ;
+                    if (sprite.getId() == SpriteType.SLIMUS)
+                        slimus = sprite;
+                }
+
+                foreach (Image2D sprite in sprites.ToList())
+                {
+                    if (sprite.getId() != SpriteType.WALL || sprite.getId() != SpriteType.BAR)
+                        if (areSpriteColliding(slimus, sprite))
+                            newCollision(slimus, sprite);
 
                 }
+
+                Thread.Sleep(10);
             }
         }
 
         // Checking if two sprite are colliding using circular hitbox
-        public bool areSpriteColliding(Sprite sprite_A, Sprite sprite_B)
+        public bool areSpriteColliding(Image2D sprite_A, Image2D sprite_B)
         {
-            if (sprite_A == null || sprite_B == null)
+            if (sprite_A == null || sprite_B == null || sprite_A == sprite_B)
                 return false;
 
             double max = sprite_A.radius + sprite_B.radius;
@@ -46,49 +60,31 @@ namespace Explorus_K.Game
                 return false;
         }
 
-        private void newCollision(Sprite sprite_A, Sprite sprite_B)
+        private void newCollision(Image2D sprite_A, Image2D sprite_B)
         {
             // If the collision is with the slimus
-            if (sprite_A.spriteType == SpriteType.SLIMUS || sprite_B.spriteType == SpriteType.SLIMUS)
+            if (sprite_A.getId() == SpriteType.SLIMUS || sprite_B.getId() == SpriteType.SLIMUS)
             {
                 // Finding the slimus is colliding with what
-                Sprite collidingSprite = null;
+                Image2D collidingSprite = null;
 
-                if (sprite_A.spriteType == SpriteType.SLIMUS)
+                if (sprite_A.getId() == SpriteType.SLIMUS)
                     collidingSprite = sprite_B;
                 else
                     collidingSprite = sprite_A;
 
-                collisionManager(collidingSprite.spriteType);
-            }
-        }
-
-        private void collisionManager(SpriteType type)
-        {
-            // doing stuff depending on the collision
-            if (type == SpriteType.GEM)
-            {
-                collisionStrategy.SetStrategy(new GemStrategy());
-            }
-            else if (type == SpriteType.DOOR)
-            {
-                collisionStrategy.SetStrategy(new DoorStrategy());
-            }
-            else if (type == SpriteType.MINI_SLIMUS)
-            {
-                collisionStrategy.SetStrategy(new MiniSlimeStrategy());
-            }
-            else if (type == SpriteType.TOXIC_SLIME)
-            {
-                collisionStrategy.SetStrategy(new ToxicSlimeStrategy());
+                gameEngine.State = collidingSprite.collisionStrategy.executeStrategy(
+                    gameEngine.gameView.labyrinthImage,
+                    gameEngine.gameView.labyrinthImage.labyrinthImages.IndexOf(collidingSprite),
+                    collidingSprite.getId());
             }
         }
 
         // Return the distance between the center of two sprites
-        private double getDiff(Sprite sprite_A, Sprite sprite_B)
+        private double getDiff(Image2D sprite_A, Image2D sprite_B)
         {
-            int x = Math.Abs(sprite_A.x_pos - sprite_B.x_pos);
-            int y = Math.Abs(sprite_A.y_pos - sprite_B.y_pos);
+            int x = Math.Abs(sprite_A.X - sprite_B.X);
+            int y = Math.Abs(sprite_A.Y - sprite_B.Y);
 
             return Math.Sqrt(y * y + x * x);
         }

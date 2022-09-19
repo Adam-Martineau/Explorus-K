@@ -30,7 +30,7 @@ namespace Explorus_K.Views
         private int countdown = 3;
 
 
-        public LabyrinthImage labyrinthImage;		
+		public LabyrinthImage labyrinthImage;	
 
 		public GameView(GameEngine gameEngine)
 		{
@@ -87,20 +87,25 @@ namespace Explorus_K.Views
             }
 		}
 
-		public void Update(double fps)
-		{
-			GameState state = GameState.PLAY;
+        public void Update(double fps)
+        {
+            gameTitle = "Explorus-K - FPS " + Math.Round(fps, 1).ToString();
+        }
+
+        public void oldUpdate(double fps)
+        {
+            GameState state = GameState.PLAY;
 
             gameTitle = "Explorus-K - FPS " + Math.Round(fps, 1).ToString();
 
             labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.GEM);
 
-			labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.DOOR);
+            labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.DOOR);
 
             state = labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.MINI_SLIMUS);
-			if (state == GameState.RESTART)
-			{
-				gameEngine.State = state;
+            if (state == GameState.RESTART)
+            {
+                gameEngine.State = state;
             }
 
             state = labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.TOXIC_SLIME);
@@ -110,7 +115,7 @@ namespace Explorus_K.Views
             }
         }
 
-		private void showMenu(Graphics g ,string text)
+        private void showMenu(Graphics g ,string text)
 		{
             StringFormat stringFormat = new StringFormat();
             stringFormat.Alignment = StringAlignment.Center;

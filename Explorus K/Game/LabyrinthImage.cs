@@ -9,7 +9,7 @@ namespace Explorus_K.Game
 {
     public class LabyrinthImage
     {
-        List<Image2D> labyrinthImages;
+        public List<Image2D> labyrinthImages;
         Labyrinth labyrinth;
         Slimus slimus;
         Point labyrinthPosition;
@@ -172,6 +172,8 @@ namespace Explorus_K.Game
         {
             return (headerOffset * index) + ((headerOffset * column)/2);
         }
+
+        
 
         public GameState IsColliding(SpriteType sprite1, SpriteType sprite2)
 		{
