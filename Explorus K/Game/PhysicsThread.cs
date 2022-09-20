@@ -77,14 +77,21 @@ namespace Explorus_K.Game
 			{
 				// Finding the slimus is colliding with what
 				Image2D collidingSprite = null;
+				Image2D bubble = null;
 
 				if (sprite_A.getId() == SpriteType.BUBBLE)
+				{
 					collidingSprite = sprite_B;
+					bubble = sprite_A;
+				}
 				else
+				{
 					collidingSprite = sprite_A;
+					bubble = sprite_B;
+				}
 
 				if (collidingSprite.getId() == SpriteType.TOXIC_SLIME)
-					executeToxicSlimeCollisionWithBubble(collidingSprite);
+					executeToxicSlimeCollisionWithBubble(collidingSprite, bubble);
 			}
 			// If the collision is with the slimus
 			else if (sprite_A.getId() == SpriteType.SLIMUS || sprite_B.getId() == SpriteType.SLIMUS)
@@ -131,20 +138,19 @@ namespace Explorus_K.Game
 			}
 		}
 
-		private void executeToxicSlimeCollisionWithBubble(Image2D toxicSlime)
+		private void executeToxicSlimeCollisionWithBubble(Image2D toxicSlime, Image2D bubbleImage)
 		{
-			gameEngine.gameView.labyrinthImage.startInvincibilityTimer();
+			foreach (Bubble bubbleBubble in gameEngine.gameView.labyrinthImage.bubbleManager.getBubbleList().ToList())
+			{
+				if (bubbleImage.id == bubbleBubble.id && !bubbleBubble.isPopped())
+				{
+                    bubbleBubble.popBubble();
 
-			if (gameEngine.State == GameState.STOP)
-			{
-				gameEngine.gameView.labyrinthImage.stopInvincibilityTimer();
-			}
-			else
-			{
-				gameEngine.State = toxicSlime.collisionStrategy.executeStrategy(
-					gameEngine.gameView.labyrinthImage,
-					gameEngine.gameView.labyrinthImage.labyrinthImages.IndexOf(toxicSlime),
-					SpriteType.BUBBLE);
+                    gameEngine.State = toxicSlime.collisionStrategy.executeStrategy(
+						gameEngine.gameView.labyrinthImage,
+						gameEngine.gameView.labyrinthImage.labyrinthImages.IndexOf(toxicSlime),
+						SpriteType.BUBBLE);
+                }
 			}
 		}
 

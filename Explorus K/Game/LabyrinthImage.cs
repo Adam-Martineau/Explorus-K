@@ -20,7 +20,7 @@ namespace Explorus_K.Game
         GemBar gemBar = null;
         List<Player> playerList = new List<Player>();
 
-        private BubbleManager bubbleManager;
+        public BubbleManager bubbleManager;
 
         private static Timer invincibilityTimer;
         private static Timer bubbleTimer;

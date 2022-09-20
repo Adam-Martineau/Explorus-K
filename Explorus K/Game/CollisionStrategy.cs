@@ -125,7 +125,6 @@ namespace Explorus_K.Models
                         }
                     }
                 }
-
             }
 
             return GameState.PLAY;

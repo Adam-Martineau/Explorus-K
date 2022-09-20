@@ -20,6 +20,7 @@ namespace Explorus_K.Models
         public int Y { get => y; set => y = value; }
         public int X { get => x; set => x = value; }
         public CollisionContext collisionStrategy { get; set; } = new CollisionContext();
+        public Guid id { get; }
 
         public Image2D() { }
 
@@ -37,6 +38,17 @@ namespace Explorus_K.Models
             this.type = type;
             this.x = x;
             this.y = y;
+
+            buildObj();
+        }
+
+        public Image2D(SpriteType id, ImageType type, int x, int y, Guid id1) : this(id, type, x, y)
+        {
+            this.spriteType = id;
+            this.type = type;
+            this.x = x;
+            this.y = y;
+            this.id = id1;
 
             buildObj();
         }
