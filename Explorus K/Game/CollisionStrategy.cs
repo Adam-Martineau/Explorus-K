@@ -107,9 +107,24 @@ namespace Explorus_K.Models
                     return GameState.STOP;
                 }
             }
-            if (type == SpriteType.BUBBLE)
+            else if (type == SpriteType.BUBBLE)
             {
                 //Perte de vie du toxic slime
+                Image2D toxicSlime = labyrinthImage.labyrinthImages[imageIndex];
+
+
+                foreach (Player player in labyrinthImage.getPlayerList().ToList())
+                {
+                    if (player.getPosX() == toxicSlime.X && player.getPosY() == toxicSlime.Y)
+                    {
+                        player.decreaseLife();
+                        if (player.getLifes() < 1)
+                        {
+                            labyrinthImage.getPlayerList().Remove(player);
+                            labyrinthImage.labyrinthImages.Remove(toxicSlime);
+                        }
+                    }
+                }
             }
 
             return GameState.PLAY;
