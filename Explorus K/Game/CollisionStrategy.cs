@@ -122,6 +122,7 @@ namespace Explorus_K.Models
                         {
                             labyrinthImage.getPlayerList().Remove(player);
                             labyrinthImage.labyrinthImages.Remove(toxicSlime);
+                            labyrinthImage.labyrinthImages.Add(new Image2D(SpriteType.GEM, ImageType.GEM, toxicSlime.X, toxicSlime.Y));
                         }
                     }
                 }

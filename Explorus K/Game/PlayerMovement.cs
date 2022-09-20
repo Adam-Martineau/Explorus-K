@@ -139,7 +139,7 @@ namespace Explorus_K.Game
         private void setToxicSlimeMovementDirection(Player player)
         {
 
-            int randomInt = r.Next(0, 4);
+            int randomInt = 1;//r.Next(0, 4);
 
             MovementDirection movementDirection;
 
