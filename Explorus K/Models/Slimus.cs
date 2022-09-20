@@ -17,6 +17,7 @@ namespace Explorus_K.Models
         private int animationCount = 0;
         private string labyrinthName = "s";
         private Iterator iterator;
+        private Guid id = Guid.NewGuid();
 
         public Slimus(int posX, int posY, ImageType imageType, int life, Iterator iterator)
         {
@@ -175,6 +176,11 @@ namespace Explorus_K.Models
                         break;
                 }
             }
+        }
+
+        public Guid GetGuid()
+        {
+            return this.id;
         }
     }
 }

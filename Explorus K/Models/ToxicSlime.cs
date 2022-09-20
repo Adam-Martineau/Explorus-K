@@ -15,6 +15,7 @@ namespace Explorus_K.Models
         private int animationCount = 0;
         private string labyrinthName;
         private Iterator iterator;
+        private Guid id = Guid.NewGuid();
 
         public ToxicSlime(int posX, int posY, ImageType imageType, int life, Iterator iterator)
         {
@@ -89,7 +90,7 @@ namespace Explorus_K.Models
 
         public Image2D refreshPlayer()
         {
-            return new Image2D(SpriteType.TOXIC_SLIME, imageType, posX, posY);
+            return new Image2D(SpriteType.TOXIC_SLIME, imageType, posX, posY, id);
         }
 
         public ImageType getAnimationDictValue(MovementDirection key, int value)
@@ -152,6 +153,11 @@ namespace Explorus_K.Models
                         break;
                 }
             }
+        }
+
+        public Guid GetGuid()
+        {
+            return this.id;
         }
     }
 }

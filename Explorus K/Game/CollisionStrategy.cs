@@ -112,10 +112,9 @@ namespace Explorus_K.Models
                 //Perte de vie du toxic slime
                 Image2D toxicSlime = labyrinthImage.labyrinthImages[imageIndex];
 
-
                 foreach (Player player in labyrinthImage.getPlayerList().ToList())
                 {
-                    if (player.getPosX() == toxicSlime.X && player.getPosY() == toxicSlime.Y)
+                    if (player.GetGuid() == toxicSlime.id)
                     {
                         player.decreaseLife();
                         if (player.getLifes() < 1)

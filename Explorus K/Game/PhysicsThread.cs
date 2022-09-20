@@ -153,10 +153,5 @@ namespace Explorus_K.Game
                 }
 			}
 		}
-
-        public void restartThread()
-        {
-            Console.WriteLine("yoo");
-        }
     }
 }

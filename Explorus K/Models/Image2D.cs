@@ -112,7 +112,7 @@ namespace Explorus_K.Models
             else if (spriteType == SpriteType.DOOR)
             {
                 collisionStrategy.SetStrategy(new DoorStrategy());
-                radius = Constant.LARGE_SPRITE_DIMENSION - 5;
+                radius = Constant.LARGE_SPRITE_DIMENSION - 20;
             }
             else if (spriteType == SpriteType.MINI_SLIMUS)
             {
@@ -127,7 +127,7 @@ namespace Explorus_K.Models
             else if (spriteType == SpriteType.BUBBLE)
             {
                 collisionStrategy.SetStrategy(new ToxicSlimeStrategy());
-                radius = Constant.LARGE_SPRITE_DIMENSION;
+                radius = Constant.SMALL_SPRITE_DIMENSION - 10;
             }
             else if (spriteType == SpriteType.SLIMUS)
             {

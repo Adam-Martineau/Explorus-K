@@ -157,7 +157,7 @@ namespace Explorus_K.Game
 
         
 
-        public GameState IsColliding(SpriteType sprite1, SpriteType sprite2)
+        /*public GameState IsColliding(SpriteType sprite1, SpriteType sprite2)
 		{
             GameState state = GameState.PLAY;
             int pixel = 0;
@@ -224,7 +224,7 @@ namespace Explorus_K.Game
             }
 
             return GameState.PLAY;
-        }
+        }*/
 
         private void OnTimedEventInvincible(Object source, ElapsedEventArgs e)
         {
