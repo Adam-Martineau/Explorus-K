@@ -1,4 +1,5 @@
 ﻿using Explorus_K.Game;
+using System;
 using System.Drawing;
 
 namespace Explorus_K.Models
@@ -12,6 +13,7 @@ namespace Explorus_K.Models
         private MovementDirection movementDirection;
         private Point iteratorPos;
         private int animationCount = 0;
+        public Guid id { get; } = Guid.NewGuid();
 
 
         public Bubble(int posX, int posY, ImageType imageType, MovementDirection movementDirection, Point iteratorPos)
@@ -77,7 +79,7 @@ namespace Explorus_K.Models
 
         public Image2D refreshBubble()
         {
-            return new Image2D(SpriteType.BUBBLE, imageType, posX, posY);
+            return new Image2D(SpriteType.BUBBLE, imageType, posX, posY, id);
         }
 
         public MovementDirection getMovementDirection()
