@@ -26,12 +26,13 @@ namespace Explorus_K.Controllers
 		BubbleManager bubbleManager;
 		private GameState gameState;
 		Thread thread;
+		AudioBabillard audioBabillard;
 
         public GameState State { get => gameState; set => gameState = value; }
 
         public GameEngine()
-
 		{
+			audioBabillard = new AudioBabillard();
             bubbleManager = new BubbleManager();
             labyrinth = new Labyrinth();
             //The game engine get passed from contructor to constructor until it reach GameForm.cs
@@ -42,7 +43,7 @@ namespace Explorus_K.Controllers
             actionManager = new ActionManager(this, playerMovement);
             Thread thread = new Thread(new ThreadStart(GameLoop));
 			thread.Start();
-			Thread audioThread = new Thread(new ThreadStart(new AudioThread(new AudioBabillard()).Run));
+			Thread audioThread = new Thread(new ThreadStart(new AudioThread(audioBabillard).Run));
 			audioThread.Start();
 			gameView.Show();
 		}
@@ -82,9 +83,9 @@ namespace Explorus_K.Controllers
 
 				if (gameState == GameState.PLAY)
 				{
-					actionManager.characterActionsManagement(gameView, bubbleManager);
+					actionManager.characterActionsManagement(gameView, bubbleManager, audioBabillard);
 					playerMovement.moveAndAnimatePlayer(gameView.getLabyrinthImage().getPlayerList());
-					playerMovement.moveAndAnimateBubbles(bubbleManager);
+					playerMovement.moveAndAnimateBubbles(bubbleManager, audioBabillard);
 
 					if (lag >= MS_PER_FRAME)
 					{

@@ -9,6 +9,6 @@ namespace Explorus_K.Game.Audio
     public interface IListener
     {
         void Notify();
-        void Process(Message msg);
+        void Process(string fileName);
     }
 }

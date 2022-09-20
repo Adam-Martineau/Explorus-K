@@ -1,4 +1,5 @@
 ﻿using Explorus_K.Controllers;
+using Explorus_K.Game.Audio;
 using Explorus_K.Models;
 using System;
 using System.Collections.Generic;
@@ -42,13 +43,13 @@ namespace Explorus_K.Game
             }
         }
 
-        public void moveAndAnimateBubbles(BubbleManager bubbleManager)
+        public void moveAndAnimateBubbles(BubbleManager bubbleManager, AudioBabillard audioBabillard)
         {
             List<Bubble> bubbles = new List<Bubble>(bubbleManager.getBubbleList());
 
             foreach (Bubble bubble in bubbles)
             {
-                animateBubble(bubble, bubbleManager);
+                animateBubble(bubble, bubbleManager, audioBabillard);
             }
         }
 
@@ -266,7 +267,7 @@ namespace Explorus_K.Game
             }
         }
 
-        private void animateBubble(Bubble bubble, BubbleManager bubbleManager)
+        private void animateBubble(Bubble bubble, BubbleManager bubbleManager, AudioBabillard audioBabillard)
         {
             int count = bubble.getAnimationCount();
 
@@ -279,6 +280,7 @@ namespace Explorus_K.Game
                 else
                 {
                     bubbleManager.removeBubble(bubble);
+                    audioBabillard.AddMessage(AudioName.BUBBLE_HIT);
                 }
 
                 bubble.setAnimationCount(count);

@@ -74,8 +74,9 @@
     </Compile>
     <Compile Include="Game\AnimationEnum.cs" />
     <Compile Include="Game\Audio\AudioBabillard.cs" />
+    <Compile Include="Game\Audio\AudioFileNameContainer.cs" />
+    <Compile Include="Game\Audio\AudioName.cs" />
     <Compile Include="Game\Audio\IListener.cs" />
-    <Compile Include="Game\Audio\Message.cs" />
     <Compile Include="Game\BubbleManager.cs" />
     <Compile Include="Game\Constant.cs" />
     <Compile Include="Game\GameState.cs" />

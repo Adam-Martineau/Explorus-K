@@ -12,21 +12,25 @@ namespace Explorus_K.Game.Audio
     {
         private List<IListener> listeners_;
 
-        private Queue<Message> messages_;
+        private Queue<string> fileNameQueue;
+
+        private AudioFileNameContainer audioFileNameContainer;
 
         public AudioBabillard()
         {
             listeners_ = new List<IListener>();
-            messages_ = new Queue<Message>();
+            fileNameQueue = new Queue<string>();
+            audioFileNameContainer = AudioFileNameContainer.getInstance();
         }
 
-        public void AddMessage(Message msg)
+        public void AddMessage(AudioName audioName)
         {
             lock (this)
             {
-                messages_.Enqueue(msg);
+                string fileName = audioFileNameContainer.getFileName(audioName);
+                this.fileNameQueue.Enqueue(fileName);
 
-                if (messages_.Count > 5)
+                if (this.fileNameQueue.Count > 0)
                     foreach (IListener l in listeners_)
                         l.Notify();
             }
@@ -39,20 +43,20 @@ namespace Explorus_K.Game.Audio
 
         public bool HasMessages()
         {
-            return messages_.Count > 0;
+            return fileNameQueue.Count > 0;
         }
 
-        public List<Message> GetMessages()
+        public List<string> GetMessages()
         {
-            List<Message> messages = new List<Message>();
+            List<string> messages = new List<string>();
             lock (this)
             {      
-                foreach (Message msg in messages_)
+                foreach (string fileName in fileNameQueue)
                 {
-                    messages.Add(new Message(msg));
+                    messages.Add(fileName);
                 }
 
-                messages_.Clear();
+                fileNameQueue.Clear();
             }
 
             return messages;
