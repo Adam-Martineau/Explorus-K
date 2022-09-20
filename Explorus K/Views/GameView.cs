@@ -106,7 +106,7 @@ namespace Explorus_K.Views
 
             gameTitle = "Explorus-K - FPS " + Math.Round(fps, 1).ToString();
 
-			if (gameEngine.State == GameState.PLAY)
+			/*if (gameEngine.State == GameState.PLAY)
 			{
 				labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.GEM);
 
@@ -123,7 +123,7 @@ namespace Explorus_K.Views
 				{
 					gameEngine.State = state;
 				}
-			}
+			}*/
         }
 
 		private void showMenu(Graphics g ,string text)

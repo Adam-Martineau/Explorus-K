@@ -147,5 +147,10 @@ namespace Explorus_K.Game
 					SpriteType.BUBBLE);
 			}
 		}
-	}
+
+        public void restartThread()
+        {
+            Console.WriteLine("yoo");
+        }
+    }
 }
