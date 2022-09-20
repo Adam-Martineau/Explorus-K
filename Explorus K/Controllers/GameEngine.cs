@@ -108,7 +108,7 @@ namespace Explorus_K.Controllers
                     gameView.Render();
                     Thread.Sleep(1);
 
-                    if (gameState == GameState.STOP)
+                    if (gameState == GameState.STOP || gameState == GameState.RESTART)
                     {
 						Thread.Sleep(3000);
 						restart();
@@ -168,13 +168,15 @@ namespace Explorus_K.Controllers
 
 		public void restart()
 		{
+            bubbleManager = new BubbleManager();
             labyrinth = new Labyrinth();
-            gameView = new GameView(this);
-            bindings = initiate_bindings();
-            //actionManager = new ActionManager(this);
-            thread = new Thread(new ThreadStart(GameLoop));
-            thread.Start();
-			resume();
+            playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
+            actionManager = new ActionManager(this, playerMovement);
+            gameView.Restart(this);
+            gameView.InitializeHeaderBar(new HealthBarCreator(), lifeCount);
+            gameView.InitializeHeaderBar(new BubbleBarCreator(), bubbleCount);
+            gameView.InitializeHeaderBar(new GemBarCreator(), gemCount);
+            resume();
         }
     }
 }
