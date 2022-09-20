@@ -26,18 +26,18 @@ namespace Explorus_K.Game
             this.iterator = iterator;
         }
 
-        public bool canPlayerMove(MovementDirection movementDirection, Point position)
+        public bool canPlayerMove(MovementDirection movementDirection, Point position, SpriteType sprite)
         {
             switch(movementDirection)
             {
                 case MovementDirection.down:
-                    return isWallOrDoor((String)iterator.getMapEntryAt(position.X, position.Y + 1));
+                    return isWallOrDoor((String)iterator.getMapEntryAt(position.X, position.Y + 1), sprite);
                 case MovementDirection.up:
-                    return isWallOrDoor((String)iterator.getMapEntryAt(position.X, position.Y - 1));
+                    return isWallOrDoor((String)iterator.getMapEntryAt(position.X, position.Y - 1), sprite);
                 case MovementDirection.left:
-                    return isWallOrDoor((String)iterator.getMapEntryAt(position.X - 1, position.Y));
+                    return isWallOrDoor((String)iterator.getMapEntryAt(position.X - 1, position.Y), sprite);
                 case MovementDirection.right:
-                    return isWallOrDoor((String)iterator.getMapEntryAt(position.X + 1, position.Y));
+                    return isWallOrDoor((String)iterator.getMapEntryAt(position.X + 1, position.Y), sprite);
                 default:
                     return false;
             }
@@ -122,11 +122,19 @@ namespace Explorus_K.Game
         }
 
 
-        private bool isWallOrDoor(string destinationObject)
+        private bool isWallOrDoor(string destinationObject, SpriteType type)
         {
             string wall = "w";
             string door = "p";
-            return (destinationObject != wall && destinationObject != door);
+            string lockedDoor = "l";
+            if (type == SpriteType.SLIMUS)
+            {
+                return (destinationObject != wall && destinationObject != door);
+            }
+            else
+            {
+                return (destinationObject != wall && destinationObject != door && destinationObject != lockedDoor);
+            }
         }
 
         private void setToxicSlimeMovementDirection(Player player)
@@ -140,28 +148,28 @@ namespace Explorus_K.Game
             {
                 case 0:
                     movementDirection = MovementDirection.up;
-                    if (canPlayerMove(movementDirection, player.getIterator().Current()))
+                    if (canPlayerMove(movementDirection, player.getIterator().Current(),SpriteType.TOXIC_SLIME))
                     {
                         player.setMovementDirection(movementDirection);
                     }
                     break;
                 case 1:
                     movementDirection = MovementDirection.down;
-                    if (canPlayerMove(movementDirection, player.getIterator().Current()))
+                    if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
                     {
                         player.setMovementDirection(movementDirection);
                     }
                     break;
                 case 2:
                     movementDirection = MovementDirection.left;
-                    if (canPlayerMove(movementDirection, player.getIterator().Current()))
+                    if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
                     {
                         player.setMovementDirection(movementDirection);
                     }
                     break;
                 case 3:
                     movementDirection = MovementDirection.right;
-                    if (canPlayerMove(movementDirection, player.getIterator().Current()))
+                    if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
                     {
                         player.setMovementDirection(movementDirection);
                     }
@@ -223,7 +231,7 @@ namespace Explorus_K.Game
             switch (movementDirection)
             {
                 case MovementDirection.down:
-                    if(canPlayerMove(movementDirection, bubble.getIteratorPosition()))
+                    if(canPlayerMove(movementDirection, bubble.getIteratorPosition(), SpriteType.BUBBLE))
                     {
                         bubble.moveDown(bubbleStepSize);
                     }
@@ -233,7 +241,7 @@ namespace Explorus_K.Game
                     }                    
                     break;
                 case MovementDirection.up:
-                    if (canPlayerMove(movementDirection, bubble.getIteratorPosition()))
+                    if (canPlayerMove(movementDirection, bubble.getIteratorPosition(), SpriteType.BUBBLE))
                     {
                         bubble.moveUp(bubbleStepSize);
                     }
@@ -243,7 +251,7 @@ namespace Explorus_K.Game
                     }
                     break;
                 case MovementDirection.left:
-                    if (canPlayerMove(movementDirection, bubble.getIteratorPosition()))
+                    if (canPlayerMove(movementDirection, bubble.getIteratorPosition(), SpriteType.BUBBLE))
                     {
                         bubble.moveLeft(bubbleStepSize);
                     }
@@ -253,7 +261,7 @@ namespace Explorus_K.Game
                     }
                     break;
                 case MovementDirection.right:
-                    if (canPlayerMove(movementDirection, bubble.getIteratorPosition()))
+                    if (canPlayerMove(movementDirection, bubble.getIteratorPosition(), SpriteType.BUBBLE))
                     {
                         bubble.moveRight(bubbleStepSize);
                     }

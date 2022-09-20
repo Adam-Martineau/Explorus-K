@@ -12,12 +12,12 @@ namespace Explorus_K.Models
     {
         public abstract IBar FactoryMethod();
 
-        public IBar InitializeBar(int length)
+        public IBar InitializeBar(int length, int current)
         {
             // Call the factory method to create a Product object.
             var bar = FactoryMethod();
 
-            return bar.Initialize(length);
+            return bar.Initialize(length, current);
         }
     }
 
@@ -48,7 +48,7 @@ namespace Explorus_K.Models
     public interface IBar
     {
         int getCurrent();
-        IBar Initialize(int length);
+        IBar Initialize(int length, int current);
         void Decrease();
         void Increase();
         int getLength();
@@ -60,15 +60,22 @@ namespace Explorus_K.Models
         private int current;
         private int length;
 
-        public IBar Initialize(int length)
+        public IBar Initialize(int length, int current)
         {
-            this.current = length;
+            this.current = current;
             this.length = length;
 
             healthBar.Add(new Image2D(SpriteType.BAR, ImageType.LEFT_SIDE_BAR, 0, 1));
             for (int i = 1; i < length + 1; i++)
             {
-                healthBar.Add(new Image2D(SpriteType.BAR, ImageType.HEALTH_BAR_FULL, i, 1));
+                if(i <= current)
+                {
+                    healthBar.Add(new Image2D(SpriteType.BAR, ImageType.HEALTH_BAR_FULL, i, 1));
+                }
+                else
+                {
+                    healthBar.Add(new Image2D(SpriteType.BAR, ImageType.EMPTY_BAR, i, 1));
+                }
             }
             healthBar.Add(new Image2D(SpriteType.BAR, ImageType.RIGHT_SIDE_BAR, length + 1, 1));
 
@@ -111,9 +118,9 @@ namespace Explorus_K.Models
         private int current;
         private int length;
 
-        public IBar Initialize(int length)
+        public IBar Initialize(int length, int current)
         {
-            this.current = length;
+            this.current = current;
             this.length = length;
 
             bubbleBar.Add(new Image2D(0, ImageType.LEFT_SIDE_BAR, 0, 1));
@@ -129,8 +136,11 @@ namespace Explorus_K.Models
         {
             if (current > 0)
             {
-                bubbleBar[current].setType(ImageType.EMPTY_BAR);
-                current--;
+                for (int i = 1; i < length + 1; i++)
+                {
+                    bubbleBar[i].setType(ImageType.EMPTY_BAR);
+                }
+                current-=length;
                 //gemBar[current].setType(ImageType.GEM_BAR_HALF);
             }
         }
@@ -161,9 +171,9 @@ namespace Explorus_K.Models
         private int current;
         private int length;
 
-        public IBar Initialize(int length)
+        public IBar Initialize(int length, int current)
         {
-            this.current = 0;
+            this.current = current;
             this.length = length;
 
             gemBar.Add(new Image2D(0, ImageType.LEFT_SIDE_BAR, 0, 1));

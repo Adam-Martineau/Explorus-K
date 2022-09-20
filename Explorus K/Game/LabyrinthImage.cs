@@ -9,9 +9,9 @@ namespace Explorus_K.Game
 {
     public class LabyrinthImage
     {
-        List<Image2D> labyrinthImages;
+        public List<Image2D> labyrinthImages;
         Labyrinth labyrinth;
-        Slimus slimus;
+        public Slimus slimus;
         Point labyrinthPosition;
         CollisionContext collisionStrategy = null;
         Context keyState = null;
@@ -20,7 +20,7 @@ namespace Explorus_K.Game
         GemBar gemBar = null;
         List<Player> playerList = new List<Player>();
 
-        private BubbleManager bubbleManager;
+        public BubbleManager bubbleManager;
 
         private static Timer invincibilityTimer;
         private static Timer bubbleTimer;
@@ -155,7 +155,9 @@ namespace Explorus_K.Game
             return (headerOffset * index) + ((headerOffset * column)/2);
         }
 
-        public GameState IsColliding(SpriteType sprite1, SpriteType sprite2)
+        
+
+        /*public GameState IsColliding(SpriteType sprite1, SpriteType sprite2)
 		{
             GameState state = GameState.PLAY;
             int pixel = 0;
@@ -222,12 +224,11 @@ namespace Explorus_K.Game
             }
 
             return GameState.PLAY;
-        }
+        }*/
 
         private void OnTimedEventInvincible(Object source, ElapsedEventArgs e)
         {
             numberOfTrigger += 1;
-            Console.WriteLine(numberOfTrigger);
             if (numberOfTrigger < 30)
             {
                 if (slimusOpacity == 1.0f)
@@ -252,6 +253,12 @@ namespace Explorus_K.Game
             invincibilityTimer.Start();
             numberOfTrigger = 0;
             slimus.setInvincible(true);
+        }
+
+        public void stopInvincibilityTimer()
+        {
+            invincibilityTimer.Stop();
+            slimus.setInvincible(false);
         }
 
         private void OnTimedEventBubble(Object source, ElapsedEventArgs e)
@@ -297,8 +304,6 @@ namespace Explorus_K.Game
                     }
                     else if (labyrinth.getMapEntryAt(i, j) == "s")
                     {
-                        Console.WriteLine(i * Constant.LARGE_SPRITE_DIMENSION);
-                        Console.WriteLine(j * Constant.LARGE_SPRITE_DIMENSION);
                         slimus = new Slimus(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.SLIMUS_DOWN_ANIMATION_1, Constant.SLIMUS_LIVES, Labyrinth.Map.CreateIterator("s"));
                         labyrinthImages.Add(new Image2D(SpriteType.SLIMUS, slimus.getImageType(), slimus.getPosX(), slimus.getPosY()));
                         playerList.Add(slimus);

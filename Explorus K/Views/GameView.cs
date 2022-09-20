@@ -3,8 +3,10 @@ using Explorus_K.Game;
 using Explorus_K.Models;
 using System;
 using System.Drawing;
+using System.Reflection.Emit;
 using System.Timers;
 using System.Windows.Forms;
+using System.Windows.Interop;
 using Application = System.Windows.Forms.Application;
 using Size = System.Drawing.Size;
 using Timer = System.Timers.Timer;
@@ -32,7 +34,7 @@ namespace Explorus_K.Views
 
         public LabyrinthImage labyrinthImage;		
 
-		public GameView(GameEngine gameEngine)
+		public GameView(GameEngine gameEngine, int level)
 		{
 			this.gameEngine = gameEngine;
 			gameForm = new GameForm(this);
@@ -53,6 +55,8 @@ namespace Explorus_K.Views
             resumeTimer = new Timer(1000);
             resumeTimer.Elapsed += OnTimedEventResume;
 
+            gameForm.UpdateLevel("Level " + level.ToString(), Color.Red);
+
             resize();
 		}
 
@@ -69,9 +73,10 @@ namespace Explorus_K.Views
 				});
 		}
 
-        public void Restart(GameEngine gameEngine)
-        {
-			this.gameEngine = gameEngine;
+        public void Restart(GameEngine gameEngine, int level)
+		{
+			gameForm.UpdateLevel("Level " + level.ToString(), Color.Red);
+            this.gameEngine = gameEngine;
             labyrinthImage = new LabyrinthImage(gameEngine.GetLabyrinth(), gameEngine.getBubbleManager());
             resize();
             Render();
@@ -101,7 +106,7 @@ namespace Explorus_K.Views
 
             gameTitle = "Explorus-K - FPS " + Math.Round(fps, 1).ToString();
 
-			if (gameEngine.State == GameState.PLAY)
+			/*if (gameEngine.State == GameState.PLAY)
 			{
 				labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.GEM);
 
@@ -118,7 +123,7 @@ namespace Explorus_K.Views
 				{
 					gameEngine.State = state;
 				}
-			}
+			}*/
         }
 
 		private void showMenu(Graphics g ,string text)
@@ -165,7 +170,7 @@ namespace Explorus_K.Views
             {
                 showMenu(g, "YOU WIN");
             }
-            gameForm.UpdateStatusBar(gameEngine.State.ToString(), Color.Red);
+            gameForm.UpdateStatus(gameEngine.State.ToString(), Color.Red);
         }
 
         public Player getSlimusObject()
@@ -177,9 +182,9 @@ namespace Explorus_K.Views
             return labyrinthImage.BubbleBar;
         }
 
-        public void InitializeHeaderBar(ProgressionBarCreator creator, int count)
+        public void InitializeHeaderBar(ProgressionBarCreator creator, int length, int current)
 		{
-			IBar bar = creator.InitializeBar(count);
+			IBar bar = creator.InitializeBar(length, current);
 
 			if(creator.GetType() == typeof(HealthBarCreator))
 			{

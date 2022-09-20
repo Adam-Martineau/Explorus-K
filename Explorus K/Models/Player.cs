@@ -21,6 +21,8 @@ namespace Explorus_K
 
         int decreaseLife();
 
+        Guid GetGuid();
+
         MovementDirection getMovementDirection();
 
         void setMovementDirection(MovementDirection direction);

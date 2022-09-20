@@ -32,13 +32,17 @@ namespace Explorus_K
         {
             this.statusBar = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.levelLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusBar.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusBar
             // 
             this.statusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusLabel});
+            this.statusLabel,
+            this.toolStripStatusLabel1,
+            this.levelLabel});
             this.statusBar.Location = new System.Drawing.Point(0, 332);
             this.statusBar.Name = "statusBar";
             this.statusBar.Size = new System.Drawing.Size(385, 22);
@@ -50,6 +54,19 @@ namespace Explorus_K
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(66, 17);
             this.statusLabel.Text = "statusLabel";
+            // 
+            // levelLabel
+            // 
+            this.levelLabel.Name = "levelLabel";
+            this.levelLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.levelLabel.Size = new System.Drawing.Size(59, 17);
+            this.levelLabel.Text = "levelLabel";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(12, 17);
+            this.toolStripStatusLabel1.Text = "-";
             // 
             // GameForm
             // 
@@ -75,6 +92,8 @@ namespace Explorus_K
 
         private System.Windows.Forms.StatusStrip statusBar;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
+        private System.Windows.Forms.ToolStripStatusLabel levelLabel;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }
 

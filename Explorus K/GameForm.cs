@@ -37,10 +37,16 @@ namespace Explorus_K
             gameView.LostFocus();
         }
 
-        public void UpdateStatusBar(string msg, Color color)
+        public void UpdateStatus(string msg, Color color)
         {
             statusLabel.Text = msg;
             statusLabel.ForeColor = color;
+        }
+
+        public void UpdateLevel(string msg, Color color)
+        {
+            levelLabel.Text = msg;
+            levelLabel.ForeColor = color;
         }
     }
 }

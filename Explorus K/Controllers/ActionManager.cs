@@ -37,13 +37,13 @@ namespace Explorus_K.Game
 				currentAction = action;
 			else if (action == Actions.shoot && currentAction == Actions.none)
                 currentAction = action;
-            else if (action == Actions.move_left && movePlayer.canPlayerMove(MovementDirection.left, slimusIterator.Current()) && currentAction == Actions.none)
+            else if (action == Actions.move_left && movePlayer.canPlayerMove(MovementDirection.left, slimusIterator.Current(), SpriteType.SLIMUS) && currentAction == Actions.none)
 				currentAction = action;
-			else if (action == Actions.move_right && movePlayer.canPlayerMove(MovementDirection.right, slimusIterator.Current()) && currentAction == Actions.none)
+			else if (action == Actions.move_right && movePlayer.canPlayerMove(MovementDirection.right, slimusIterator.Current(), SpriteType.SLIMUS) && currentAction == Actions.none)
 				currentAction = action;
-			else if (action == Actions.move_up && movePlayer.canPlayerMove(MovementDirection.up, slimusIterator.Current()) && currentAction == Actions.none)
+			else if (action == Actions.move_up && movePlayer.canPlayerMove(MovementDirection.up, slimusIterator.Current(), SpriteType.SLIMUS) && currentAction == Actions.none)
 				currentAction = action;
-			else if (action == Actions.move_down && movePlayer.canPlayerMove(MovementDirection.down, slimusIterator.Current()) && currentAction == Actions.none)
+			else if (action == Actions.move_down && movePlayer.canPlayerMove(MovementDirection.down, slimusIterator.Current(), SpriteType.SLIMUS) && currentAction == Actions.none)
 				currentAction = action;
 		}
 
@@ -73,7 +73,7 @@ namespace Explorus_K.Game
             //Actions state machine
             if (currentAction == Actions.shoot)
             {
-                if(view.getBubbleBarObject().getCurrent() > 0)
+                if(view.getBubbleBarObject().getCurrent() == view.getBubbleBarObject().getLength())
                 {
                     Slimus slimus = (Slimus)view.getSlimusObject();
                     Iterator tempSlimusIterator = slimus.getIterator();
@@ -83,7 +83,7 @@ namespace Explorus_K.Game
                     switch(oldDirection)
                     {
                         case MovementDirection.up:
-                            if(movePlayer.canPlayerMove(oldDirection, posBubble))
+                            if(movePlayer.canPlayerMove(oldDirection, posBubble, SpriteType.SLIMUS))
                             {
                                 bubble = new Bubble(slimus.getPosX(), slimus.getPosY() - Constant.LARGE_SPRITE_DIMENSION, ImageType.BUBBLE_BIG, oldDirection, new Point(posBubble.X, posBubble.Y - 1));
                                 bubbleManager.addBubble(bubble);
@@ -92,7 +92,7 @@ namespace Explorus_K.Game
                             }
                             break;
                         case MovementDirection.down:
-                            if (movePlayer.canPlayerMove(oldDirection, posBubble))
+                            if (movePlayer.canPlayerMove(oldDirection, posBubble, SpriteType.SLIMUS))
                             {
                                 bubble = new Bubble(slimus.getPosX(), slimus.getPosY() + Constant.LARGE_SPRITE_DIMENSION, ImageType.BUBBLE_BIG, oldDirection, new Point(posBubble.X, posBubble.Y + 1));
                                 bubbleManager.addBubble(bubble);
@@ -101,7 +101,7 @@ namespace Explorus_K.Game
                             }
                             break;
                         case MovementDirection.left:
-                            if (movePlayer.canPlayerMove(oldDirection, posBubble))
+                            if (movePlayer.canPlayerMove(oldDirection, posBubble, SpriteType.SLIMUS))
                             {
                                 bubble = new Bubble(slimus.getPosX() - Constant.LARGE_SPRITE_DIMENSION, slimus.getPosY(), ImageType.BUBBLE_BIG, oldDirection, new Point(posBubble.X - 1, posBubble.Y));
                                 bubbleManager.addBubble(bubble);
@@ -110,7 +110,7 @@ namespace Explorus_K.Game
                             }
                             break;
                         case MovementDirection.right:
-                            if (movePlayer.canPlayerMove(oldDirection, posBubble))
+                            if (movePlayer.canPlayerMove(oldDirection, posBubble, SpriteType.SLIMUS))
                             {
                                 bubble = new Bubble(slimus.getPosX() + Constant.LARGE_SPRITE_DIMENSION, slimus.getPosY(), ImageType.BUBBLE_BIG, oldDirection, new Point(posBubble.X + 1, posBubble.Y));
                                 bubbleManager.addBubble(bubble);
@@ -121,7 +121,10 @@ namespace Explorus_K.Game
                     }
                     currentAction = Actions.none;
                 }
-                    
+                else
+                {
+                    currentAction = Actions.none;
+                }   
 
             }
             else if (currentAction == Actions.move_left)

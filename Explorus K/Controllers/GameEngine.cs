@@ -15,11 +15,8 @@ namespace Explorus_K.Controllers
 	{
 		private const int MS_PER_FRAME = 16;
 
-		private GameView gameView;
+		public GameView gameView { get; set; }
 		private List<Binding> bindings;
-		private int lifeCount = 6;
-		private int bubbleCount = 6;
-		private int gemCount = 6;
 		private Labyrinth labyrinth;
 		ActionManager actionManager;
 		PlayerMovement playerMovement;
@@ -27,6 +24,14 @@ namespace Explorus_K.Controllers
 		private GameState gameState;
 		Thread thread;
 		AudioBabillard audioBabillard;
+		private int gameLevel = 1;
+
+        public static object gameStatelock = new object();
+        Thread physicsThread;
+
+		Thread mainThread;
+
+        public static EventWaitHandle physicsWaitHandle;
 
         public GameState State { get => gameState; set => gameState = value; }
 
@@ -36,7 +41,7 @@ namespace Explorus_K.Controllers
             bubbleManager = new BubbleManager();
             labyrinth = new Labyrinth();
             //The game engine get passed from contructor to constructor until it reach GameForm.cs
-            gameView = new GameView(this);
+            gameView = new GameView(this, gameLevel);
 			bindings = initiate_bindings();
             gameState = GameState.RESUME;
             playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
@@ -47,6 +52,17 @@ namespace Explorus_K.Controllers
 			audioThread.Start();
 			gameView.Show();
 		}
+            
+			mainThread = new Thread(new ThreadStart(GameLoop));
+			mainThread.Start();
+			
+			Physics physics = new Physics(this);
+            physicsWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
+            physicsThread = new Thread(new ThreadStart(physics.startThread));
+			physicsThread.Start();
+
+            gameView.Show();
+        }
 
 		private List<Binding> initiate_bindings()
 		{
@@ -64,14 +80,14 @@ namespace Explorus_K.Controllers
 
 		private void GameLoop()
 		{
-			gameView.InitializeHeaderBar(new HealthBarCreator(), lifeCount);
-			gameView.InitializeHeaderBar(new BubbleBarCreator(), bubbleCount);
-			gameView.InitializeHeaderBar(new GemBarCreator(), gemCount);
+			gameView.InitializeHeaderBar(new HealthBarCreator(), Constant.SLIMUS_LIVES, Constant.SLIMUS_LIVES);
+			gameView.InitializeHeaderBar(new BubbleBarCreator(), Constant.INITIAL_BUBBLE_COUNT, Constant.INITIAL_BUBBLE_COUNT);
+			gameView.InitializeHeaderBar(new GemBarCreator(), Constant.INITIAL_GEM_COUNT, 0);
 
 			double previous_time = getCurrentTime();
 			double lag = 0.0;
 
-			while (true)
+            while (true)
 			{
 				//Actions state machine
 				actionManager.systemActionsManagement();
@@ -99,6 +115,7 @@ namespace Explorus_K.Controllers
 						}
 						
 						gameView.Render();
+						physicsWaitHandle.Set();
 					}
 
 					Thread.Sleep(1);
@@ -168,14 +185,25 @@ namespace Explorus_K.Controllers
 
 		public void restart()
 		{
+            gameLevel += 1;
             bubbleManager = new BubbleManager();
             labyrinth = new Labyrinth();
+            int remainingLifes = gameView.getLabyrinthImage().HealthBar.getCurrent();
+            if (gameState == GameState.STOP)
+			{
+				remainingLifes = Constant.SLIMUS_LIVES;
+			}
+            gameView.Restart(this, gameLevel);
             playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
             actionManager = new ActionManager(this, playerMovement);
-            gameView.Restart(this);
-            gameView.InitializeHeaderBar(new HealthBarCreator(), lifeCount);
-            gameView.InitializeHeaderBar(new BubbleBarCreator(), bubbleCount);
-            gameView.InitializeHeaderBar(new GemBarCreator(), gemCount);
+            physicsThread.Abort();
+            Physics physics = new Physics(this);
+            physicsWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
+            physicsThread = new Thread(new ThreadStart(physics.startThread));
+            physicsThread.Start();
+            gameView.InitializeHeaderBar(new HealthBarCreator(), Constant.SLIMUS_LIVES, remainingLifes);
+            gameView.InitializeHeaderBar(new BubbleBarCreator(), Constant.INITIAL_BUBBLE_COUNT, Constant.INITIAL_BUBBLE_COUNT);
+            gameView.InitializeHeaderBar(new GemBarCreator(), Constant.INITIAL_GEM_COUNT, 0);
             resume();
         }
     }
