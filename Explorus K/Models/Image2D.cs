@@ -110,7 +110,12 @@ namespace Explorus_K.Models
             else if (spriteType == SpriteType.TOXIC_SLIME)
             {
                 collisionStrategy.SetStrategy(new ToxicSlimeStrategy());
-                radius = Constant.LARGE_SPRITE_DIMENSION - 5;
+                radius = Constant.LARGE_SPRITE_DIMENSION - 20;
+            }
+            else if (spriteType == SpriteType.BUBBLE)
+            {
+                collisionStrategy.SetStrategy(new ToxicSlimeStrategy());
+                radius = Constant.LARGE_SPRITE_DIMENSION;
             }
             else if (spriteType == SpriteType.SLIMUS)
             {
