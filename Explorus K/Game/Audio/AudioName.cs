@@ -22,10 +22,10 @@ namespace Explorus_K.Game.Audio
         SOUND_6,
         SOUND_7,
         SOUND_9,
-        SOUND_10,
+        OPEN_DOOR,
         SOUND_11,
         SOUND_13,
-        SOUND_14,
+        WINNING,
         SOUND_17,
     }
 }

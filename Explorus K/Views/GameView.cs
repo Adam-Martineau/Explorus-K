@@ -102,28 +102,7 @@ namespace Explorus_K.Views
 
 		public void Update(double fps)
 		{
-			GameState state = GameState.PLAY;
-
             gameTitle = "Explorus-K - FPS " + Math.Round(fps, 1).ToString();
-
-			/*if (gameEngine.State == GameState.PLAY)
-			{
-				labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.GEM);
-
-				labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.DOOR);
-
-				state = labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.MINI_SLIMUS);
-				if (state == GameState.RESTART)
-				{
-					gameEngine.State = state;
-				}
-
-				state = labyrinthImage.IsColliding(SpriteType.SLIMUS, SpriteType.TOXIC_SLIME);
-				if (state == GameState.STOP)
-				{
-					gameEngine.State = state;
-				}
-			}*/
         }
 
 		private void showMenu(Graphics g ,string text)

@@ -1,5 +1,6 @@
 ﻿using Explorus_K.Game;
 using Explorus_K.Game;
+using Explorus_K.Game.Audio;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -28,20 +29,20 @@ namespace Explorus_K.Models
             this._strategy = strategy;
         }
 
-        public GameState executeStrategy(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
+        public GameState executeStrategy(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type, AudioBabillard audio)
         {
-            return _strategy.execute(labyrinthImage, imageIndex, type);
+            return _strategy.execute(labyrinthImage, imageIndex, type, audio);
         }
     }
 
     public interface IStrategy
     {
-        GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type);
+        GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type, AudioBabillard audio);
     }
 
     class GemStrategy : IStrategy
     {
-        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type, AudioBabillard audio)
         {
             if(type == SpriteType.SLIMUS)
             {
@@ -53,6 +54,7 @@ namespace Explorus_K.Models
                     labyrinthImage.getSlimus().getIterator().replaceAt("l", pos.X, pos.Y);
                 }
                 labyrinthImage.removeImageAt(imageIndex);
+                audio.AddMessage(AudioName.GETTTING_COIN);
             }
 
             return GameState.PLAY;
@@ -61,7 +63,7 @@ namespace Explorus_K.Models
 
     class DoorStrategy : IStrategy
     {
-        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type, AudioBabillard audio)
         {
             if (type == SpriteType.SLIMUS)
             {
@@ -70,6 +72,7 @@ namespace Explorus_K.Models
                     Point pos = labyrinthImage.getSlimus().getIterator().findPosition("l");
                     labyrinthImage.getSlimus().getIterator().replaceAt(".", pos.X, pos.Y);
                     labyrinthImage.removeImageAt(imageIndex);
+                    audio.AddMessage(AudioName.OPEN_DOOR);
                 }
             }
 
@@ -79,10 +82,11 @@ namespace Explorus_K.Models
 
     class MiniSlimeStrategy : IStrategy
     {
-        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type, AudioBabillard audio)
         {
             if (type == SpriteType.SLIMUS)
             {
+                audio.AddMessage(AudioName.WINNING);
                 return GameState.RESTART;
             }
             else
@@ -94,7 +98,7 @@ namespace Explorus_K.Models
 
     class ToxicSlimeStrategy : IStrategy
     {
-        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type, AudioBabillard audio)
         {
             if (type == SpriteType.SLIMUS)
             {
@@ -104,8 +108,14 @@ namespace Explorus_K.Models
                 if(labyrinthImage.HealthBar.getCurrent() == 0)
                 {
                     labyrinthImage.stopInvincibilityTimer();
+                    audio.AddMessage(AudioName.BOOM);
                     return GameState.STOP;
                 }
+                else
+                {
+                    audio.AddMessage(AudioName.BEEP_BOOP);
+                }
+
             }
             else if (type == SpriteType.BUBBLE)
             {
@@ -117,6 +127,7 @@ namespace Explorus_K.Models
                     if (player.GetGuid() == toxicSlime.id)
                     {
                         player.decreaseLife();
+                        audio.AddMessage(AudioName.GETTING_HIT);
                         if (player.getLifes() < 1)
                         {
                             labyrinthImage.getPlayerList().Remove(player);

@@ -42,9 +42,10 @@ namespace Explorus_K.Game.Audio
             _audioFiles.Add(AudioName.SOUND_6, "sound6");
             _audioFiles.Add(AudioName.SOUND_7, "sound7");
             _audioFiles.Add(AudioName.SOUND_9, "sound9");
+            _audioFiles.Add(AudioName.OPEN_DOOR, "sound10");
             _audioFiles.Add(AudioName.SOUND_11, "sound11");
             _audioFiles.Add(AudioName.SOUND_13, "sound13");
-            _audioFiles.Add(AudioName.SOUND_14, "sound14");
+            _audioFiles.Add(AudioName.WINNING, "sound14");
             _audioFiles.Add(AudioName.SOUND_17, "sound17");
         }
     }

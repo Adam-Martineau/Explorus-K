@@ -1,4 +1,5 @@
 ﻿using Explorus_K.Controllers;
+using Explorus_K.Game.Audio;
 using Explorus_K.Models;
 using Microsoft.VisualBasic.Devices;
 using System;
@@ -13,11 +14,13 @@ namespace Explorus_K.Game
 	internal class Physics
 	{
 		GameEngine gameEngine;
+		AudioBabillard audioBabillard;
 		public List<Image2D> sprites { get; set; } = new List<Image2D>();
 
-		public Physics(GameEngine gameEngine)
+		public Physics(GameEngine gameEngine, AudioBabillard audioBabillard)
 		{
 			this.gameEngine = gameEngine;
+			this.audioBabillard = audioBabillard;
 		}
 
 		public void startThread()
@@ -118,24 +121,19 @@ namespace Explorus_K.Game
 			gameEngine.State = collidingSprite.collisionStrategy.executeStrategy(
 				gameEngine.gameView.labyrinthImage,
 				gameEngine.gameView.labyrinthImage.labyrinthImages.IndexOf(collidingSprite),
-				SpriteType.SLIMUS);
+				SpriteType.SLIMUS,
+				audioBabillard);
 		}
 
 		private void executeToxicSlimeCollision(Image2D toxicSlime)
 		{
 			gameEngine.gameView.labyrinthImage.startInvincibilityTimer();
 
-			if (gameEngine.State == GameState.STOP)
-			{
-				gameEngine.gameView.labyrinthImage.stopInvincibilityTimer();
-			}
-			else
-			{
-				gameEngine.State = toxicSlime.collisionStrategy.executeStrategy(
+			gameEngine.State = toxicSlime.collisionStrategy.executeStrategy(
 					gameEngine.gameView.labyrinthImage,
 					gameEngine.gameView.labyrinthImage.labyrinthImages.IndexOf(toxicSlime),
-					SpriteType.SLIMUS);
-			}
+					SpriteType.SLIMUS,
+					audioBabillard);
 		}
 
 		private void executeToxicSlimeCollisionWithBubble(Image2D toxicSlime, Image2D bubbleImage)
@@ -149,7 +147,8 @@ namespace Explorus_K.Game
                     gameEngine.State = toxicSlime.collisionStrategy.executeStrategy(
 						gameEngine.gameView.labyrinthImage,
 						gameEngine.gameView.labyrinthImage.labyrinthImages.IndexOf(toxicSlime),
-						SpriteType.BUBBLE);
+						SpriteType.BUBBLE,
+						audioBabillard);
                 }
 			}
 		}
