@@ -50,7 +50,7 @@ namespace Explorus_K.Models
                 {
                     labyrinthImage.KeyState.RequestChangingState();
                     Point pos = labyrinthImage.getSlimus().getIterator().findPosition("p");
-                    labyrinthImage.getSlimus().getIterator().replaceAt(".", pos.X, pos.Y);
+                    labyrinthImage.getSlimus().getIterator().replaceAt("l", pos.X, pos.Y);
                 }
                 labyrinthImage.removeImageAt(imageIndex);
             }
@@ -67,6 +67,8 @@ namespace Explorus_K.Models
             {
                 if (labyrinthImage.KeyState.CurrentState() == "WithKeyState")
                 {
+                    Point pos = labyrinthImage.getSlimus().getIterator().findPosition("l");
+                    labyrinthImage.getSlimus().getIterator().replaceAt(".", pos.X, pos.Y);
                     labyrinthImage.removeImageAt(imageIndex);
                 }
             }
@@ -97,6 +99,7 @@ namespace Explorus_K.Models
             if (type == SpriteType.SLIMUS)
             {
                 labyrinthImage.HealthBar.Decrease();
+                labyrinthImage.getSlimus().decreaseLife();
                 
                 if(labyrinthImage.HealthBar.getCurrent() == 0)
                 {

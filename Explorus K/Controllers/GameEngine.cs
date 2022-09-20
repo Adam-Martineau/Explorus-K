@@ -15,14 +15,12 @@ namespace Explorus_K.Controllers
 
 		private GameView gameView;
 		private List<Binding> bindings;
-		private int lifeCount = 6;
-		private int bubbleCount = 6;
-		private int gemCount = 6;
 		private Labyrinth labyrinth;
 		ActionManager actionManager;
 		PlayerMovement playerMovement;
 		BubbleManager bubbleManager;
 		private GameState gameState;
+		private int gameLevel = 1;
 
         public GameState State { get => gameState; set => gameState = value; }
 
@@ -32,7 +30,7 @@ namespace Explorus_K.Controllers
             bubbleManager = new BubbleManager();
             labyrinth = new Labyrinth();
             //The game engine get passed from contructor to constructor until it reach GameForm.cs
-            gameView = new GameView(this);
+            gameView = new GameView(this, gameLevel);
 			bindings = initiate_bindings();
             gameState = GameState.RESUME;
             playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
@@ -58,9 +56,9 @@ namespace Explorus_K.Controllers
 
 		private void GameLoop()
 		{
-			gameView.InitializeHeaderBar(new HealthBarCreator(), lifeCount);
-			gameView.InitializeHeaderBar(new BubbleBarCreator(), bubbleCount);
-			gameView.InitializeHeaderBar(new GemBarCreator(), gemCount);
+			gameView.InitializeHeaderBar(new HealthBarCreator(), Constant.SLIMUS_LIVES, Constant.SLIMUS_LIVES);
+			gameView.InitializeHeaderBar(new BubbleBarCreator(), Constant.INITIAL_BUBBLE_COUNT, Constant.INITIAL_BUBBLE_COUNT);
+			gameView.InitializeHeaderBar(new GemBarCreator(), Constant.INITIAL_GEM_COUNT, 0);
 
 			double previous_time = getCurrentTime();
 			double lag = 0.0;
@@ -162,14 +160,20 @@ namespace Explorus_K.Controllers
 
 		public void restart()
 		{
+			gameLevel += 1;
             bubbleManager = new BubbleManager();
             labyrinth = new Labyrinth();
+            int remainingLifes = gameView.getLabyrinthImage().HealthBar.getCurrent();
+            if (gameState == GameState.STOP)
+			{
+				remainingLifes = Constant.SLIMUS_LIVES;
+			}
+            gameView.Restart(this, gameLevel);
             playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
             actionManager = new ActionManager(this, playerMovement);
-            gameView.Restart(this);
-            gameView.InitializeHeaderBar(new HealthBarCreator(), lifeCount);
-            gameView.InitializeHeaderBar(new BubbleBarCreator(), bubbleCount);
-            gameView.InitializeHeaderBar(new GemBarCreator(), gemCount);
+            gameView.InitializeHeaderBar(new HealthBarCreator(), Constant.SLIMUS_LIVES, remainingLifes);
+            gameView.InitializeHeaderBar(new BubbleBarCreator(), Constant.INITIAL_BUBBLE_COUNT, Constant.INITIAL_BUBBLE_COUNT);
+            gameView.InitializeHeaderBar(new GemBarCreator(), Constant.INITIAL_GEM_COUNT, 0);
             resume();
         }
     }

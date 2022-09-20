@@ -227,7 +227,6 @@ namespace Explorus_K.Game
         private void OnTimedEventInvincible(Object source, ElapsedEventArgs e)
         {
             numberOfTrigger += 1;
-            Console.WriteLine(numberOfTrigger);
             if (numberOfTrigger < 30)
             {
                 if (slimusOpacity == 1.0f)
@@ -297,8 +296,6 @@ namespace Explorus_K.Game
                     }
                     else if (labyrinth.getMapEntryAt(i, j) == "s")
                     {
-                        Console.WriteLine(i * Constant.LARGE_SPRITE_DIMENSION);
-                        Console.WriteLine(j * Constant.LARGE_SPRITE_DIMENSION);
                         slimus = new Slimus(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.SLIMUS_DOWN_ANIMATION_1, Constant.SLIMUS_LIVES, Labyrinth.Map.CreateIterator("s"));
                         labyrinthImages.Add(new Image2D(SpriteType.SLIMUS, slimus.getImageType(), slimus.getPosX(), slimus.getPosY()));
                         playerList.Add(slimus);
