@@ -108,7 +108,7 @@ namespace Explorus_K.Threads
         private void playMusic()
         {
             mediaPlayers[0].Open(new System.Uri(Path.Combine(System.IO.Path.GetFullPath(@"..\..\"), "Resources") + "\\gameMusic.wav"));
-            mediaPlayers[0].Play();
+            mediaPlayers[0].Dispatcher.Invoke(() => mediaPlayers[0].Play());
         }
 
         private void changeNextMediaPlayer()

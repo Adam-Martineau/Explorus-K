@@ -46,12 +46,9 @@ namespace Explorus_K.Controllers
             gameState = GameState.RESUME;
             playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
             actionManager = new ActionManager(this, playerMovement);
-            Thread thread = new Thread(new ThreadStart(GameLoop));
-			thread.Start();
+
 			Thread audioThread = new Thread(new ThreadStart(new AudioThread(audioBabillard).Run));
 			audioThread.Start();
-			gameView.Show();
-		}
             
 			mainThread = new Thread(new ThreadStart(GameLoop));
 			mainThread.Start();
