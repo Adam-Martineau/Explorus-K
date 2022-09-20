@@ -90,8 +90,8 @@
     <Compile Include="Models\ProgressionBarCreator.cs" />
     <Compile Include="Game\SpriteContainer.cs" />
     <Compile Include="Game\ImageType.cs" />
+    <Compile Include="Game\SpriteType.cs" />
     <Compile Include="Models\Slimus.cs" />
-    <Compile Include="Models\Sprite.cs" />
     <Compile Include="Models\ToxicSlime.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

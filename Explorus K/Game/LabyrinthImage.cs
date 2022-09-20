@@ -9,9 +9,9 @@ namespace Explorus_K.Game
 {
     public class LabyrinthImage
     {
-        List<Image2D> labyrinthImages;
+        public List<Image2D> labyrinthImages;
         Labyrinth labyrinth;
-        Slimus slimus;
+        public Slimus slimus;
         Point labyrinthPosition;
         CollisionContext collisionStrategy = null;
         Context keyState = null;
@@ -155,6 +155,8 @@ namespace Explorus_K.Game
             return (headerOffset * index) + ((headerOffset * column)/2);
         }
 
+        
+
         public GameState IsColliding(SpriteType sprite1, SpriteType sprite2)
 		{
             GameState state = GameState.PLAY;
@@ -251,6 +253,12 @@ namespace Explorus_K.Game
             invincibilityTimer.Start();
             numberOfTrigger = 0;
             slimus.setInvincible(true);
+        }
+
+        public void stopInvincibilityTimer()
+        {
+            invincibilityTimer.Stop();
+            slimus.setInvincible(false);
         }
 
         private void OnTimedEventBubble(Object source, ElapsedEventArgs e)

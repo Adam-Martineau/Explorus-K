@@ -13,7 +13,7 @@ namespace Explorus_K.Controllers
 	{
 		private const int MS_PER_FRAME = 16;
 
-		private GameView gameView;
+		public GameView gameView { get; set; }
 		private List<Binding> bindings;
 		private Labyrinth labyrinth;
 		ActionManager actionManager;
@@ -22,10 +22,16 @@ namespace Explorus_K.Controllers
 		private GameState gameState;
 		private int gameLevel = 1;
 
+        public static object gameStatelock = new object();
+        Thread physicsThread;
+
+		Thread mainThread;
+
+        public static EventWaitHandle physicsWaitHandle;
+
         public GameState State { get => gameState; set => gameState = value; }
 
         public GameEngine()
-
 		{
             bubbleManager = new BubbleManager();
             labyrinth = new Labyrinth();
@@ -35,10 +41,17 @@ namespace Explorus_K.Controllers
             gameState = GameState.RESUME;
             playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
             actionManager = new ActionManager(this, playerMovement);
-            Thread thread = new Thread(new ThreadStart(GameLoop));
-			thread.Start();
-			gameView.Show();
-		}
+            
+			mainThread = new Thread(new ThreadStart(GameLoop));
+			mainThread.Start();
+			
+			Physics physics = new Physics(this);
+            physicsWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
+            physicsThread = new Thread(new ThreadStart(physics.startThread));
+			physicsThread.Start();
+
+            gameView.Show();
+        }
 
 		private List<Binding> initiate_bindings()
 		{
@@ -63,7 +76,7 @@ namespace Explorus_K.Controllers
 			double previous_time = getCurrentTime();
 			double lag = 0.0;
 
-			while (true)
+            while (true)
 			{
 				//Actions state machine
 				actionManager.systemActionsManagement();
@@ -91,6 +104,7 @@ namespace Explorus_K.Controllers
 						}
 						
 						gameView.Render();
+						physicsWaitHandle.Set();
 					}
 
 					Thread.Sleep(1);
