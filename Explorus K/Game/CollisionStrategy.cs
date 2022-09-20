@@ -103,6 +103,7 @@ namespace Explorus_K.Models
                 
                 if(labyrinthImage.HealthBar.getCurrent() == 0)
                 {
+                    labyrinthImage.stopInvincibilityTimer();
                     return GameState.STOP;
                 }
             }

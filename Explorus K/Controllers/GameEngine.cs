@@ -174,7 +174,7 @@ namespace Explorus_K.Controllers
 
 		public void restart()
 		{
-			gameLevel += 1;
+            gameLevel += 1;
             bubbleManager = new BubbleManager();
             labyrinth = new Labyrinth();
             int remainingLifes = gameView.getLabyrinthImage().HealthBar.getCurrent();
@@ -185,6 +185,11 @@ namespace Explorus_K.Controllers
             gameView.Restart(this, gameLevel);
             playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
             actionManager = new ActionManager(this, playerMovement);
+            physicsThread.Abort();
+            Physics physics = new Physics(this);
+            physicsWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
+            physicsThread = new Thread(new ThreadStart(physics.startThread));
+            physicsThread.Start();
             gameView.InitializeHeaderBar(new HealthBarCreator(), Constant.SLIMUS_LIVES, remainingLifes);
             gameView.InitializeHeaderBar(new BubbleBarCreator(), Constant.INITIAL_BUBBLE_COUNT, Constant.INITIAL_BUBBLE_COUNT);
             gameView.InitializeHeaderBar(new GemBarCreator(), Constant.INITIAL_GEM_COUNT, 0);

@@ -104,17 +104,15 @@ namespace Explorus_K.Game
         {
             gameEngine.gameView.labyrinthImage.startInvincibilityTimer();
 
-            if (gameEngine.State == GameState.STOP)
-            {
-                gameEngine.gameView.labyrinthImage.stopInvincibilityTimer();
-            }
-            else
-            {
-                gameEngine.State = toxicSlime.collisionStrategy.executeStrategy(
-                    gameEngine.gameView.labyrinthImage,
-                    gameEngine.gameView.labyrinthImage.labyrinthImages.IndexOf(toxicSlime),
-                    SpriteType.SLIMUS);
-            }
+            gameEngine.State = toxicSlime.collisionStrategy.executeStrategy(
+                gameEngine.gameView.labyrinthImage,
+                gameEngine.gameView.labyrinthImage.labyrinthImages.IndexOf(toxicSlime),
+                SpriteType.SLIMUS);
+        }
+
+        public void restartThread()
+        {
+            Console.WriteLine("yoo");
         }
     }
 }
