@@ -1,5 +1,7 @@
 ﻿using Explorus_K.Game;
+using Explorus_K.Game.Audio;
 using Explorus_K.Models;
+using Explorus_K.Threads;
 using Explorus_K.Views;
 using System;
 using System.Collections.Generic;
@@ -20,6 +22,8 @@ namespace Explorus_K.Controllers
 		PlayerMovement playerMovement;
 		BubbleManager bubbleManager;
 		private GameState gameState;
+		Thread thread;
+		AudioBabillard audioBabillard;
 		private int gameLevel = 1;
 
         public static object gameStatelock = new object();
@@ -33,6 +37,7 @@ namespace Explorus_K.Controllers
 
         public GameEngine()
 		{
+			audioBabillard = new AudioBabillard();
             bubbleManager = new BubbleManager();
             labyrinth = new Labyrinth();
             //The game engine get passed from contructor to constructor until it reach GameForm.cs
@@ -41,6 +46,9 @@ namespace Explorus_K.Controllers
             gameState = GameState.RESUME;
             playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
             actionManager = new ActionManager(this, playerMovement);
+
+			Thread audioThread = new Thread(new ThreadStart(new AudioThread(audioBabillard).Run));
+			audioThread.Start();
             
 			mainThread = new Thread(new ThreadStart(GameLoop));
 			mainThread.Start();
@@ -88,9 +96,9 @@ namespace Explorus_K.Controllers
 
 				if (gameState == GameState.PLAY)
 				{
-					actionManager.characterActionsManagement(gameView, bubbleManager);
+					actionManager.characterActionsManagement(gameView, bubbleManager, audioBabillard);
 					playerMovement.moveAndAnimatePlayer(gameView.getLabyrinthImage().getPlayerList());
-					playerMovement.moveAndAnimateBubbles(bubbleManager);
+					playerMovement.moveAndAnimateBubbles(bubbleManager, audioBabillard);
 
 					if (lag >= MS_PER_FRAME)
 					{
