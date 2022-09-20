@@ -33,7 +33,6 @@ namespace Explorus_K.Threads
 
         public void Process(string filename)
         {
-            Console.WriteLine("Processing : " + filename);
            playAudio(filename);
         }
 
@@ -94,7 +93,7 @@ namespace Explorus_K.Threads
         {
             mediaPlayers[nextMediaPlayer].Open(new Uri(getResourceFilePath(filename)));
             mediaPlayers[nextMediaPlayer].Volume = sfxPlayerVolume;
-            mediaPlayers[nextMediaPlayer].Play();
+            mediaPlayers[nextMediaPlayer].Dispatcher.Invoke(() => mediaPlayers[nextMediaPlayer].Play());
             changeNextMediaPlayer();
         }
 
