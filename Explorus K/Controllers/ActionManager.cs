@@ -72,7 +72,7 @@ namespace Explorus_K.Game
             //Actions state machine
             if (currentAction == Actions.shoot)
             {
-                if(view.getBubbleBarObject().getCurrent() > 0)
+                if(view.getBubbleBarObject().getCurrent() == view.getBubbleBarObject().getLength())
                 {
                     Slimus slimus = (Slimus)view.getSlimusObject();
                     Iterator tempSlimusIterator = slimus.getIterator();
@@ -116,7 +116,10 @@ namespace Explorus_K.Game
                     }
                     currentAction = Actions.none;
                 }
-                    
+                else
+                {
+                    currentAction = Actions.none;
+                }   
 
             }
             else if (currentAction == Actions.move_left)

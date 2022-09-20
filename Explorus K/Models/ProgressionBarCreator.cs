@@ -136,8 +136,11 @@ namespace Explorus_K.Models
         {
             if (current > 0)
             {
-                bubbleBar[current].setType(ImageType.EMPTY_BAR);
-                current--;
+                for (int i = 1; i < length + 1; i++)
+                {
+                    bubbleBar[i].setType(ImageType.EMPTY_BAR);
+                }
+                current-=length;
                 //gemBar[current].setType(ImageType.GEM_BAR_HALF);
             }
         }
