@@ -71,5 +71,33 @@ namespace TestExplorus
 
             Assert.IsFalse(audioBabillard.HasMessages());
         }
+
+        [TestMethod]
+        public void givenThreadIsRunning_whenChangingSoundVolume_thenThreadShouldProcessElement()
+        {
+            audioThread.Start();
+
+            audioBabillard.AddMessage(AudioName.SET_SOUND, 10);
+            Assert.IsTrue(audioBabillard.HasMessages());
+
+            Thread.Sleep(100);
+
+            Assert.IsFalse(audioBabillard.HasMessages());
+        }
+
+        [TestMethod]
+        public void givenThreadIsRunning_whenChangingMusicVolume_thenThreadShouldProcessElement()
+        {
+            audioThread.Start();
+
+            audioBabillard.AddMessage(AudioName.SET_MUSIC, 20);
+            Assert.IsTrue(audioBabillard.HasMessages());
+
+            Thread.Sleep(100);
+
+            Assert.IsFalse(audioBabillard.HasMessages());
+        }
+
+
     }
 }

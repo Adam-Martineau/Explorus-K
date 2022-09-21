@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionManagerTest.cs" />
+    <Compile Include="AudioBabillardTest.cs" />
     <Compile Include="BindingTest.cs" />
     <Compile Include="CollisionStrategyTests.cs" />
     <Compile Include="IBarFactoryTests.cs" />
