@@ -9,6 +9,31 @@ using System.Text;
 using System.Threading;
 
 
+/*
+ * Code FSP du thread Physic :
+ 
+    set Strat = {gem, toxic, bubble}
+
+	PHYSIC (N=3)   = (start->PHYSIC[N]),
+	PHYSIC[i:0..3] = 
+			(
+			isColliding -> COLLIDING |
+			noMoreSprite -> PHYSIC |
+			nextSprite -> PHYSIC[N]
+ 			),
+
+	COLLIDING = 
+			( 
+			nextSprite -> PHYSIC[N] | 
+			 strat.Strat -> STRATEGY
+ 			),
+
+	STRATEGY = 
+			( 
+			nextCollisionStrat -> COLLIDING
+			| nextSprite -> PHYSIC[N]).
+ */
+
 namespace Explorus_K.Game
 {
 	internal class Physics
