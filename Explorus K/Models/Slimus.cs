@@ -57,16 +57,6 @@ namespace Explorus_K.Models
             return lifeCount--;
         }
 
-        public int getBubbleCount()
-        {
-            return bubbleCount;
-        }
-
-        public int decreaseBubbleCount()
-        {
-            return bubbleCount--;
-        }
-
         public void setImageType(ImageType imageType)
         {
             this.imageType = imageType;

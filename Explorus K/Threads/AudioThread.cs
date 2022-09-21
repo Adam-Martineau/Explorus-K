@@ -16,6 +16,25 @@ using System.IO;
 using System.Windows.Threading;
 using Explorus_K.Game;
 
+/*
+ * Code FSP du thread Audio :
+ 
+    AUDIO (N=4)   = AUDIO[N],
+    AUDIO[i:0..N] = 
+      ( when(i==4) playAudio[0] -> AUDIO[0] |
+	    when(i==4) playAudio[1] -> AUDIO[1] |
+	    when(i==4) playAudio[2] -> AUDIO[2] |
+	    when(i==4) playAudio[3] -> AUDIO[3] |
+	    when(i==4) playMusic -> MUSICPLAYER |
+	    when(i < 3) nextMediaPlayer[i+1] -> MEDIABUFFER |
+	    when(i == 3) nextMediaPlayer[0] -> MEDIABUFFER
+      ),
+
+
+    MEDIABUFFER = ( waitForEvent -> AUDIO),
+    MUSICPLAYER = (stop -> AUDIO).
+ */
+
 namespace Explorus_K.Threads
 {
     public class AudioThread : IListener

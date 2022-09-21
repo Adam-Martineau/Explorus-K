@@ -15,7 +15,7 @@ namespace TestExplorus
         public void healthBarTest()
         {
             HealthBarCreator healthBarCreator = new HealthBarCreator();
-            IBar iBar = healthBarCreator.InitializeBar(3);
+            IBar iBar = healthBarCreator.InitializeBar(3, 6);
 
             Assert.AreEqual(iBar.getLength(), 3);
             Assert.AreEqual(iBar.getCurrent(), 3);
@@ -33,7 +33,7 @@ namespace TestExplorus
         public void bubbleBarTest()
         {
             BubbleBarCreator bubbleBarCreator = new BubbleBarCreator();
-            IBar iBar = bubbleBarCreator.InitializeBar(3);
+            IBar iBar = bubbleBarCreator.InitializeBar(3, 6);
 
             Assert.AreEqual(iBar.getLength(), 3);
             Assert.AreEqual(iBar.getCurrent(), 3);
@@ -51,7 +51,7 @@ namespace TestExplorus
         public void gemBarTest()
         {
             GemBarCreator gemBarCreator = new GemBarCreator();
-            IBar iBar = gemBarCreator.InitializeBar(3);
+            IBar iBar = gemBarCreator.InitializeBar(3, 6);
 
             Assert.AreEqual(iBar.getLength(), 3);
             Assert.AreEqual(iBar.getCurrent(), 0);
