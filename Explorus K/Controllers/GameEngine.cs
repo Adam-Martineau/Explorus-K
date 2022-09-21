@@ -25,11 +25,13 @@ namespace Explorus_K.Controllers
 		Thread thread;
 		AudioBabillard audioBabillard;
 		private int gameLevel = 1;
+		private bool show_fps;
 
         public static object gameStatelock = new object();
         Thread physicsThread;
-
-		Thread mainThread;
+		AudioThread audio;
+		Thread audioThread;
+        Thread mainThread;
 
         public static EventWaitHandle physicsWaitHandle;
 
@@ -44,10 +46,12 @@ namespace Explorus_K.Controllers
             gameView = new GameView(this, gameLevel);
 			bindings = initiate_bindings();
             gameState = GameState.RESUME;
+			show_fps = true;
             playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
             actionManager = new ActionManager(this, playerMovement);
 
-			Thread audioThread = new Thread(new ThreadStart(new AudioThread(audioBabillard).Run));
+			audio = new AudioThread(audioBabillard);
+            audioThread = new Thread(new ThreadStart(audio.Run));
 			audioThread.Start();
             
 			mainThread = new Thread(new ThreadStart(GameLoop));
@@ -72,6 +76,7 @@ namespace Explorus_K.Controllers
             bindings.Add(new Binding(Keys.R, Actions.resume));
             bindings.Add(new Binding(Keys.Escape, Actions.exit));
             bindings.Add(new Binding(Keys.Space, Actions.shoot));
+            bindings.Add(new Binding(Keys.F, Actions.show_fps));
             return bindings;
 		}
 
@@ -107,7 +112,7 @@ namespace Explorus_K.Controllers
 
 						while (lag >= MS_PER_FRAME)
 						{
-							gameView.Update(fps);
+							gameView.Update(show_fps, fps);
 							lag -= MS_PER_FRAME;
 						}
 						
@@ -162,7 +167,8 @@ namespace Explorus_K.Controllers
 		public void pause()
 		{
 			gameState = GameState.PAUSE;
-		}
+            gameView.Pause();
+        }
 
 		public void resume()
 		{
@@ -180,7 +186,22 @@ namespace Explorus_K.Controllers
             gameState = GameState.STOP;
         }
 
-		public void restart()
+        public void showingFPS()
+        {
+            show_fps = !show_fps;
+        }
+
+		public void setMusicVolume(int volume)
+		{
+            audioBabillard.AddMessage(AudioName.SET_MUSIC, volume);
+        }
+
+        public void setSoundVolume(int volume)
+        {
+            audioBabillard.AddMessage(AudioName.SET_SOUND, volume);
+        }
+
+        public void restart()
 		{
             gameLevel += 1;
             bubbleManager = new BubbleManager();
@@ -188,6 +209,7 @@ namespace Explorus_K.Controllers
             int remainingLifes = gameView.getLabyrinthImage().HealthBar.getCurrent();
             if (gameState == GameState.STOP)
 			{
+				gameLevel = 1;
 				remainingLifes = Constant.SLIMUS_LIVES;
 			}
             gameView.Restart(this, gameLevel);

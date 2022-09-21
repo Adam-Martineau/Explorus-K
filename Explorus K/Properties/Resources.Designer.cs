@@ -126,6 +126,15 @@ namespace Explorus_K.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
+        internal static System.IO.UnmanagedMemoryStream SET_SOUND {
+            get {
+                return ResourceManager.GetStream("SET_SOUND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
         internal static System.IO.UnmanagedMemoryStream shootingBubble {
             get {
                 return ResourceManager.GetStream("shootingBubble", resourceCulture);
@@ -247,15 +256,6 @@ namespace Explorus_K.Properties {
         internal static System.IO.UnmanagedMemoryStream VERYLOUDCLAPPING {
             get {
                 return ResourceManager.GetStream("VERYLOUDCLAPPING", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream windowsDing {
-            get {
-                return ResourceManager.GetStream("windowsDing", resourceCulture);
             }
         }
     }

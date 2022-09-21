@@ -47,6 +47,8 @@ namespace Explorus_K.Game.Audio
             _audioFiles.Add(AudioName.SOUND_13, "sound13");
             _audioFiles.Add(AudioName.WINNING, "sound14");
             _audioFiles.Add(AudioName.SOUND_17, "sound17");
+            _audioFiles.Add(AudioName.SET_SOUND, "SET_SOUND");
+            _audioFiles.Add(AudioName.SET_MUSIC, "SET_MUSIC");
         }
     }
 }

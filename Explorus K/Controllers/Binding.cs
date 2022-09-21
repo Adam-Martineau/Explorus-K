@@ -17,7 +17,8 @@ namespace Explorus_K.Controllers
         pause,
         resume,
         exit,
-        shoot
+        shoot,
+        show_fps
     }
 
     internal class Binding

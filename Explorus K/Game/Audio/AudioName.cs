@@ -27,5 +27,7 @@ namespace Explorus_K.Game.Audio
         SOUND_13,
         WINNING,
         SOUND_17,
+        SET_SOUND,
+        SET_MUSIC
     }
 }

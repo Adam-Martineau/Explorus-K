@@ -13,6 +13,8 @@ using System.Media;
 using System.Runtime.Remoting.Contexts;
 using System.Runtime.CompilerServices;
 using System.IO;
+using System.Windows.Threading;
+using Explorus_K.Game;
 
 /*
  * Code FSP du thread Audio :
@@ -42,7 +44,7 @@ namespace Explorus_K.Threads
 
         private List<MediaPlayer> mediaPlayers = new List<MediaPlayer>();
         private int nextMediaPlayer = 1;
-        private double sfxPlayerVolume = 0.5;
+        //private double sfxPlayerVolume = 0.5;
 
         public AudioThread(AudioBabillard b)
         {
@@ -50,9 +52,20 @@ namespace Explorus_K.Threads
             b.RegisterListener(this);
         }
 
-        public void Process(string filename)
+        public void Process((string,int) message)
         {
-           playAudio(filename);
+            if (message.Item2 == -1)
+            {
+                playAudio(message.Item1);
+            }
+            else if (message.Item1 == "SET_MUSIC")
+            {
+                setMusicVolume(message.Item2);
+            }
+            else if (message.Item1 == "SET_SOUND")
+            {
+                changeSoundVolume(message);
+            }
         }
 
         public void Run()
@@ -61,7 +74,8 @@ namespace Explorus_K.Threads
 
             initMediaPlayerList();
 
-            setMusicVolume(10);
+            setMusicVolume(Constant.MUSIC_VOLUME);
+            setSfxVolume(Constant.SOUND_VOLUME);
 
             playMusic();
 
@@ -75,10 +89,10 @@ namespace Explorus_K.Threads
                     }
                     else
                     {
-                        List<string> fileNames = babillard_.GetMessages();
-                        foreach (string fileName in fileNames)
+                        List<(string, int)> messages = babillard_.GetMessages();
+                        foreach ((string, int) message in messages)
                         {
-                            Process(fileName);
+                            Process(message);
                         }
                     }
                 }
@@ -101,17 +115,28 @@ namespace Explorus_K.Threads
         {
             mediaPlayers[0].Volume = volume / 100.0f;
         }
+
+        public void changeSoundVolume((string, int) message)
+        {
+            setSfxVolume(message.Item2);
+            playAudio(message.Item1);
+        }
+
         public void setSfxVolume(int volume)
         {
-            for(int i = 1; i < mediaPlayers.Count; i++)
+            lock (this)
             {
-                mediaPlayers[i].Volume = volume / 100.0f;    
+                for (int i = 1; i < mediaPlayers.Count; i++)
+                {
+                    mediaPlayers[i].Volume = volume / 100.0f;
+                }
             }
         }
         public void playAudio(string filename)
         {
+            Console.WriteLine(filename);
             mediaPlayers[nextMediaPlayer].Open(new Uri(getResourceFilePath(filename)));
-            mediaPlayers[nextMediaPlayer].Volume = sfxPlayerVolume;
+            //mediaPlayers[nextMediaPlayer].Volume = sfxPlayerVolume;
             mediaPlayers[nextMediaPlayer].Dispatcher.Invoke(() => mediaPlayers[nextMediaPlayer].Play());
             changeNextMediaPlayer();
         }

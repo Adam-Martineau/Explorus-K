@@ -15,5 +15,8 @@ namespace Explorus_K.Game
         public const int TOXIC_SLIME_LIVES = 2;
         public const int INITIAL_BUBBLE_COUNT = 6;
         public const int INITIAL_GEM_COUNT = 6;
+
+        public const int MUSIC_VOLUME = 10;
+        public const int SOUND_VOLUME = 50;
     }
 }
