@@ -16,7 +16,7 @@ namespace TestExplorus
         public void healthBarFactoryTest()
         {
             HealthBarCreator healthBarCreator = new HealthBarCreator();
-            IBar iBar = healthBarCreator.InitializeBar(1);
+            IBar iBar = healthBarCreator.InitializeBar(1, 6);
             Assert.IsNotNull(iBar);
             Assert.IsInstanceOfType(iBar, typeof(HealthBar));
         }
@@ -25,7 +25,7 @@ namespace TestExplorus
         public void bubbleBarFactoryTest()
         {
             BubbleBarCreator bubbleBarCreator = new BubbleBarCreator();
-            IBar iBar = bubbleBarCreator.InitializeBar(1);
+            IBar iBar = bubbleBarCreator.InitializeBar(1, 6);
             Assert.IsNotNull(iBar);
             Assert.IsInstanceOfType(iBar, typeof(BubbleBar));
         }
@@ -34,7 +34,7 @@ namespace TestExplorus
         public void gemBarFactoryTest()
         {
             GemBarCreator gemBarCreator = new GemBarCreator();
-            IBar iBar = gemBarCreator.InitializeBar(1);
+            IBar iBar = gemBarCreator.InitializeBar(1, 6);
             Assert.IsNotNull(iBar);
             Assert.IsInstanceOfType(iBar, typeof(GemBar));
         }
