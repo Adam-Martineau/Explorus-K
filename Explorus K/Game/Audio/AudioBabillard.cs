@@ -12,14 +12,14 @@ namespace Explorus_K.Game.Audio
     {
         private List<IListener> listeners_;
 
-        private Queue<string> fileNameQueue;
+        private Queue<(string,int)> messageQueue;
 
         private AudioFileNameContainer audioFileNameContainer;
 
         public AudioBabillard()
         {
             listeners_ = new List<IListener>();
-            fileNameQueue = new Queue<string>();
+            messageQueue = new Queue<(string, int)>();
             audioFileNameContainer = AudioFileNameContainer.getInstance();
         }
 
@@ -28,9 +28,22 @@ namespace Explorus_K.Game.Audio
             lock (this)
             {
                 string fileName = audioFileNameContainer.getFileName(audioName);
-                this.fileNameQueue.Enqueue(fileName);
+                this.messageQueue.Enqueue((fileName, -1));
 
-                if (this.fileNameQueue.Count > 0)
+                if (this.messageQueue.Count > 0)
+                    foreach (IListener l in listeners_)
+                        l.Notify();
+            }
+        }
+
+        public void AddMessage(AudioName audioName, int value)
+        {
+            lock (this)
+            {
+                string fileName = audioFileNameContainer.getFileName(audioName);
+                this.messageQueue.Enqueue((fileName, value));
+
+                if (this.messageQueue.Count > 0)
                     foreach (IListener l in listeners_)
                         l.Notify();
             }
@@ -43,20 +56,20 @@ namespace Explorus_K.Game.Audio
 
         public bool HasMessages()
         {
-            return fileNameQueue.Count > 0;
+            return messageQueue.Count > 0;
         }
 
-        public List<string> GetMessages()
+        public List<(string, int)> GetMessages()
         {
-            List<string> messages = new List<string>();
+            List<(string, int)> messages = new List<(string, int)>();
             lock (this)
             {      
-                foreach (string fileName in fileNameQueue)
+                foreach ((string, int) item in messageQueue)
                 {
-                    messages.Add(fileName);
+                    messages.Add(item);
                 }
 
-                fileNameQueue.Clear();
+                messageQueue.Clear();
             }
 
             return messages;

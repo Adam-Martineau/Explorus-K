@@ -7,9 +7,12 @@ using System.Reflection.Emit;
 using System.Timers;
 using System.Windows.Forms;
 using System.Windows.Interop;
+using System.Windows.Threading;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Application = System.Windows.Forms.Application;
 using Size = System.Drawing.Size;
 using Timer = System.Timers.Timer;
+using TrackBar = System.Windows.Forms.TrackBar;
 
 namespace Explorus_K.Views
 {
@@ -100,24 +103,48 @@ namespace Explorus_K.Views
             }
 		}
 
-		public void Update(double fps)
+		public void Update(bool show_fps, double fps)
 		{
-            gameTitle = "Explorus-K - FPS " + Math.Round(fps, 1).ToString();
+			if (show_fps)
+			{
+                gameTitle = "Explorus-K - FPS " + Math.Round(fps, 1).ToString();
+            }
+			else
+			{
+                gameTitle = "Explorus-K";
+            }
         }
 
 		private void showMenu(Graphics g ,string text)
 		{
-            StringFormat stringFormat = new StringFormat();
-            stringFormat.Alignment = StringAlignment.Center;
-            stringFormat.LineAlignment = StringAlignment.Center;
+            StringFormat titleFormat = new StringFormat();
+            titleFormat.Alignment = StringAlignment.Center;
+            StringFormat soundFormat = new StringFormat();
+            soundFormat.Alignment = StringAlignment.Center;
+            soundFormat.LineAlignment = StringAlignment.Center;
             Brush brush = new SolidBrush(Color.FromArgb(64, 255, 255, 255));
 
             Rectangle menu = new Rectangle(0, (screenHeight / 2) - (menuHeight / 2), screenWidth, menuHeight);
-            g.DrawString(text, new Font("Arial", 80), Brushes.Red, menu, stringFormat);
+            g.DrawString(text, new Font("Arial", 80), Brushes.Red, menu, titleFormat);
+			gameForm.setVisibleSoundOptions(true);
+			//g.DrawString("Music Volume (Key Down) - 100 + (Key Up) - Mute (M)", new Font("Arial", 20), Brushes.Red, menu, soundFormat);
+            //g.DrawString("Sound Volume (Key Left) - 100 + (Key Right) - Mute (N)", new Font("Arial", 20), Brushes.Red, menu, soundFormat);
             g.FillRectangle(brush, Rectangle.Round(menu));
         }
 
-		private void HeaderRenderer(object sender, PaintEventArgs e)
+        private void showText(Graphics g, string text)
+        {
+            StringFormat titleFormat = new StringFormat();
+            titleFormat.Alignment = StringAlignment.Center;
+            titleFormat.LineAlignment = StringAlignment.Center;
+            Brush brush = new SolidBrush(Color.FromArgb(64, 255, 255, 255));
+
+            Rectangle menu = new Rectangle(0, (screenHeight / 2) - (menuHeight / 2), screenWidth, menuHeight);
+			g.DrawString(text, new Font("Arial", 80), Brushes.Red, menu, titleFormat);
+            g.FillRectangle(brush, Rectangle.Round(menu));
+        }
+
+        private void HeaderRenderer(object sender, PaintEventArgs e)
 		{
 			Graphics g = e.Graphics;
 			g.Clear(Color.Black);
@@ -139,15 +166,16 @@ namespace Explorus_K.Views
             }
 			else if (gameEngine.State == GameState.RESUME)
 			{
-				showMenu(g, countdown.ToString());
+                gameForm.setVisibleSoundOptions(false);
+                showText(g, countdown.ToString());
 			}
 			else if (gameEngine.State == GameState.STOP)
 			{
-                showMenu(g, "YOU DIED");
+                showText(g, "YOU DIED");
             }
             else if (gameEngine.State == GameState.RESTART)
             {
-                showMenu(g, "YOU WIN");
+                showText(g, "YOU WIN");
             }
             gameForm.UpdateStatus(gameEngine.State.ToString(), Color.Red);
         }
@@ -200,6 +228,11 @@ namespace Explorus_K.Views
             countdown = 3;
         }
 
+        public void Pause()
+        {
+            resumeTimer.Stop();
+        }
+
         private void OnTimedEventResume(Object source, ElapsedEventArgs e)
         {
             countdown -= 1;
@@ -214,5 +247,15 @@ namespace Explorus_K.Views
 		{
 			return labyrinthImage;
 		}
+
+        public void setMusicVolume(int volume)
+        {
+            gameEngine.setMusicVolume(volume);
+        }
+
+        public void setSoundVolume(int volume)
+        {
+            gameEngine.setSoundVolume(volume);
+        }
     }
 }
