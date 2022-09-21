@@ -1,4 +1,5 @@
 ﻿using Explorus_K.Controllers;
+using Explorus_K.Game;
 using Explorus_K.Game.Audio;
 using Explorus_K.Models;
 using Microsoft.VisualBasic.Devices;
@@ -9,15 +10,20 @@ using System.Text;
 using System.Threading;
 
 
-namespace Explorus_K.Game
+namespace Explorus_K.Threads
 {
-	internal class Physics
+	internal class PhysicsThread
 	{
 		GameEngine gameEngine;
 		AudioBabillard audioBabillard;
 		public List<Image2D> sprites { get; set; } = new List<Image2D>();
 
-		public Physics(GameEngine gameEngine, AudioBabillard audioBabillard)
+		public PhysicsThread()
+		{
+			//sprites = 
+		}
+
+		public PhysicsThread(GameEngine gameEngine, AudioBabillard audioBabillard)
 		{
 			this.gameEngine = gameEngine;
 			this.audioBabillard = audioBabillard;

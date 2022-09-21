@@ -57,7 +57,7 @@ namespace Explorus_K.Controllers
 			mainThread = new Thread(new ThreadStart(GameLoop));
 			mainThread.Start();
 			
-			Physics physics = new Physics(this, audioBabillard);
+			PhysicsThread physics = new PhysicsThread(this, audioBabillard);
             physicsWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
             physicsThread = new Thread(new ThreadStart(physics.startThread));
 			physicsThread.Start();
@@ -216,7 +216,7 @@ namespace Explorus_K.Controllers
             playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
             actionManager = new ActionManager(this, playerMovement);
             physicsThread.Abort();
-            Physics physics = new Physics(this, audioBabillard);
+            PhysicsThread physics = new PhysicsThread(this, audioBabillard);
             physicsWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
             physicsThread = new Thread(new ThreadStart(physics.startThread));
             physicsThread.Start();

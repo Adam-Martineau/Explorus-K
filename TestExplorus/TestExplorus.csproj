@@ -74,6 +74,7 @@
     <Compile Include="KeyStateTests.cs" />
     <Compile Include="LabyrinthTests.cs" />
     <Compile Include="MapIteratorTest.cs" />
+    <Compile Include="PhysicsThreadTest.cs" />
     <Compile Include="PlayerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpriteContainerTests.cs" />
