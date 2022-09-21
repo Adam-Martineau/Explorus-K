@@ -8,7 +8,6 @@ namespace Explorus_K.Game.Audio
 {
     public enum AudioName
     {
-        CLAPPING,
         BOOM,
         BEEP_BOOP,
         BUBBLE_HIT,
