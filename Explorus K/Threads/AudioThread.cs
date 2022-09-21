@@ -134,7 +134,6 @@ namespace Explorus_K.Threads
         }
         public void playAudio(string filename)
         {
-            Console.WriteLine(filename);
             mediaPlayers[nextMediaPlayer].Open(new Uri(getResourceFilePath(filename)));
             //mediaPlayers[nextMediaPlayer].Volume = sfxPlayerVolume;
             mediaPlayers[nextMediaPlayer].Dispatcher.Invoke(() => mediaPlayers[nextMediaPlayer].Play());
