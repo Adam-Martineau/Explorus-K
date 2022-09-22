@@ -34,10 +34,9 @@ namespace Explorus_K.Controllers
 		Thread audioThread;
         Thread mainThread;
 
-		Physics physics;
         public static EventWaitHandle physicsWaitHandle;
 
-		Render render;
+		//Render render;
         public static EventWaitHandle renderWaitHandle;
 
         public GameState State { get => gameState; set => gameState = value; }
@@ -67,9 +66,9 @@ namespace Explorus_K.Controllers
             physicsThread = new Thread(new ThreadStart(physics.startThread));
 			physicsThread.Start();
 
-			render = new Render();
-			renderWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-			render = new 
+			//render = new Render();
+			//renderWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
+			//render = new 
 
 			gameView.Show();
         }
