@@ -24,7 +24,8 @@ namespace Explorus_K.Controllers
 		private GameState gameState;
 		Thread thread;
 		AudioBabillard audioBabillard;
-		private int gameLevel = 1;
+		PhysicsThread physics;
+        private int gameLevel = 1;
 		private bool show_fps;
 
         public static object gameStatelock = new object();
@@ -57,8 +58,8 @@ namespace Explorus_K.Controllers
 			mainThread = new Thread(new ThreadStart(GameLoop));
 			mainThread.Start();
 			
-			PhysicsThread physics = new PhysicsThread(this, audioBabillard);
             physicsWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
+            physics = new PhysicsThread(this.gameView.labyrinthImage, audioBabillard);
             physicsThread = new Thread(new ThreadStart(physics.startThread));
 			physicsThread.Start();
 
@@ -118,6 +119,7 @@ namespace Explorus_K.Controllers
 						
 						gameView.Render();
 						physicsWaitHandle.Set();
+						gameState = physics.getGameState();
 					}
 
 					Thread.Sleep(1);
@@ -216,8 +218,8 @@ namespace Explorus_K.Controllers
             playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
             actionManager = new ActionManager(this, playerMovement);
             physicsThread.Abort();
-            PhysicsThread physics = new PhysicsThread(this, audioBabillard);
             physicsWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
+            physics = new PhysicsThread(gameView.labyrinthImage, audioBabillard);
             physicsThread = new Thread(new ThreadStart(physics.startThread));
             physicsThread.Start();
             gameView.InitializeHeaderBar(new HealthBarCreator(), Constant.SLIMUS_LIVES, remainingLifes);

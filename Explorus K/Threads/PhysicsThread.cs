@@ -10,34 +10,56 @@ using System.Text;
 using System.Threading;
 
 
+/*
+ * Code FSP du thread Physic :
+ 
+    set Strat = {gem, toxic, bubble}
+
+	PHYSIC (N=3)   = (start->PHYSIC[N]),
+	PHYSIC[i:0..3] = 
+			(
+			isColliding -> COLLIDING |
+			noMoreSprite -> PHYSIC |
+			nextSprite -> PHYSIC[N]
+ 			),
+
+	COLLIDING = 
+			( 
+			nextSprite -> PHYSIC[N] | 
+			 strat.Strat -> STRATEGY
+ 			),
+
+	STRATEGY = 
+			( 
+			nextCollisionStrat -> COLLIDING
+			| nextSprite -> PHYSIC[N]).
+ */
+
 namespace Explorus_K.Threads
 {
 	internal class PhysicsThread
 	{
-		GameEngine gameEngine;
-		AudioBabillard audioBabillard;
-		public List<Image2D> sprites { get; set; } = new List<Image2D>();
+        private AudioBabillard audioBabillard;
+        private LabyrinthImage labyrinthImage;
+        private GameState gameState;
+        private bool running_;
 
-		public PhysicsThread()
+        public PhysicsThread(LabyrinthImage labyrinthImage, AudioBabillard audioBabillard)
 		{
-			//sprites = 
-		}
-
-		public PhysicsThread(GameEngine gameEngine, AudioBabillard audioBabillard)
-		{
-			this.gameEngine = gameEngine;
+			this.labyrinthImage = labyrinthImage;
 			this.audioBabillard = audioBabillard;
-		}
+			this.gameState = GameState.PLAY;
+        }
 
 		public void startThread()
 		{
-			sprites = gameEngine.gameView.labyrinthImage.labyrinthImages;
+            running_ = true;
 
-			while (true)
+            while (running_)
 			{
-				GameEngine.physicsWaitHandle.WaitOne();
+                GameEngine.physicsWaitHandle.WaitOne();
 
-				foreach (Image2D sprite in sprites.ToList())
+                foreach (Image2D sprite in labyrinthImage.labyrinthImages.ToList())
 				{
 					if (sprite.getId() == SpriteType.SLIMUS || sprite.getId() == SpriteType.BUBBLE)
 						searchForCollisionWithSprite(sprite);
@@ -45,9 +67,14 @@ namespace Explorus_K.Threads
 			}
 		}
 
-		private void searchForCollisionWithSprite(Image2D spriteToLookFor)
+        public void Stop()
+        {
+            running_ = false;
+        }
+
+        private void searchForCollisionWithSprite(Image2D spriteToLookFor)
 		{
-			foreach (Image2D sprite in sprites.ToList())
+            foreach (Image2D sprite in labyrinthImage.labyrinthImages.ToList())
 			{
 				if (sprite.getId() != SpriteType.WALL || sprite.getId() != SpriteType.BAR)
 					if (areSpriteColliding(spriteToLookFor, sprite))
@@ -82,7 +109,7 @@ namespace Explorus_K.Threads
 		// the logic for a collision
 		private void newCollision(Image2D sprite_A, Image2D sprite_B)
 		{
-			if (sprite_A.getId() == SpriteType.BUBBLE || sprite_B.getId() == SpriteType.BUBBLE)
+            if (sprite_A.getId() == SpriteType.BUBBLE || sprite_B.getId() == SpriteType.BUBBLE)
 			{
 				// Finding the slimus is colliding with what
 				Image2D collidingSprite = null;
@@ -117,46 +144,62 @@ namespace Explorus_K.Threads
 				if (collidingSprite.getId() != SpriteType.TOXIC_SLIME)
 					executeCollision(collidingSprite);
 
-				else if (!gameEngine.gameView.labyrinthImage.slimus.getInvincible())
+				else if (!labyrinthImage.slimus.getInvincible())
 					executeToxicSlimeCollision(collidingSprite);
 			}
 		}
 
 		private void executeCollision(Image2D collidingSprite)
 		{
-			gameEngine.State = collidingSprite.collisionStrategy.executeStrategy(
-				gameEngine.gameView.labyrinthImage,
-				gameEngine.gameView.labyrinthImage.labyrinthImages.IndexOf(collidingSprite),
+			Console.WriteLine("hihi");
+            gameState = collidingSprite.collisionStrategy.executeStrategy(
+				labyrinthImage,
+				labyrinthImage.labyrinthImages.IndexOf(collidingSprite),
 				SpriteType.SLIMUS,
 				audioBabillard);
 		}
 
 		private void executeToxicSlimeCollision(Image2D toxicSlime)
 		{
-			gameEngine.gameView.labyrinthImage.startInvincibilityTimer();
+			labyrinthImage.startInvincibilityTimer();
 
-			gameEngine.State = toxicSlime.collisionStrategy.executeStrategy(
-					gameEngine.gameView.labyrinthImage,
-					gameEngine.gameView.labyrinthImage.labyrinthImages.IndexOf(toxicSlime),
+            gameState = toxicSlime.collisionStrategy.executeStrategy(
+					labyrinthImage,
+					labyrinthImage.labyrinthImages.IndexOf(toxicSlime),
 					SpriteType.SLIMUS,
 					audioBabillard);
 		}
 
 		private void executeToxicSlimeCollisionWithBubble(Image2D toxicSlime, Image2D bubbleImage)
 		{
-			foreach (Bubble bubbleBubble in gameEngine.gameView.labyrinthImage.bubbleManager.getBubbleList().ToList())
+			foreach (Bubble bubbleBubble in labyrinthImage.bubbleManager.getBubbleList().ToList())
 			{
 				if (bubbleImage.id == bubbleBubble.id && !bubbleBubble.isPopped())
 				{
                     bubbleBubble.popBubble();
 
-                    gameEngine.State = toxicSlime.collisionStrategy.executeStrategy(
-						gameEngine.gameView.labyrinthImage,
-						gameEngine.gameView.labyrinthImage.labyrinthImages.IndexOf(toxicSlime),
+                    gameState = toxicSlime.collisionStrategy.executeStrategy(
+						labyrinthImage,
+						labyrinthImage.labyrinthImages.IndexOf(toxicSlime),
 						SpriteType.BUBBLE,
 						audioBabillard);
                 }
 			}
 		}
+
+		public GameState getGameState()
+		{
+			return gameState;
+		}
+
+        public LabyrinthImage getLabyrinthImage()
+        {
+            return labyrinthImage;
+        }
+
+        public void setLabyrinthImage(LabyrinthImage lab)
+        {
+            labyrinthImage = lab;
+        }
     }
 }
