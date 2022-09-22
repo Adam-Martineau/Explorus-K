@@ -70,10 +70,16 @@ namespace Explorus_K.Views
 
         public void Render()
 		{
-			if (gameForm.Visible)
-				gameForm.BeginInvoke((MethodInvoker)delegate {
-					gameForm.Refresh();
-				});
+			while (true)
+			{
+				GameEngine.renderWaitHandle.WaitOne();
+
+				if (gameForm.Visible)
+					gameForm.BeginInvoke((MethodInvoker)delegate
+					{
+						gameForm.Refresh();
+					});
+			}
 		}
 
         public void Restart(GameEngine gameEngine, int level)
