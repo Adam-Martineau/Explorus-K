@@ -33,6 +33,7 @@ namespace Explorus_K.Controllers
 		AudioThread audio;
 		Thread audioThread;
         Thread mainThread;
+		Thread renderThread;
 
 		//Render render;
         public static EventWaitHandle renderWaitHandle;
@@ -63,9 +64,9 @@ namespace Explorus_K.Controllers
             physicsThread = new Thread(new ThreadStart(physics.startThread));
 			physicsThread.Start();
 
-			//render = new Render();
-			//renderWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-			//render = new 
+			renderWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
+			renderThread = new Thread(new ThreadStart(gameView.Render));
+			renderThread.Start();
 
 			gameView.Show();
         }
@@ -121,17 +122,19 @@ namespace Explorus_K.Controllers
 							lag -= MS_PER_FRAME;
 						}
 						
-						gameView.Render();
+						renderWaitHandle.Set();
+
+						//physicsWaitHandle.Set();
 						//PhysicsThread.physicsWaitHandle.Set();
 						physics.Notify();
 						gameState = physics.getGameState();
-					}
+                    }
 
 					Thread.Sleep(1);
 				}
 				else
 				{
-                    gameView.Render();
+					renderWaitHandle.Set();
                     Thread.Sleep(1);
 
                     if (gameState == GameState.STOP || gameState == GameState.RESTART)
