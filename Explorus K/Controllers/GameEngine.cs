@@ -33,7 +33,11 @@ namespace Explorus_K.Controllers
 		Thread audioThread;
         Thread mainThread;
 
+		Physics physics;
         public static EventWaitHandle physicsWaitHandle;
+
+		Render render;
+        public static EventWaitHandle renderWaitHandle;
 
         public GameState State { get => gameState; set => gameState = value; }
 
@@ -57,12 +61,16 @@ namespace Explorus_K.Controllers
 			mainThread = new Thread(new ThreadStart(GameLoop));
 			mainThread.Start();
 			
-			Physics physics = new Physics(this, audioBabillard);
+			physics = new Physics(this, audioBabillard);
             physicsWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
             physicsThread = new Thread(new ThreadStart(physics.startThread));
 			physicsThread.Start();
 
-            gameView.Show();
+			render = new Render();
+			renderWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
+			render = new 
+
+			gameView.Show();
         }
 
 		private List<Binding> initiate_bindings()
