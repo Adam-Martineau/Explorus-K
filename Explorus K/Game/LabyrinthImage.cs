@@ -1,4 +1,6 @@
-﻿using Explorus_K.Models;
+﻿using Explorus_K.Controllers;
+using Explorus_K.Models;
+using Explorus_K.Threads;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -89,7 +91,7 @@ namespace Explorus_K.Game
             return null;
         }
 
-        public void drawLabyrinthImage(Graphics g)
+        public void drawLabyrinthImage(Graphics graphics)
         {
             refreshPlayerSprite();
 
@@ -99,21 +101,35 @@ namespace Explorus_K.Game
                 if (SpriteType == SpriteType.MINI_SLIMUS || SpriteType == SpriteType.GEM)
                 {
                     float pos = (Constant.LARGE_SPRITE_DIMENSION - Constant.SMALL_SPRITE_DIMENSION) / 2;
-                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()), (float)(sp.X + labyrinthPosition.X + pos), (float)(sp.Y + labyrinthPosition.Y + pos), Constant.SMALL_SPRITE_DIMENSION, Constant.SMALL_SPRITE_DIMENSION);
+                    RenderTask renderTask = new drawImageTask(
+                        graphics,
+                        SpriteContainer.getInstance().getBitmapByImageType(sp.getType()),
+                        (float)(sp.X + labyrinthPosition.X + pos),
+                        (float)(sp.Y + labyrinthPosition.Y + pos),
+                        Constant.SMALL_SPRITE_DIMENSION,
+                        Constant.SMALL_SPRITE_DIMENSION);
+                    //GameEngine.render.addTask(renderTask);
                 }
                 else if (SpriteType == SpriteType.SLIMUS)
                 {
                     Bitmap opacityImage = SetOpacity(new Bitmap(SpriteContainer.getInstance().getBitmapByImageType(slimus.getImageType())), slimusOpacity);
-                    g.DrawImage(opacityImage, slimus.getPosX() + labyrinthPosition.X, slimus.getPosY() + labyrinthPosition.Y, Constant.LARGE_SPRITE_DIMENSION, Constant.LARGE_SPRITE_DIMENSION);
+                    RenderTask renderTask = new drawImageTask(
+                        graphics,
+                        opacityImage,
+                        slimus.getPosX(),
+                        slimus.getPosY() + labyrinthPosition.Y,
+                        Constant.LARGE_SPRITE_DIMENSION,
+                        Constant.LARGE_SPRITE_DIMENSION);
+                    //GameEngine.render.addTask(renderTask);
                 }
                 else if (SpriteType == SpriteType.DOOR)
                 {
                     Bitmap opacityImage = SetOpacity(new Bitmap(SpriteContainer.getInstance().getBitmapByImageType(sp.getType())), 0.4f);
-                    g.DrawImage(opacityImage, (float)(sp.X + labyrinthPosition.X), (float)(sp.Y + labyrinthPosition.Y), Constant.LARGE_SPRITE_DIMENSION, Constant.LARGE_SPRITE_DIMENSION);
+                    graphics.DrawImage(opacityImage, (float)(sp.X + labyrinthPosition.X), (float)(sp.Y + labyrinthPosition.Y), Constant.LARGE_SPRITE_DIMENSION, Constant.LARGE_SPRITE_DIMENSION);
                 }
                 else
                 {
-                    g.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()), (float)(sp.X + labyrinthPosition.X), (float)(sp.Y + labyrinthPosition.Y), Constant.LARGE_SPRITE_DIMENSION, Constant.LARGE_SPRITE_DIMENSION);
+                    graphics.DrawImage(SpriteContainer.getInstance().getBitmapByImageType(sp.getType()), (float)(sp.X + labyrinthPosition.X), (float)(sp.Y + labyrinthPosition.Y), Constant.LARGE_SPRITE_DIMENSION, Constant.LARGE_SPRITE_DIMENSION);
                 }
             }
         }

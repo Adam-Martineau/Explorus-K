@@ -58,8 +58,9 @@ namespace Explorus_K.Game
 
 				foreach (Image2D sprite in sprites.ToList())
 				{
-					if (sprite.getId() == SpriteType.SLIMUS || sprite.getId() == SpriteType.BUBBLE)
-						searchForCollisionWithSprite(sprite);
+					if (sprite != null)
+						if (sprite.getId() == SpriteType.SLIMUS || sprite.getId() == SpriteType.BUBBLE)
+							searchForCollisionWithSprite(sprite);
 				}
 			}
 		}

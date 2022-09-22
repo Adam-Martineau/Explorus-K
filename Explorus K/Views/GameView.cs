@@ -1,6 +1,7 @@
 ﻿using Explorus_K.Controllers;
 using Explorus_K.Game;
 using Explorus_K.Models;
+using Explorus_K.Threads;
 using System;
 using System.Drawing;
 using System.Reflection.Emit;
@@ -18,7 +19,7 @@ namespace Explorus_K.Views
 {
 	public class GameView
 	{
-		public GameForm gameForm;
+		static public GameForm gameForm;
         GameEngine gameEngine;
         string gameTitle;
 
@@ -140,9 +141,13 @@ namespace Explorus_K.Views
             Brush brush = new SolidBrush(Color.FromArgb(64, 255, 255, 255));
 
             Rectangle menu = new Rectangle(0, (screenHeight / 2) - (menuHeight / 2), screenWidth, menuHeight);
-			g.DrawString(text, new Font("Arial", 80), Brushes.Red, menu, titleFormat);
-            g.FillRectangle(brush, Rectangle.Round(menu));
-        }
+			//g.DrawString(text, new Font("Arial", 80), Brushes.Red, menu, titleFormat);
+            //g.FillRectangle(brush, Rectangle.Round(menu));
+
+			RenderTask renderTask = new drawStringTask(g, text, new Font("Arial", 80), Brushes.Red, menu, titleFormat);
+			GameEngine.render.addTask(renderTask);
+			renderTask = new fillRectengleTask(g, brush, Rectangle.Round(menu));
+		}
 
         private void HeaderRenderer(object sender, PaintEventArgs e)
 		{

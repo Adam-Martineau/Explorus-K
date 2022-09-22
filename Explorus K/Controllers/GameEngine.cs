@@ -28,15 +28,16 @@ namespace Explorus_K.Controllers
 		private bool show_fps;
 
         public static object gameStatelock = new object();
-        Thread physicsThread;
 		AudioThread audio;
 		Thread audioThread;
         Thread mainThread;
 
 		Physics physics;
+        Thread physicsThread;
         public static EventWaitHandle physicsWaitHandle;
 
-		Render render;
+		public static Render render;
+        Thread renderThread;
         public static EventWaitHandle renderWaitHandle;
 
         public GameState State { get => gameState; set => gameState = value; }
@@ -68,7 +69,8 @@ namespace Explorus_K.Controllers
 
 			render = new Render();
 			renderWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-			render = new 
+			renderThread = new Thread(new ThreadStart(render.startThread)); 
+			renderThread.Start();
 
 			gameView.Show();
         }
@@ -126,6 +128,7 @@ namespace Explorus_K.Controllers
 						
 						gameView.Render();
 						physicsWaitHandle.Set();
+						renderWaitHandle.Set();
 					}
 
 					Thread.Sleep(1);
