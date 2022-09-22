@@ -1,10 +1,12 @@
-﻿using Explorus_K.Controllers;
+﻿using Explorus_K;
+using Explorus_K.Controllers;
 using Explorus_K.Game;
 using Explorus_K.Game.Audio;
 using Explorus_K.Models;
 using Explorus_K.Threads;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,7 +22,6 @@ namespace TestExplorus
 
         PhysicsThread physicsThreadRef;
         Thread physicsThread;
-        static EventWaitHandle physicsWaitHandle;
         LabyrinthImage labyrinthImage;
         Labyrinth labyrinth;
         BubbleManager bubbleManager;
@@ -37,7 +38,6 @@ namespace TestExplorus
             labyrinth = new Labyrinth();
             bubbleManager = new BubbleManager();
             labyrinthImage = new LabyrinthImage(labyrinth, bubbleManager);
-            physicsWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
             physicsThreadRef = new PhysicsThread(labyrinthImage, audioBabillard);
             physicsThread = new Thread(new ThreadStart(physicsThreadRef.startThread));
         }
@@ -131,6 +131,7 @@ namespace TestExplorus
         /// 
 
         [TestMethod]
+        [Timeout(2000)]
         public void givenPhysicsThreadIsRunning_whenDoingNothing_thenShouldBeRunning()
         {
             physicsThread.Start();
@@ -153,18 +154,59 @@ namespace TestExplorus
         }
 
         [TestMethod]
-        public void givenThreadIsRunning_whenCollidingWithGem_thenThreadShouldIncreaseGemBar()
+        public void givenPhysicsThreadIsRunning_whenCollidingWithGem_thenThreadShouldIncreaseGemBar()
         {
+            labyrinthImage.GemBar.Initialize(6, 0);
             labyrinthImage.labyrinthImages.Add(new Image2D(SpriteType.GEM, ImageType.GEM, labyrinthImage.slimus.getPosX(), labyrinthImage.slimus.getPosY()));
             physicsThreadRef.setLabyrinthImage(labyrinthImage);
 
             physicsThread.Start();
 
-            //physicsThreadRef.Set();
+            Assert.AreEqual(0, physicsThreadRef.getLabyrinthImage().GemBar.getCurrent());
 
-            Thread.Sleep(100);
+            physicsThreadRef.Notify();
 
-            Assert.AreEqual(GameState.PLAY, physicsThreadRef.getGameState());
+            Thread.Sleep(2000);
+
+            Assert.AreEqual(1, physicsThreadRef.getLabyrinthImage().GemBar.getCurrent());
+        }
+
+        [TestMethod]
+        public void givenPhysicsThreadIsRunning_whenCollidingWithToxicSlime_thenThreadShouldDecreaseHealthBar()
+        {
+            labyrinthImage.HealthBar.Initialize(6, 6);
+            labyrinthImage.labyrinthImages.Add(new Image2D(SpriteType.TOXIC_SLIME, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, labyrinthImage.slimus.getPosX(), labyrinthImage.slimus.getPosY()));
+            physicsThreadRef.setLabyrinthImage(labyrinthImage);
+
+            physicsThread.Start();
+
+            Assert.AreEqual(6, physicsThreadRef.getLabyrinthImage().HealthBar.getCurrent());
+
+            physicsThreadRef.Notify();
+
+            Thread.Sleep(2000);
+
+            Assert.AreEqual(5, physicsThreadRef.getLabyrinthImage().HealthBar.getCurrent());
+        }
+
+        [TestMethod]
+        public void givenPhysicsThreadIsRunning_whenBubbleCollidingWithToxicSlime_thenThreadShouldDecreaseToxicLife()
+        {
+            Player toxic = labyrinthImage.getPlayerList()[labyrinthImage.getPlayerList().Count - 1];
+            Bubble bubble = new Bubble(toxic.getPosX(), toxic.getPosY(), ImageType.BUBBLE_BIG, MovementDirection.up, new Point());
+            bubbleManager.addBubble(bubble);
+            labyrinthImage.labyrinthImages.Add(bubble.refreshBubble());
+            physicsThreadRef.setLabyrinthImage(labyrinthImage);
+
+            physicsThread.Start();
+
+            Assert.AreEqual(2, physicsThreadRef.getLabyrinthImage().getPlayerList()[physicsThreadRef.getLabyrinthImage().getPlayerList().Count-1].getLifes());
+
+            physicsThreadRef.Notify();
+
+            Thread.Sleep(2000);
+
+            Assert.AreEqual(1, physicsThreadRef.getLabyrinthImage().getPlayerList()[physicsThreadRef.getLabyrinthImage().getPlayerList().Count - 1].getLifes());
         }
     }
 }

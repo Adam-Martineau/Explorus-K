@@ -34,8 +34,6 @@ namespace Explorus_K.Controllers
 		Thread audioThread;
         Thread mainThread;
 
-        public static EventWaitHandle physicsWaitHandle;
-
 		//Render render;
         public static EventWaitHandle renderWaitHandle;
 
@@ -61,7 +59,6 @@ namespace Explorus_K.Controllers
 			mainThread = new Thread(new ThreadStart(GameLoop));
 			mainThread.Start();
 			
-            physicsWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
             physics = new PhysicsThread(this.gameView.labyrinthImage, audioBabillard);
             physicsThread = new Thread(new ThreadStart(physics.startThread));
 			physicsThread.Start();
@@ -125,7 +122,8 @@ namespace Explorus_K.Controllers
 						}
 						
 						gameView.Render();
-						physicsWaitHandle.Set();
+						//PhysicsThread.physicsWaitHandle.Set();
+						physics.Notify();
 						gameState = physics.getGameState();
 					}
 
@@ -225,7 +223,6 @@ namespace Explorus_K.Controllers
             playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
             actionManager = new ActionManager(this, playerMovement);
             physicsThread.Abort();
-            physicsWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
             physics = new PhysicsThread(gameView.labyrinthImage, audioBabillard);
             physicsThread = new Thread(new ThreadStart(physics.startThread));
             physicsThread.Start();

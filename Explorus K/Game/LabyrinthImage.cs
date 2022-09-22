@@ -247,7 +247,7 @@ namespace Explorus_K.Game
                         tempToxicSlime.setLabyrinthName(tempLabyrinthName);
                         labyrintNameCount++;
                         playerList.Add(tempToxicSlime);
-                        labyrinthImages.Add(new Image2D(SpriteType.TOXIC_SLIME, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
+                        labyrinthImages.Add(new Image2D(SpriteType.TOXIC_SLIME, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION,tempToxicSlime.GetGuid()));
                     }
                 }
             }

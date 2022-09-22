@@ -57,19 +57,30 @@ namespace Explorus_K.Threads
 
             while (running_)
 			{
-                GameEngine.physicsWaitHandle.WaitOne();
-
-                foreach (Image2D sprite in labyrinthImage.labyrinthImages.ToList())
+				lock (this)
 				{
-					if (sprite.getId() == SpriteType.SLIMUS || sprite.getId() == SpriteType.BUBBLE)
-						searchForCollisionWithSprite(sprite);
-				}
+                    Monitor.Wait(this, 1000);
+
+                    foreach (Image2D sprite in labyrinthImage.labyrinthImages.ToList())
+                    {
+                        if (sprite.getId() == SpriteType.SLIMUS || sprite.getId() == SpriteType.BUBBLE)
+                            searchForCollisionWithSprite(sprite);
+                    }
+                }
 			}
 		}
 
         public void Stop()
         {
             running_ = false;
+        }
+
+		public void Notify()
+		{
+            lock (this)
+            {
+                Monitor.Pulse(this);
+            }
         }
 
         private void searchForCollisionWithSprite(Image2D spriteToLookFor)
@@ -151,13 +162,12 @@ namespace Explorus_K.Threads
 
 		private void executeCollision(Image2D collidingSprite)
 		{
-			Console.WriteLine("hihi");
             gameState = collidingSprite.collisionStrategy.executeStrategy(
 				labyrinthImage,
 				labyrinthImage.labyrinthImages.IndexOf(collidingSprite),
 				SpriteType.SLIMUS,
 				audioBabillard);
-		}
+        }
 
 		private void executeToxicSlimeCollision(Image2D toxicSlime)
 		{
@@ -174,10 +184,9 @@ namespace Explorus_K.Threads
 		{
 			foreach (Bubble bubbleBubble in labyrinthImage.bubbleManager.getBubbleList().ToList())
 			{
-				if (bubbleImage.id == bubbleBubble.id && !bubbleBubble.isPopped())
+                if (bubbleImage.id == bubbleBubble.id && !bubbleBubble.isPopped())
 				{
                     bubbleBubble.popBubble();
-
                     gameState = toxicSlime.collisionStrategy.executeStrategy(
 						labyrinthImage,
 						labyrinthImage.labyrinthImages.IndexOf(toxicSlime),
