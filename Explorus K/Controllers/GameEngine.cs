@@ -114,9 +114,8 @@ namespace Explorus_K.Controllers
 							gameView.Update(show_fps, fps);
 							lag -= MS_PER_FRAME;
 						}
-
+						
 						gameView.Render();
-
 						physics.Notify();
 						gameState = physics.getGameState();
                     }
