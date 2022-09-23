@@ -40,6 +40,7 @@ namespace Explorus_K.Threads
     public class AudioThread : IListener
     {
         private bool running_;
+        private bool musicRestarted = false;
         private AudioBabillard babillard_;
 
         private List<MediaPlayer> mediaPlayers = new List<MediaPlayer>();
@@ -94,6 +95,12 @@ namespace Explorus_K.Threads
                             Process(message);
                         }
                     }
+
+                    if(musicRestarted)
+                    {
+                        playMusic();
+                        musicRestarted = false;
+                    }
                 }
             }
         }
@@ -137,6 +144,11 @@ namespace Explorus_K.Threads
             //mediaPlayers[nextMediaPlayer].Volume = sfxPlayerVolume;
             mediaPlayers[nextMediaPlayer].Dispatcher.Invoke(() => mediaPlayers[nextMediaPlayer].Play());
             changeNextMediaPlayer();
+        }
+
+        public void restartMusic()
+        {
+            musicRestarted = true;
         }
 
         private void initMediaPlayerList()

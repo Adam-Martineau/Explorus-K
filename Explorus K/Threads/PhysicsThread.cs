@@ -63,8 +63,11 @@ namespace Explorus_K.Threads
 
                     foreach (Image2D sprite in labyrinthImage.labyrinthImages.ToList())
                     {
-                        if (sprite.getId() == SpriteType.SLIMUS || sprite.getId() == SpriteType.BUBBLE)
-                            searchForCollisionWithSprite(sprite);
+						if (sprite != null)
+						{
+							if (sprite.getId() == SpriteType.SLIMUS || sprite.getId() == SpriteType.BUBBLE)
+								searchForCollisionWithSprite(sprite);
+						}
                     }
                 }
 			}
