@@ -183,7 +183,10 @@ namespace Explorus_K.Views
             {
                 showText(g, "YOU WIN");
             }
-            gameForm.UpdateStatus(gameEngine.State.ToString(), Color.Red);
+
+            gameForm.BeginInvoke((MethodInvoker)delegate {
+                gameForm.UpdateStatus(gameEngine.State.ToString(), Color.Red);
+            });
         }
 
         public Player getSlimusObject()
