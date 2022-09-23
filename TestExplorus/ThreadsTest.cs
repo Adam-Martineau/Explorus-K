@@ -26,6 +26,9 @@ namespace TestExplorus
         Labyrinth labyrinth;
         BubbleManager bubbleManager;
 
+        GameForm gameForm;
+        Thread renderThread;
+
 
         [TestInitialize]
         public void initializeThread()
@@ -40,6 +43,8 @@ namespace TestExplorus
             labyrinthImage = new LabyrinthImage(labyrinth, bubbleManager);
             physicsThreadRef = new PhysicsThread(labyrinthImage, audioBabillard);
             physicsThread = new Thread(new ThreadStart(physicsThreadRef.startThread));
+
+
         }
 
         [TestCleanup]
@@ -207,6 +212,19 @@ namespace TestExplorus
             Thread.Sleep(2000);
 
             Assert.AreEqual(1, physicsThreadRef.getLabyrinthImage().getPlayerList()[physicsThreadRef.getLabyrinthImage().getPlayerList().Count - 1].getLifes());
+        }
+
+        /// =====================================
+        ///          RENDER THREAD TESTS
+        /// =====================================
+        /// 
+
+        [TestMethod]
+        public void testIsRenderThreadRunning()
+        {
+            physicsThread.Start();
+            Assert.AreEqual(physicsThread.ThreadState, ThreadState.Running);
+            Assert.IsTrue(physicsThread.IsAlive);
         }
     }
 }

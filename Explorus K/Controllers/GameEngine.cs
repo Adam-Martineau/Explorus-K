@@ -35,9 +35,6 @@ namespace Explorus_K.Controllers
         Thread mainThread;
 		Thread renderThread;
 
-		//Render render;
-        public static EventWaitHandle renderWaitHandle;
-
         public GameState State { get => gameState; set => gameState = value; }
 
         public GameEngine()
@@ -63,10 +60,6 @@ namespace Explorus_K.Controllers
             physics = new PhysicsThread(this.gameView.labyrinthImage, audioBabillard);
             physicsThread = new Thread(new ThreadStart(physics.startThread));
 			physicsThread.Start();
-
-			renderWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-			renderThread = new Thread(new ThreadStart(gameView.Render));
-			renderThread.Start();
 
 			gameView.Show();
         }
@@ -121,11 +114,9 @@ namespace Explorus_K.Controllers
 							gameView.Update(show_fps, fps);
 							lag -= MS_PER_FRAME;
 						}
-						
-						renderWaitHandle.Set();
 
-						//physicsWaitHandle.Set();
-						//PhysicsThread.physicsWaitHandle.Set();
+						gameView.Render();
+
 						physics.Notify();
 						gameState = physics.getGameState();
                     }
@@ -134,7 +125,7 @@ namespace Explorus_K.Controllers
 				}
 				else
 				{
-					renderWaitHandle.Set();
+					gameView.Render();
                     Thread.Sleep(1);
 
                     if (gameState == GameState.STOP || gameState == GameState.RESTART)

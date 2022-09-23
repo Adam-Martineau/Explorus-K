@@ -1,9 +1,11 @@
 ﻿using Explorus_K.Controllers;
 using Explorus_K.Game;
 using Explorus_K.Models;
+using Explorus_K.Threads;
 using System;
 using System.Drawing;
 using System.Reflection.Emit;
+using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
 using System.Windows.Interop;
@@ -18,8 +20,13 @@ namespace Explorus_K.Views
 {
 	public class GameView
 	{
-		public GameForm gameForm;
+		public static volatile GameForm gameForm;
         GameEngine gameEngine;
+
+        RenderThread renderThread = new RenderThread();
+        public static EventWaitHandle renderWaitHandle;
+
+
         string gameTitle;
 
 		internal int largeSpriteDimension = 52;
@@ -60,6 +67,10 @@ namespace Explorus_K.Views
 
             gameForm.UpdateLevel("Level " + level.ToString(), Color.Red);
 
+            renderWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
+            Thread thread = new Thread(new ThreadStart(() => renderThread.startThread()));
+            thread.Start();
+
             resize();
 		}
 
@@ -70,17 +81,8 @@ namespace Explorus_K.Views
 
         public void Render()
 		{
-			while (true)
-			{
-				GameEngine.renderWaitHandle.WaitOne();
-
-				if (gameForm.Visible)
-					gameForm.BeginInvoke((MethodInvoker)delegate
-					{
-						gameForm.Refresh();
-					});
-			}
-		}
+            renderWaitHandle.Set();
+        }
 
         public void Restart(GameEngine gameEngine, int level)
 		{
