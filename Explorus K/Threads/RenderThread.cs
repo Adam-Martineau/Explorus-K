@@ -1,4 +1,10 @@
-﻿using Explorus_K.Controllers;
+﻿/*
+ * RENDER_THREAD = (wait -> RENDER_THREAD | render -> RENDER_FORM),
+ * RENDER_FORM = (refresh_form -> RENDER_THREAD).
+ * 
+ */
+
+using Explorus_K.Controllers;
 using Explorus_K.Views;
 using System;
 using System.Collections.Generic;

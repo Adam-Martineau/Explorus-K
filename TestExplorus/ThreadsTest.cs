@@ -4,6 +4,7 @@ using Explorus_K.Game;
 using Explorus_K.Game.Audio;
 using Explorus_K.Models;
 using Explorus_K.Threads;
+using Explorus_K.Views;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Drawing;
@@ -26,7 +27,7 @@ namespace TestExplorus
         Labyrinth labyrinth;
         BubbleManager bubbleManager;
 
-        GameForm gameForm;
+        RenderThread render;
         Thread renderThread;
 
 
@@ -44,7 +45,8 @@ namespace TestExplorus
             physicsThreadRef = new PhysicsThread(labyrinthImage, audioBabillard);
             physicsThread = new Thread(new ThreadStart(physicsThreadRef.startThread));
 
-
+            render = new RenderThread();
+            renderThread = new Thread(new ThreadStart(render.startThread));
         }
 
         [TestCleanup]
@@ -222,9 +224,10 @@ namespace TestExplorus
         [TestMethod]
         public void testIsRenderThreadRunning()
         {
-            physicsThread.Start();
-            Assert.AreEqual(physicsThread.ThreadState, ThreadState.Running);
-            Assert.IsTrue(physicsThread.IsAlive);
+            renderThread.Start();
+            Assert.AreEqual(renderThread.ThreadState, ThreadState.Running);
+            Assert.IsTrue(renderThread.IsAlive);
+            renderThread.Abort();
         }
     }
 }
