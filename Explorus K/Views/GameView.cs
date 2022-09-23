@@ -88,7 +88,6 @@ namespace Explorus_K.Views
             this.gameEngine = gameEngine;
             labyrinthImage = new LabyrinthImage(gameEngine.GetLabyrinth(), gameEngine.getBubbleManager());
             resize();
-            Render();
         }
 
         public void Close()
@@ -133,8 +132,6 @@ namespace Explorus_K.Views
             Rectangle menu = new Rectangle(0, (screenHeight / 2) - (menuHeight / 2), screenWidth, menuHeight);
             g.DrawString(text, new Font("Arial", 80), Brushes.Red, menu, titleFormat);
 			gameForm.setVisibleSoundOptions(true);
-			//g.DrawString("Music Volume (Key Down) - 100 + (Key Up) - Mute (M)", new Font("Arial", 20), Brushes.Red, menu, soundFormat);
-            //g.DrawString("Sound Volume (Key Left) - 100 + (Key Right) - Mute (N)", new Font("Arial", 20), Brushes.Red, menu, soundFormat);
             g.FillRectangle(brush, Rectangle.Round(menu));
         }
 

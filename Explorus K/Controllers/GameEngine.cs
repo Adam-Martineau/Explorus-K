@@ -124,8 +124,6 @@ namespace Explorus_K.Controllers
 						
 						renderWaitHandle.Set();
 
-						//physicsWaitHandle.Set();
-						//PhysicsThread.physicsWaitHandle.Set();
 						physics.Notify();
 						gameState = physics.getGameState();
                     }
