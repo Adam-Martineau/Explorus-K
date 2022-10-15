@@ -184,4 +184,88 @@
   <data name="SET_SOUND" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SET_SOUND.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Title" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Title.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="audio_bleu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\audio-bleu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="audio_noir" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\audio-noir.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="difficulty_bleu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\difficulty-bleu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="difficulty_noir" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\difficulty-noir.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="exitgame_bleu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\exitgame-bleu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="exitgame_noir" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\exitgame-noir.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="resume_bleu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\resume-bleu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="resume_noir" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\resume-noir.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="startgame_bleu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\startgame-bleu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="startgame_noir" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\startgame-noir.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cursor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cursor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Title_Bleu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Title-Bleu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="numberFontMenu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MinecraftTen-VGORe.ttf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="music_volume_bleu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\music-volume-bleu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="music_volume_noir" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\music-volume-noir.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="return_bleu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\return-bleu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="return_noir" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\return-noir.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sound_volume_bleu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sound-volume-bleu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sound_volume_noir" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sound-volume-noir.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="expert_bleu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\expert-bleu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="expert_noir" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\expert-noir.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="impossible_bleu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\impossible-bleu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="impossible_noir" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\impossible-noir.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="normal_bleu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\normal-bleu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="normal_noir" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\normal-noir.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="easy_bleu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\easy-bleu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="easy_noir" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\easy-noir.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

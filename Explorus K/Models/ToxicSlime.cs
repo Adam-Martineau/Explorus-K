@@ -159,5 +159,10 @@ namespace Explorus_K.Models
         {
             return this.id;
         }
+
+        public void setLives(int lives)
+        {
+            this.lifeCount = lives;
+        }
     }
 }

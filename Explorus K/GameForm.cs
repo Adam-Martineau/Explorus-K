@@ -4,30 +4,20 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Threading;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Explorus_K
 {
     public partial class GameForm : Form
     {
+        delegate void SetVisibleCallback(Form f, Control ctrl, bool value);
+        delegate void SetStatusCallback(Form f, string msg, Color color);
         private GameView gameView;
         public GameForm(GameView gameView)
         {
             InitializeComponent();
             this.DoubleBuffered = true;
             this.gameView = gameView;
-            musicTrackBar.Value = Constant.MUSIC_VOLUME;
-            musicTrackBar.Maximum = 100;
-            musicTrackBar.Minimum = 0;
-            musicTrackBar.TickFrequency = 5;
-            soundTrackBar.Maximum = 100;
-            soundTrackBar.Minimum = 0;
-            soundTrackBar.TickFrequency = 5;
-            soundTrackBar.Value = Constant.SOUND_VOLUME;
-            musicValueLabel.Text = musicTrackBar.Value.ToString();
-            soundValueLabel.Text = soundTrackBar.Value.ToString();
-            soundOptionsPanel.Width = 400;
-            soundOptionsPanel.Height = 100;
-            soundOptionsPanel.Location = new Point(this.Width / 2 - soundOptionsPanel.Size.Width / 2,this.Height / 2);
         }
 
         private void GameForm_KeyDown(object sender, KeyEventArgs e)
@@ -53,47 +43,37 @@ namespace Explorus_K
             gameView.LostFocus();
         }
 
-        public void UpdateStatus(string msg, Color color)
+        public void UpdateStatus(Form form, string msg, Color color)
         {
-            statusLabel.Text = msg;
-            statusLabel.ForeColor = color;
+            if (statusBar.InvokeRequired)
+            {
+                SetStatusCallback d = new SetStatusCallback(UpdateStatus);
+                form.Invoke(d, new object[] { form, msg, color });
+            }
+            else
+            {
+                statusLabel.Text = msg;
+                statusLabel.ForeColor = color;
+            }
+        }
+
+        public void showControl(Form form, Control ctrl, bool value)
+        {
+            if (ctrl.InvokeRequired)
+            {
+                SetVisibleCallback d = new SetVisibleCallback(showControl);
+                form.Invoke(d, new object[] { form, ctrl, value });
+            }
+            else
+            {
+                ctrl.Visible = value;
+            }
         }
 
         public void UpdateLevel(string msg, Color color)
         {
             levelLabel.Text = msg;
             levelLabel.ForeColor = color;
-        }
-
-        public void setVisibleSoundOptions(bool visible)
-        {
-            soundOptionsPanel.Visible = visible;
-        }
-
-        private void musicTrackBar_Scroll(object sender, EventArgs e)
-        {
-            gameView.setMusicVolume(musicTrackBar.Value);
-            musicValueLabel.Text = musicTrackBar.Value.ToString();
-        }
-
-        private void soundTrackBar_Scroll(object sender, EventArgs e)
-        {
-            gameView.setSoundVolume(soundTrackBar.Value);
-            soundValueLabel.Text = soundTrackBar.Value.ToString();
-        }
-
-        private void muteMusic_Click(object sender, EventArgs e)
-        {
-            musicTrackBar.Value = 0;
-            gameView.setMusicVolume(musicTrackBar.Value);
-            musicValueLabel.Text = musicTrackBar.Value.ToString();
-        }
-
-        private void muteSound_Click(object sender, EventArgs e)
-        {
-            soundTrackBar.Value = 0;
-            gameView.setSoundVolume(soundTrackBar.Value);
-            soundValueLabel.Text = soundTrackBar.Value.ToString();
         }
     }
 }

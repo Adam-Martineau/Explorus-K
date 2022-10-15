@@ -19,6 +19,8 @@ namespace Explorus_K
 
         int getLifes();
 
+        void setLives(int lives);
+
         int decreaseLife();
 
         Guid GetGuid();

@@ -47,6 +47,45 @@ namespace Explorus_K.Game
 				currentAction = action;
 		}
 
+        public void menuHandler(Actions action)
+        {
+            currentAction = action;
+        }
+
+        public void systemMenuManagement(GameView view)
+        {
+            if (currentAction == Actions.select_menu)
+            {
+                view.selectMenu();
+                currentAction = Actions.none;
+            }
+            else if (currentAction == Actions.move_left)
+            {
+                view.volumeDown();
+                currentAction = Actions.none;
+            }
+            else if (currentAction == Actions.move_right)
+            {
+                view.volumeUp();
+                currentAction = Actions.none;
+            }
+            else if (currentAction == Actions.move_up)
+            {
+                view.cursorUp();
+                currentAction = Actions.none;
+            }
+            else if (currentAction == Actions.move_down)
+            {
+                view.cursorDown();
+                currentAction = Actions.none;
+            }
+            else if (currentAction == Actions.mute)
+            {
+                view.mutevolume();
+                currentAction = Actions.none;
+            }
+        }
+
         public void systemActionsManagement()
         {
             if (currentAction == Actions.pause)

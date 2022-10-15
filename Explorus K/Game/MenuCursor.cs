@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 
 namespace Explorus_K.Game
 {
-    public enum GameState
+    public enum MenuCursor
     {
-        PLAY,
-        PAUSE,
+        START_GAME,
+        EXIT_GAME,
         RESUME,
-        STOP,
-        RESTART,
-        MENU
+        AUDIO,
+        DIFFICULTY,
+        MUSIC_VOLUME,
+        SOUND_VOLUME,
+        RETURN
     }
 }
