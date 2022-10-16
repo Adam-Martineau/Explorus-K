@@ -29,6 +29,7 @@ namespace Explorus_K.Controllers
 		PhysicsThread physics;
         private int gameLevel = 1;
 		private bool show_fps;
+		private bool undoDone = false;
 
         public static object gameStatelock = new object();
         Thread physicsThread;
@@ -142,7 +143,7 @@ namespace Explorus_K.Controllers
 					{
 						firstListTimestamp = commands[0].getCommandTimestamp();
 						replayInitiated = true;
-					}
+                    }
 					else
 					{
 						int i = 0;
@@ -161,6 +162,11 @@ namespace Explorus_K.Controllers
 						{
 							command.execute();
 							commands.Remove(command);
+
+							if(command.GetType() == typeof(BubbleCommand))
+							{
+								int i = 0;
+							}
 						}
 					}
 
@@ -180,7 +186,7 @@ namespace Explorus_K.Controllers
 
                         gameView.Render();
                         physics.Notify();
-                        gameState = physics.getGameState();
+                        //gameState = physics.getGameState();
                     }
 
 					if(commands.Count == 0)
@@ -188,18 +194,30 @@ namespace Explorus_K.Controllers
                         gameState = GameState.RESTART;
 						replayInitiated = false;
 					}
-					
+
                     Thread.Sleep(1);
 
                 }
 				else if(gameState == GameState.UNDO)
 				{
-                    for (int i = 0; i < commandInvoker.getCommands().Count; i++)
-                    {
-                        commandInvoker.getCommands()[commandInvoker.getCommands().Count - i - 1].unexecute();
-                        playerMovement.moveAndAnimatePlayer(gameView.getLabyrinthImage().getPlayerList(), commandInvoker, gameState);
+					if(!undoDone)
+					{
+                        for (int i = 0; i < commandInvoker.getCommands().Count; i++)
+                        {
+                            commandInvoker.getCommands()[commandInvoker.getCommands().Count - i - 1].unexecute();
+                            playerMovement.moveAndAnimatePlayer(gameView.getLabyrinthImage().getPlayerList(), commandInvoker, gameState);
+                        }
+
+                        gameState = GameState.REPLAY;
+						undoDone = true;
                     }
-					gameState = GameState.REPLAY;
+					else
+					{
+						gameState = GameState.REPLAY;
+					}
+                    
+
+					Thread.Sleep(10);
                 }
 				else
 				{

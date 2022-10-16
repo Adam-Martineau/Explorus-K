@@ -23,7 +23,9 @@ namespace Explorus_K.Game.Replay
 
         public void computeBubbleCommand(Bubble bubble, BubbleManager bubbleManager)
         {
-            bubbleManager.addBubble(bubble);
+            Bubble bubbleCopy = new Bubble(bubble.getPosX(), bubble.getPosY(), ImageType.BUBBLE_BIG, bubble.getMovementDirection(), bubble.getIteratorPosition());
+
+            bubbleManager.addBubble(bubbleCopy);
         }
     }
 }

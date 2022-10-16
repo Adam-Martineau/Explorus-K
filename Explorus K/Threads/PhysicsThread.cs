@@ -65,10 +65,14 @@ namespace Explorus_K.Threads
                     {
 						if (sprite != null)
 						{
-							if (sprite.getId() == SpriteType.SLIMUS || sprite.getId() == SpriteType.BUBBLE)
+							if (sprite.getId() == SpriteType.SLIMUS)
+							{
 								searchForCollisionWithSprite(sprite);
+							}
+								
 						}
                     }
+
                 }
 			}
 		}

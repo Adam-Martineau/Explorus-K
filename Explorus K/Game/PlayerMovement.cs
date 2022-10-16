@@ -133,6 +133,7 @@ namespace Explorus_K.Game
                 {
                     movePlayer(player, movementDirection, count);
                     firstUndoMovement = false;
+                    player.setAnimationCount(0);
                 }
                 else
                 {
@@ -143,7 +144,7 @@ namespace Explorus_K.Game
                 player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.BIG)));
                 movePlayerIterator(player, movementDirection);
                 player.setMovementDirection(MovementDirection.none);
-                count = 0;
+               
             }
         }
 
