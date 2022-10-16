@@ -1,5 +1,6 @@
 ﻿using Explorus_K.Controllers;
 using Explorus_K.Game.Audio;
+using Explorus_K.Game.Replay;
 using Explorus_K.Models;
 using Explorus_K.Views;
 using System;
@@ -79,7 +80,7 @@ namespace Explorus_K.Game
         }
 
         //If the action can be done, we use a state machine to wait until the action is over
-        public void characterActionsManagement(GameView view, BubbleManager bubbleManager, AudioBabillard audioBabillard)
+        public void characterActionsManagement(GameView view, BubbleManager bubbleManager, AudioBabillard audioBabillard, Invoker commandInvoker)
 		{
             //Actions state machine
             if (currentAction == Actions.shoot)
@@ -97,7 +98,7 @@ namespace Explorus_K.Game
                             if(movePlayer.canPlayerMove(oldDirection, posBubble, SpriteType.SLIMUS))
                             {
                                 bubble = new Bubble(slimus.getPosX(), slimus.getPosY() - Constant.LARGE_SPRITE_DIMENSION, ImageType.BUBBLE_BIG, oldDirection, new Point(posBubble.X, posBubble.Y - 1));
-                                bubbleManager.addBubble(bubble);
+                                commandInvoker.executeCommand(new BubbleCommand(bubble, bubbleManager));
                                 view.getBubbleBarObject().Decrease();
                                 audioBabillard.AddMessage(AudioName.SHOOTING_BUBBLE);
                             }
@@ -106,7 +107,7 @@ namespace Explorus_K.Game
                             if (movePlayer.canPlayerMove(oldDirection, posBubble, SpriteType.SLIMUS))
                             {
                                 bubble = new Bubble(slimus.getPosX(), slimus.getPosY() + Constant.LARGE_SPRITE_DIMENSION, ImageType.BUBBLE_BIG, oldDirection, new Point(posBubble.X, posBubble.Y + 1));
-                                bubbleManager.addBubble(bubble);
+                                commandInvoker.executeCommand(new BubbleCommand(bubble, bubbleManager));
                                 view.getBubbleBarObject().Decrease();
                                 audioBabillard.AddMessage(AudioName.SHOOTING_BUBBLE);
                             }
@@ -115,7 +116,7 @@ namespace Explorus_K.Game
                             if (movePlayer.canPlayerMove(oldDirection, posBubble, SpriteType.SLIMUS))
                             {
                                 bubble = new Bubble(slimus.getPosX() - Constant.LARGE_SPRITE_DIMENSION, slimus.getPosY(), ImageType.BUBBLE_BIG, oldDirection, new Point(posBubble.X - 1, posBubble.Y));
-                                bubbleManager.addBubble(bubble);
+                                commandInvoker.executeCommand(new BubbleCommand(bubble, bubbleManager));
                                 view.getBubbleBarObject().Decrease();
                                 audioBabillard.AddMessage(AudioName.SHOOTING_BUBBLE);
                             }
@@ -124,7 +125,7 @@ namespace Explorus_K.Game
                             if (movePlayer.canPlayerMove(oldDirection, posBubble, SpriteType.SLIMUS))
                             {
                                 bubble = new Bubble(slimus.getPosX() + Constant.LARGE_SPRITE_DIMENSION, slimus.getPosY(), ImageType.BUBBLE_BIG, oldDirection, new Point(posBubble.X + 1, posBubble.Y));
-                                bubbleManager.addBubble(bubble);
+                                commandInvoker.executeCommand(new BubbleCommand(bubble, bubbleManager));
                                 view.getBubbleBarObject().Decrease();
                                 audioBabillard.AddMessage(AudioName.SHOOTING_BUBBLE);
                             }
@@ -143,7 +144,7 @@ namespace Explorus_K.Game
 				if(!isMovementInitialized)
 				{
 					isMovementInitialized = true;
-					view.getSlimusObject().setMovementDirection(MovementDirection.left);
+					commandInvoker.executeCommand(new SlimusCommand(view.getSlimusObject(), MovementDirection.left));
                     audioBabillard.AddMessage(AudioName.MOVING);
 				}
 
@@ -159,7 +160,7 @@ namespace Explorus_K.Game
                 if (!isMovementInitialized)
                 {
                     isMovementInitialized = true;
-                    view.getSlimusObject().setMovementDirection(MovementDirection.right);
+                    commandInvoker.executeCommand(new SlimusCommand(view.getSlimusObject(), MovementDirection.right));
                     audioBabillard.AddMessage(AudioName.MOVING);
                 }
 
@@ -177,7 +178,7 @@ namespace Explorus_K.Game
                 if (!isMovementInitialized)
                 {
                     isMovementInitialized = true;
-                    view.getSlimusObject().setMovementDirection(MovementDirection.up);
+                    commandInvoker.executeCommand(new SlimusCommand(view.getSlimusObject(), MovementDirection.up));
                     audioBabillard.AddMessage(AudioName.MOVING);
                 }
 
@@ -193,7 +194,7 @@ namespace Explorus_K.Game
                 if (!isMovementInitialized)
                 {
                     isMovementInitialized = true;
-                    view.getSlimusObject().setMovementDirection(MovementDirection.down);
+                    commandInvoker.executeCommand(new SlimusCommand(view.getSlimusObject(), MovementDirection.down));
                     audioBabillard.AddMessage(AudioName.MOVING);
                 }
 

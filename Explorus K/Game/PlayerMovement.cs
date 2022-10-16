@@ -1,5 +1,6 @@
 ﻿using Explorus_K.Controllers;
 using Explorus_K.Game.Audio;
+using Explorus_K.Game.Replay;
 using Explorus_K.Models;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,13 @@ namespace Explorus_K.Game
         private const int playerStepSize = 2;
         private const int bubbleStepSize = 4;
 
+
+        bool firstUndoMovement;
+
         public PlayerMovement(Iterator iterator)
         {
             this.iterator = iterator;
+            firstUndoMovement = true;
         }
 
         public bool canPlayerMove(MovementDirection movementDirection, Point position, SpriteType sprite)
@@ -53,18 +58,18 @@ namespace Explorus_K.Game
             }
         }
 
-        public void moveAndAnimatePlayer(List<Player> players)
+        public void moveAndAnimatePlayer(List<Player> players, Invoker commandInvoker, GameState gameState)
         {
             foreach(Player player in players)
             {
                 if(player.GetType() == typeof(ToxicSlime) && player.getMovementDirection() == MovementDirection.none)
                 {
-                    setToxicSlimeMovementDirection(player);
+                    setToxicSlimeMovementDirection(player, commandInvoker);
                 }
 
                 if(player.getMovementDirection() != MovementDirection.none)
                 {
-                    animatePlayer(player, player.getAnimationCount(), playerStepSize);
+                    animatePlayer(player, player.getAnimationCount(), playerStepSize, gameState);
                 }
             }
         }
@@ -91,34 +96,55 @@ namespace Explorus_K.Game
             player.setMovementDirection(movementDirection);
         }
 
-        private void animatePlayer(Player player, int count, int stepSize)
+        private void animatePlayer(Player player, int count, int stepSize, GameState gameState)
         {
             MovementDirection movementDirection = player.getMovementDirection();
 
-            if (count < Constant.LARGE_SPRITE_DIMENSION && player.getMovementDirection() != MovementDirection.none)
+            if (gameState != GameState.UNDO)
             {
-                count += stepSize;
-                movePlayer(player, movementDirection, stepSize);
+                if (count < Constant.LARGE_SPRITE_DIMENSION && player.getMovementDirection() != MovementDirection.none)
+                {
+                    count += stepSize;
+                    movePlayer(player, movementDirection, stepSize);
 
-                if (count < 8)
-                    player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.BIG)));
-                else if (count > 8 && count < 16)
-                    player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.MEDIUM)));
-                else if (count > 16 && count < 32)
-                    player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.SMALL)));
-                else if (count > 32 && count < 40)
-                    player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.MEDIUM)));
-                else if (count > 40)
-                    player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.BIG)));
+                    if (count < 8)
+                        player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.BIG)));
+                    else if (count > 8 && count < 16)
+                        player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.MEDIUM)));
+                    else if (count > 16 && count < 32)
+                        player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.SMALL)));
+                    else if (count > 32 && count < 40)
+                        player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.MEDIUM)));
+                    else if (count > 40)
+                        player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.BIG)));
+                }
+                else
+                {
+                    movePlayerIterator(player, movementDirection);
+                    player.setMovementDirection(MovementDirection.none);
+                    count = 0;
+                }
+
+                player.setAnimationCount(count);
             }
             else
             {
+                if(firstUndoMovement)
+                {
+                    movePlayer(player, movementDirection, count);
+                    firstUndoMovement = false;
+                }
+                else
+                {
+                    movePlayer(player, movementDirection, Constant.LARGE_SPRITE_DIMENSION);
+                }
+
+                
+                player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.BIG)));
                 movePlayerIterator(player, movementDirection);
                 player.setMovementDirection(MovementDirection.none);
                 count = 0;
             }
-
-            player.setAnimationCount(count);
         }
 
 
@@ -137,7 +163,7 @@ namespace Explorus_K.Game
             }
         }
 
-        private void setToxicSlimeMovementDirection(Player player)
+        private void setToxicSlimeMovementDirection(Player player, Invoker commandInvoker)
         {
 
             int randomInt = r.Next(0, 4);
@@ -150,28 +176,28 @@ namespace Explorus_K.Game
                     movementDirection = MovementDirection.up;
                     if (canPlayerMove(movementDirection, player.getIterator().Current(),SpriteType.TOXIC_SLIME))
                     {
-                        player.setMovementDirection(movementDirection);
+                        //commandInvoker.executeCommand(new SlimusCommand(player, movementDirection));
                     }
                     break;
                 case 1:
                     movementDirection = MovementDirection.down;
                     if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
                     {
-                        player.setMovementDirection(movementDirection);
+                        //commandInvoker.executeCommand(new SlimusCommand(player, movementDirection));
                     }
                     break;
                 case 2:
                     movementDirection = MovementDirection.left;
                     if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
                     {
-                        player.setMovementDirection(movementDirection);
+                        //commandInvoker.executeCommand(new SlimusCommand(player, movementDirection));
                     }
                     break;
                 case 3:
                     movementDirection = MovementDirection.right;
                     if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
                     {
-                        player.setMovementDirection(movementDirection);
+                        //commandInvoker.executeCommand(new SlimusCommand(player, movementDirection));
                     }
                     break;
                 default:

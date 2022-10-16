@@ -12,6 +12,8 @@ namespace Explorus_K.Game
         PAUSE,
         RESUME,
         STOP,
-        RESTART
+        RESTART,
+        REPLAY,
+        UNDO
     }
 }

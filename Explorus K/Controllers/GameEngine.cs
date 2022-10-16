@@ -1,10 +1,12 @@
 ﻿using Explorus_K.Game;
 using Explorus_K.Game.Audio;
+using Explorus_K.Game.Replay;
 using Explorus_K.Models;
 using Explorus_K.Threads;
 using Explorus_K.Views;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
@@ -88,6 +90,12 @@ namespace Explorus_K.Controllers
 			double previous_time = getCurrentTime();
 			double lag = 0.0;
 
+			Invoker commandInvoker = new Invoker();
+
+            bool replayInitiated = false;
+			double elapsedTimeCombined = 0;
+            long firstListTimestamp = 0;
+
             while (true)
 			{
 				//Actions state machine
@@ -98,10 +106,12 @@ namespace Explorus_K.Controllers
 				previous_time = current_time;
 				lag += elapsed_time;
 
+				
+
 				if (gameState == GameState.PLAY)
 				{
-					actionManager.characterActionsManagement(gameView, bubbleManager, audioBabillard);
-					playerMovement.moveAndAnimatePlayer(gameView.getLabyrinthImage().getPlayerList());
+					actionManager.characterActionsManagement(gameView, bubbleManager, audioBabillard, commandInvoker);
+					playerMovement.moveAndAnimatePlayer(gameView.getLabyrinthImage().getPlayerList(), commandInvoker, gameState);
 					playerMovement.moveAndAnimateBubbles(bubbleManager, audioBabillard);
 
 					if (lag >= MS_PER_FRAME)
@@ -122,6 +132,75 @@ namespace Explorus_K.Controllers
 
 					Thread.Sleep(1);
 				}
+				else if(gameState == GameState.REPLAY)
+				{
+					List<ICommand> commands = commandInvoker.getCommands();
+
+					elapsedTimeCombined += elapsed_time;
+
+					if(!replayInitiated)
+					{
+						firstListTimestamp = commands[0].getCommandTimestamp();
+						replayInitiated = true;
+					}
+					else
+					{
+						int i = 0;
+					}
+
+
+					foreach (ICommand command in new List<ICommand>(commands))
+					{
+						long millisecondsBeetwenComand = command.getCommandTimestamp() - firstListTimestamp;
+
+						if(millisecondsBeetwenComand > elapsedTimeCombined)
+						{
+							break;
+						}
+						else
+						{
+							command.execute();
+							commands.Remove(command);
+						}
+					}
+
+                    playerMovement.moveAndAnimatePlayer(gameView.getLabyrinthImage().getPlayerList(), new Invoker(), gameState);
+                    playerMovement.moveAndAnimateBubbles(bubbleManager, audioBabillard);
+
+                    if (lag >= MS_PER_FRAME)
+                    {
+
+                        float fps = 1000f / (float)lag;
+
+                        while (lag >= MS_PER_FRAME)
+                        {
+                            gameView.Update(show_fps, fps);
+                            lag -= MS_PER_FRAME;
+                        }
+
+                        gameView.Render();
+                        physics.Notify();
+                        gameState = physics.getGameState();
+                    }
+
+					if(commands.Count == 0)
+					{
+                        gameState = GameState.RESTART;
+						replayInitiated = false;
+					}
+					
+                    Thread.Sleep(1);
+
+                }
+				else if(gameState == GameState.UNDO)
+				{
+                    for (int i = 0; i < commandInvoker.getCommands().Count; i++)
+                    {
+                        commandInvoker.getCommands()[commandInvoker.getCommands().Count - i - 1].unexecute();
+                        playerMovement.moveAndAnimatePlayer(gameView.getLabyrinthImage().getPlayerList(), commandInvoker, gameState);
+                    }
+					gameState = GameState.REPLAY;
+                }
 				else
 				{
 					gameView.Render();

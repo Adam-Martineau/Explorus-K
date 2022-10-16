@@ -85,6 +85,11 @@
     <Compile Include="Game\LabyrinthImage.cs" />
     <Compile Include="Game\CollisionStrategy.cs" />
     <Compile Include="Game\MovementDirection.cs" />
+    <Compile Include="Game\Replay\BubbleCommand.cs" />
+    <Compile Include="Game\Replay\ICommand.cs" />
+    <Compile Include="Game\Replay\Invoker.cs" />
+    <Compile Include="Game\Replay\Receiver.cs" />
+    <Compile Include="Game\Replay\SlimusCommand.cs" />
     <Compile Include="Threads\AudioThread.cs" />
     <Compile Include="Threads\PhysicsThread.cs" />
     <Compile Include="Game\PlayerMovement.cs" />

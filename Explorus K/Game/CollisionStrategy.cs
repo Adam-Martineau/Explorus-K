@@ -109,7 +109,7 @@ namespace Explorus_K.Models
                 {
                     labyrinthImage.stopInvincibilityTimer();
                     audio.AddMessage(AudioName.BOOM);
-                    return GameState.STOP;
+                    return GameState.UNDO;
                 }
                 else
                 {
