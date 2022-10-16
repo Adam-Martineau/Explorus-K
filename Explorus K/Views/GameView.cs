@@ -57,7 +57,7 @@ namespace Explorus_K.Views
 			this.gameEngine = gameEngine;
 			gameForm = new GameForm(this);
 			gameForm.Size = new Size(screenWidth, screenHeight);
-			gameForm.MinimumSize = new Size(800, 1000);
+			gameForm.MinimumSize = new Size(1000, 1000);
 
             AddFontFromMemory();
 
@@ -196,16 +196,16 @@ namespace Explorus_K.Views
             {
                 if (cursorIndex == i)
                 {
-                    g.DrawImage(Resources.cursor, (screenWidth / 2) - widthText, ((screenHeight / 6) * (i + 2)) - (cursorDim / 2), cursorDim, cursorDim);
-
                     if (menuOptions[i].Type == MenuCursor.DIFFICULTY)
                     {
+                        g.DrawImage(Resources.cursor, (screenWidth / 2) - (widthText + 150), ((screenHeight / 6) * (i + 2)) - (cursorDim / 2), cursorDim, cursorDim);
                         g.DrawImage(menuOptions[i].Image[1], (screenWidth / 2) - (widthText + 25), ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
                         g.DrawString(": ", new Font(pfc.Families[0], 40, FontStyle.Regular), Brushes.White, (screenWidth / 2)-10, ((screenHeight / 6) * (i + 2)) - 40);
                         g.DrawImage(gameEngine.GameDifficulty.getSelectedBitmap(), (screenWidth / 2) + 50, ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
                     }
                     else
                     {
+                        g.DrawImage(Resources.cursor, (screenWidth / 2) - widthText, ((screenHeight / 6) * (i + 2)) - (cursorDim / 2), cursorDim, cursorDim);
                         g.DrawImage(menuOptions[i].Image[1], (screenWidth / 2) - (widthText / 2), ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
                     }
                 }

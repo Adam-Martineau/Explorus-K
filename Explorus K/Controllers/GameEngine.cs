@@ -291,6 +291,7 @@ namespace Explorus_K.Controllers
 		public void changeDifficulty()
 		{
             difficulty.changeDifficulty();
+			playerMovement.setPlayerSpeed(difficulty.getPlayerSpeed());
         }
 
         public void restart()

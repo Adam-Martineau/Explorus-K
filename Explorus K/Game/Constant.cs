@@ -34,9 +34,9 @@ namespace Explorus_K.Game
         public const int TOXIC_SLIME_LIVES_EXPERT = 3;
         public const int TOXIC_SLIME_LIVES_IMPOSSIBLE = 3;
 
-        public const int TOXIC_SLIME_SPEED_EASY = 6;
-        public const int TOXIC_SLIME_SPEED_NORMAL = 6;
-        public const int TOXIC_SLIME_SPEED_EXPERT = 3;
-        public const int TOXIC_SLIME_SPEED_IMPOSSIBLE = 1;
+        public const int PLAYER_SPEED_EASY = 2;
+        public const int PLAYER_SPEED_NORMAL = 2;
+        public const int PLAYER_SPEED_EXPERT = 4;
+        public const int PLAYER_SPEED_IMPOSSIBLE = 4;
     }
 }

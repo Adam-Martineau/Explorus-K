@@ -76,7 +76,7 @@ namespace Explorus_K
             this.Controls.Add(this.statusBar);
             this.DoubleBuffered = true;
             this.Name = "GameForm";
-            this.Text = "Form1";
+            this.Text = "Explorus-K";
             this.SizeChanged += new System.EventHandler(this.GameForm_SizeChanged_1);
             this.GotFocus += new System.EventHandler(this.GameForm_Enter);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GameForm_KeyDown);

@@ -18,7 +18,7 @@ namespace Explorus_K.Game
         private Iterator iterator;
         private Random r = new Random();
 
-        private const int playerStepSize = 2;
+        private int playerStepSize = 2;
         private const int bubbleStepSize = 4;
 
         public PlayerMovement(Iterator iterator)
@@ -320,6 +320,11 @@ namespace Explorus_K.Game
 
                 bubble.setAnimationCount(count);
             }
+        }
+
+        public void setPlayerSpeed(int step)
+        {
+            playerStepSize = step;
         }
     }
 }
