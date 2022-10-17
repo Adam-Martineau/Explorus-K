@@ -141,16 +141,11 @@ namespace Explorus_K.Controllers
 
 					if(!replayInitiated)
 					{
-						firstListTimestamp = commands[0].getCommandTimestamp();
+                        firstListTimestamp = commands[0].getCommandTimestamp();
 						replayInitiated = true;
                     }
-					else
-					{
-						int i = 0;
-					}
 
-
-					foreach (ICommand command in new List<ICommand>(commands))
+                    foreach (ICommand command in new List<ICommand>(commands))
 					{
 						long millisecondsBeetwenComand = command.getCommandTimestamp() - firstListTimestamp;
 
@@ -184,7 +179,7 @@ namespace Explorus_K.Controllers
                         //gameState = physics.getGameState();
                     }
 
-					if(commands.Count == 0)
+                    if (commands.Count == 0)
 					{
                         gameState = GameState.RESTART;
 						replayInitiated = false;
@@ -195,7 +190,10 @@ namespace Explorus_K.Controllers
                 }
 				else if(gameState == GameState.UNDO)
 				{
-                    if(!undoDone)
+                    physicsThread.Abort();
+                    
+
+                    if (!undoDone)
 					{
 						foreach(Player player in gameView.getLabyrinthImage().getPlayerList())
 						{
@@ -217,7 +215,13 @@ namespace Explorus_K.Controllers
 						gameState = GameState.REPLAY;
 					}
 
-                    Thread.Sleep(100);
+                    Thread.Sleep(50);
+
+                    physics = new PhysicsThread(gameView.labyrinthImage, audioBabillard, new Invoker());
+                    physicsThread = new Thread(new ThreadStart(physics.startThread));
+                    physicsThread.Start();
+
+                    Thread.Sleep(50);
                 }
 				else
 				{

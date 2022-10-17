@@ -25,13 +25,13 @@ namespace Explorus_K.Game.Replay
         public void execute()
         {
             Receiver receiver = new Receiver();
-            receiver.computeToxicSlimeDeadCommand(labyrinthImage, player, image2D, true);
+            receiver.computeToxicSlimeDeadCommand(labyrinthImage, player, image2D, false);
         }
 
         public void unexecute()
         {
             Receiver receiver = new Receiver();
-            receiver.computeToxicSlimeDeadCommand(labyrinthImage, player, image2D, false);
+            receiver.computeToxicSlimeDeadCommand(labyrinthImage, player, image2D, true);
         }
 
         public long getCommandTimestamp()
