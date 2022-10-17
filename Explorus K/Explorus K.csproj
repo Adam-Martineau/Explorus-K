@@ -90,6 +90,7 @@
     <Compile Include="Game\MenuCursor.cs" />
     <Compile Include="Game\MenuOption.cs" />
     <Compile Include="Game\MovementDirection.cs" />
+    <Compile Include="Models\Movement.cs" />
     <Compile Include="Threads\AudioThread.cs" />
     <Compile Include="Threads\PhysicsThread.cs" />
     <Compile Include="Game\PlayerMovement.cs" />
@@ -121,6 +122,8 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="MapIteratorDiagram.cd" />
+    <None Include="PlayerDiagram.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

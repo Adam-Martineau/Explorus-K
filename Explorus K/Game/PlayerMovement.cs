@@ -113,7 +113,7 @@ namespace Explorus_K.Game
             }
             else
             {
-                movePlayerIterator(player, movementDirection);
+                player.getIterator().Move(movementDirection);
                 player.setMovementDirection(MovementDirection.none);
                 count = 0;
             }
@@ -173,27 +173,6 @@ namespace Explorus_K.Game
                     {
                         player.setMovementDirection(movementDirection);
                     }
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private void movePlayerIterator(Player player, MovementDirection movementDirection)
-        {
-            switch (movementDirection)
-            {
-                case MovementDirection.down:
-                    player.getIterator().MoveDown();
-                    break;
-                case MovementDirection.up:
-                    player.getIterator().MoveUp();
-                    break;
-                case MovementDirection.left:
-                    player.getIterator().MoveLeft();
-                    break;
-                case MovementDirection.right:
-                    player.getIterator().MoveRight();
                     break;
                 default:
                     break;

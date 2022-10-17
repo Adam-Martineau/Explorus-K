@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Explorus_K.Game;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,29 +8,20 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Media3D;
 
 namespace Explorus_K.Models
 {
+
     public abstract class Iterator
     {
         public abstract Point Current();
-        public abstract void MoveLeft();
-        public abstract void MoveRight();
-        public abstract void MoveUp();
-        public abstract void MoveDown();
-        public abstract object GetLeft();
-        public abstract object GetRight();
-        public abstract object GetUp();
-        public abstract object GetDown();
-        public abstract bool isAbleToMoveLeft();
-        public abstract bool isAbleToMoveRight();
-        public abstract bool isAbleToMoveUp();
-        public abstract bool isAbleToMoveDown();
+        public abstract void Move(MovementDirection dir);
         public abstract void replaceAt(object newValue, int x, int y);
 
         public abstract object getMapEntryAt(int x, int y);
 
-        public abstract Point findPosition(object key);
+        public abstract Point getPosition(object key);
     }
 
     /// <summary>
@@ -50,10 +42,10 @@ namespace Explorus_K.Models
         {
             this._collection = collection;
 
-            _position = findPosition(key);
+            _position = getPosition(key);
         }
 
-        public override Point findPosition(object key)
+        public override Point getPosition(object key)
         {
             // initialising result array to -1 in case keyString
             // is not found
@@ -85,136 +77,52 @@ namespace Explorus_K.Models
             return _position;
         }
 
-        public override void MoveLeft()
+        public override void Move(MovementDirection dir)
         {
-            int updatedX = this._position.X - 1;
-            int updatedY = this._position.Y;
+            int updatedX = -1;
+            int updatedY = -1;
 
-            if (isAbleToMoveLeft())
+            switch (dir)
             {
-                this._position = new Point(updatedX, updatedY);
+                case MovementDirection.left:
+                    updatedX = this._position.X - 1;
+                    updatedY = this._position.Y;
+
+                    if (updatedX >= 0)
+                    {
+                        this._position = new Point(updatedX, updatedY);
+                    }
+                    break;
+                case MovementDirection.right:
+                    updatedX = this._position.X + 1;
+                    updatedY = this._position.Y;
+
+                    if (updatedX < _collection.getLengthX())
+                    {
+                        this._position = new Point(updatedX, updatedY);
+                    }
+                    break;
+                case MovementDirection.up:
+                    updatedX = this._position.X;
+                    updatedY = this._position.Y - 1;
+
+                    if (updatedY >= 0)
+                    {
+                        this._position = new Point(updatedX, updatedY);
+                    }
+                    break;
+                case MovementDirection.down:
+                    updatedX = this._position.X;
+                    updatedY = this._position.Y + 1;
+
+                    if (updatedY < _collection.getLengthY())
+                    {
+                        this._position = new Point(updatedX, updatedY);
+                    }
+                    break;
+                default:
+                    break;
             }
-        }
-
-        public override void MoveRight()
-        {
-            int updatedX = this._position.X + 1;
-            int updatedY = this._position.Y;
-
-            if (isAbleToMoveRight())
-            {
-                this._position = new Point(updatedX, updatedY);
-            }
-        }
-
-        public override void MoveUp()
-        {
-            int updatedX = this._position.X;
-            int updatedY = this._position.Y - 1;
-
-            if (isAbleToMoveUp())
-            {
-                this._position = new Point(updatedX, updatedY);
-            }
-        }
-
-        public override void MoveDown()
-        {
-            int updatedX = this._position.X;
-            int updatedY = this._position.Y + 1;
-
-            if (isAbleToMoveDown())
-            {
-                this._position = new Point(updatedX, updatedY);
-            }
-        }
-
-        public override object GetLeft()
-        {
-            if(_position.X == 0)
-            {
-                return String.Empty;
-            }
-
-            return _collection.getMap()[_position.X-1, _position.Y];
-        }
-
-        public override object GetRight()
-        {
-            if (_position.X == _collection.getLengthX() - 1)
-            {
-                return String.Empty;
-            }
-
-            return _collection.getMap()[_position.X+1, _position.Y];
-        }
-
-        public override object GetUp()
-        {
-            if (_position.Y == 0)
-            {
-                return String.Empty;
-            }
-
-            return _collection.getMap()[_position.X, _position.Y-1];
-        }
-
-        public override object GetDown()
-        {
-            if (_position.Y == _collection.getLengthY() - 1)
-            {
-                return String.Empty;
-            }
-
-            return _collection.getMap()[_position.X, _position.Y+1];
-        }
-
-        public override bool isAbleToMoveLeft()
-        {
-            int updatedX = this._position.X - 1;
-
-            if (updatedX >= 0)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public override bool isAbleToMoveRight()
-        {
-            int updatedX = this._position.X + 1;
-
-            if (updatedX < _collection.getLengthX())
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public override bool isAbleToMoveDown()
-        {
-            int updatedY = this._position.Y + 1;
-
-            if (updatedY < _collection.getLengthY())
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public override bool isAbleToMoveUp()
-        {
-            int updatedY = this._position.Y - 1;
-
-            if (updatedY >= 0)
-            {
-                return true;
-            }
-
-            return false;
         }
 
         public override void replaceAt(object newValue, int x, int y)
