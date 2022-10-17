@@ -37,12 +37,14 @@ namespace Explorus_K.Controllers
 		Thread audioThread;
         Thread mainThread;
 		Thread renderThread;
+        Invoker commandInvoker;
 
         public GameState State { get => gameState; set => gameState = value; }
 
         public GameEngine()
 		{
-			audioBabillard = new AudioBabillard();
+            commandInvoker = new Invoker();
+            audioBabillard = new AudioBabillard();
             bubbleManager = new BubbleManager();
             labyrinth = new Labyrinth();
             //The game engine get passed from contructor to constructor until it reach GameForm.cs
@@ -60,11 +62,13 @@ namespace Explorus_K.Controllers
 			mainThread = new Thread(new ThreadStart(GameLoop));
 			mainThread.Start();
 			
-            physics = new PhysicsThread(this.gameView.labyrinthImage, audioBabillard);
+            physics = new PhysicsThread(this.gameView.labyrinthImage, audioBabillard, commandInvoker);
             physicsThread = new Thread(new ThreadStart(physics.startThread));
 			physicsThread.Start();
 
-			gameView.Show();
+			
+
+            gameView.Show();
         }
 
 		private List<Binding> initiate_bindings()
@@ -91,8 +95,6 @@ namespace Explorus_K.Controllers
 			double previous_time = getCurrentTime();
 			double lag = 0.0;
 
-			Invoker commandInvoker = new Invoker();
-
             bool replayInitiated = false;
 			double elapsedTimeCombined = 0;
             long firstListTimestamp = 0;
@@ -107,12 +109,10 @@ namespace Explorus_K.Controllers
 				previous_time = current_time;
 				lag += elapsed_time;
 
-				
-
 				if (gameState == GameState.PLAY)
 				{
 					actionManager.characterActionsManagement(gameView, bubbleManager, audioBabillard, commandInvoker);
-					playerMovement.moveAndAnimatePlayer(gameView.getLabyrinthImage().getPlayerList(), commandInvoker, gameState);
+					playerMovement.moveAndAnimatePlayers(gameView.getLabyrinthImage().getPlayerList(), commandInvoker, gameState);
 					playerMovement.moveAndAnimateBubbles(bubbleManager, audioBabillard);
 
 					if (lag >= MS_PER_FRAME)
@@ -137,7 +137,7 @@ namespace Explorus_K.Controllers
 				{
 					List<ICommand> commands = commandInvoker.getCommands();
 
-					elapsedTimeCombined += elapsed_time;
+					elapsedTimeCombined +=  13;
 
 					if(!replayInitiated)
 					{
@@ -162,15 +162,10 @@ namespace Explorus_K.Controllers
 						{
 							command.execute();
 							commands.Remove(command);
-
-							if(command.GetType() == typeof(BubbleCommand))
-							{
-								int i = 0;
-							}
 						}
 					}
 
-                    playerMovement.moveAndAnimatePlayer(gameView.getLabyrinthImage().getPlayerList(), new Invoker(), gameState);
+                    playerMovement.moveAndAnimatePlayers(gameView.getLabyrinthImage().getPlayerList(), new Invoker(), gameState);
                     playerMovement.moveAndAnimateBubbles(bubbleManager, audioBabillard);
 
                     if (lag >= MS_PER_FRAME)
@@ -200,24 +195,29 @@ namespace Explorus_K.Controllers
                 }
 				else if(gameState == GameState.UNDO)
 				{
-					if(!undoDone)
+                    if(!undoDone)
 					{
+						foreach(Player player in gameView.getLabyrinthImage().getPlayerList())
+						{
+							player.setMovementDirection(MovementDirection.none);
+						}
+
                         for (int i = 0; i < commandInvoker.getCommands().Count; i++)
                         {
                             commandInvoker.getCommands()[commandInvoker.getCommands().Count - i - 1].unexecute();
-                            playerMovement.moveAndAnimatePlayer(gameView.getLabyrinthImage().getPlayerList(), commandInvoker, gameState);
+                            playerMovement.moveAndAnimatePlayers(gameView.getLabyrinthImage().getPlayerList(), commandInvoker, gameState);
                         }
 
                         gameState = GameState.REPLAY;
 						undoDone = true;
+                        gameView.Render();
                     }
 					else
 					{
 						gameState = GameState.REPLAY;
 					}
-                    
 
-					Thread.Sleep(10);
+                    Thread.Sleep(100);
                 }
 				else
 				{
@@ -313,7 +313,8 @@ namespace Explorus_K.Controllers
             playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
             actionManager = new ActionManager(this, playerMovement);
             physicsThread.Abort();
-            physics = new PhysicsThread(gameView.labyrinthImage, audioBabillard);
+            commandInvoker = new Invoker();
+            physics = new PhysicsThread(gameView.labyrinthImage, audioBabillard, commandInvoker);
             physicsThread = new Thread(new ThreadStart(physics.startThread));
             physicsThread.Start();
             gameView.InitializeHeaderBar(new HealthBarCreator(), Constant.SLIMUS_LIVES, remainingLifes);

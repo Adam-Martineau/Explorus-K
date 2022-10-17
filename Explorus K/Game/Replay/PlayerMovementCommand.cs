@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Explorus_K.Game.Replay
 {
-    internal class SlimusCommand : ICommand
+    internal class PlayerMovementCommand : ICommand
     {
         Player slimus;
         MovementDirection direction;
         long timestamp;
 
-        public SlimusCommand(Player slimus, MovementDirection movementDirection)
+        public PlayerMovementCommand(Player slimus, MovementDirection movementDirection)
         {
             this.slimus = slimus;
             this.timestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();

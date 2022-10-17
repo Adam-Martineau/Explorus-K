@@ -95,8 +95,8 @@ namespace Explorus_K.Models
         {
             if (current <= length)
             {
-                healthBar[current].setType(ImageType.HEALTH_BAR_FULL);
                 current++;
+                healthBar[current].setType(ImageType.HEALTH_BAR_FULL);
                 //gemBar[current].setType(ImageType.GEM_BAR_HALF);
             }
         }

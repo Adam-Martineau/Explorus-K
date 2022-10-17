@@ -144,7 +144,7 @@ namespace Explorus_K.Game
 				if(!isMovementInitialized)
 				{
 					isMovementInitialized = true;
-					commandInvoker.executeCommand(new SlimusCommand(view.getSlimusObject(), MovementDirection.left));
+					commandInvoker.executeCommand(new PlayerMovementCommand(view.getSlimusObject(), MovementDirection.left));
                     audioBabillard.AddMessage(AudioName.MOVING);
 				}
 
@@ -160,7 +160,7 @@ namespace Explorus_K.Game
                 if (!isMovementInitialized)
                 {
                     isMovementInitialized = true;
-                    commandInvoker.executeCommand(new SlimusCommand(view.getSlimusObject(), MovementDirection.right));
+                    commandInvoker.executeCommand(new PlayerMovementCommand(view.getSlimusObject(), MovementDirection.right));
                     audioBabillard.AddMessage(AudioName.MOVING);
                 }
 
@@ -178,7 +178,7 @@ namespace Explorus_K.Game
                 if (!isMovementInitialized)
                 {
                     isMovementInitialized = true;
-                    commandInvoker.executeCommand(new SlimusCommand(view.getSlimusObject(), MovementDirection.up));
+                    commandInvoker.executeCommand(new PlayerMovementCommand(view.getSlimusObject(), MovementDirection.up));
                     audioBabillard.AddMessage(AudioName.MOVING);
                 }
 
@@ -194,7 +194,7 @@ namespace Explorus_K.Game
                 if (!isMovementInitialized)
                 {
                     isMovementInitialized = true;
-                    commandInvoker.executeCommand(new SlimusCommand(view.getSlimusObject(), MovementDirection.down));
+                    commandInvoker.executeCommand(new PlayerMovementCommand(view.getSlimusObject(), MovementDirection.down));
                     audioBabillard.AddMessage(AudioName.MOVING);
                 }
 

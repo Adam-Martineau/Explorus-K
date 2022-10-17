@@ -57,6 +57,11 @@ namespace Explorus_K.Models
             return lifeCount--;
         }
 
+        public void setLife(int life)
+        {
+            lifeCount = life;
+        }
+
         public void setImageType(ImageType imageType)
         {
             this.imageType = imageType;

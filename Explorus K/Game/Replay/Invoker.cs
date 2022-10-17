@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Explorus_K.Game.Replay
 {
-    internal class Invoker
+    public class Invoker
     {
         List<ICommand> commands;
 
@@ -45,11 +45,6 @@ namespace Explorus_K.Game.Replay
         {
             long now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             bool noMoreOld = true;
-
-            if(commands.Count > 45)
-            {
-                  int i = 0;
-            }
 
             while (noMoreOld)
             {

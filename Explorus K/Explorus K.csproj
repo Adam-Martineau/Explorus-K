@@ -86,10 +86,14 @@
     <Compile Include="Game\CollisionStrategy.cs" />
     <Compile Include="Game\MovementDirection.cs" />
     <Compile Include="Game\Replay\BubbleCommand.cs" />
+    <Compile Include="Game\Replay\DecreaseHealthBar.cs" />
+    <Compile Include="Game\Replay\DecreaseLifeCommand.cs" />
+    <Compile Include="Game\Replay\GemCollectingCommand.cs" />
     <Compile Include="Game\Replay\ICommand.cs" />
     <Compile Include="Game\Replay\Invoker.cs" />
     <Compile Include="Game\Replay\Receiver.cs" />
-    <Compile Include="Game\Replay\SlimusCommand.cs" />
+    <Compile Include="Game\Replay\PlayerMovementCommand.cs" />
+    <Compile Include="Game\Replay\ToxicSlimeDeadCommand.cs" />
     <Compile Include="Threads\AudioThread.cs" />
     <Compile Include="Threads\PhysicsThread.cs" />
     <Compile Include="Game\PlayerMovement.cs" />

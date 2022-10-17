@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Explorus_K.Game.Replay
 {
-    internal interface ICommand
+    public interface ICommand
     {
         void execute();
 

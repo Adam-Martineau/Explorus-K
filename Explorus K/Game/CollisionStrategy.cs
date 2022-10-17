@@ -1,6 +1,7 @@
 ﻿using Explorus_K.Game;
 using Explorus_K.Game;
 using Explorus_K.Game.Audio;
+using Explorus_K.Game.Replay;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -29,24 +30,24 @@ namespace Explorus_K.Models
             this._strategy = strategy;
         }
 
-        public GameState executeStrategy(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type, AudioBabillard audio)
+        public GameState executeStrategy(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type, AudioBabillard audio, Invoker commandInvoker)
         {
-            return _strategy.execute(labyrinthImage, imageIndex, type, audio);
+            return _strategy.execute(labyrinthImage, imageIndex, type, audio, commandInvoker);
         }
     }
 
     public interface IStrategy
     {
-        GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type, AudioBabillard audio);
+        GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type, AudioBabillard audio, Invoker commandInvoker);
     }
 
     class GemStrategy : IStrategy
     {
-        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type, AudioBabillard audio)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type, AudioBabillard audio, Invoker commandInvoker)
         {
             if(type == SpriteType.SLIMUS)
             {
-                labyrinthImage.GemBar.Increase();
+                commandInvoker.executeCommand(new GemCollectingCommand(labyrinthImage.GemBar));
                 if (labyrinthImage.GemBar.getCurrent() == labyrinthImage.GemBar.getLength())
                 {
                     labyrinthImage.KeyState.RequestChangingState();
@@ -63,7 +64,7 @@ namespace Explorus_K.Models
 
     class DoorStrategy : IStrategy
     {
-        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type, AudioBabillard audio)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type, AudioBabillard audio, Invoker commandInvoker)
         {
             if (type == SpriteType.SLIMUS)
             {
@@ -82,7 +83,7 @@ namespace Explorus_K.Models
 
     class MiniSlimeStrategy : IStrategy
     {
-        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type, AudioBabillard audio)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type, AudioBabillard audio, Invoker commandInvoker)
         {
             if (type == SpriteType.SLIMUS)
             {
@@ -98,12 +99,12 @@ namespace Explorus_K.Models
 
     class ToxicSlimeStrategy : IStrategy
     {
-        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type, AudioBabillard audio)
+        public GameState execute(LabyrinthImage labyrinthImage, int imageIndex, SpriteType type, AudioBabillard audio, Invoker commandInvoker)
         {
             if (type == SpriteType.SLIMUS)
             {
-                labyrinthImage.HealthBar.Decrease();
-                labyrinthImage.getSlimus().decreaseLife();
+                commandInvoker.executeCommand(new DecreaseLifeCommand(labyrinthImage.getSlimus()));
+                commandInvoker.executeCommand(new DecreaseHealthBar(labyrinthImage.HealthBar));
                 
                 if(labyrinthImage.HealthBar.getCurrent() == 0)
                 {
@@ -126,13 +127,11 @@ namespace Explorus_K.Models
                 {
                     if (player.GetGuid() == toxicSlime.id)
                     {
-                        player.decreaseLife();
+                        commandInvoker.executeCommand(new DecreaseLifeCommand(player));
                         audio.AddMessage(AudioName.GETTING_HIT);
                         if (player.getLifes() < 1)
                         {
-                            labyrinthImage.getPlayerList().Remove(player);
-                            labyrinthImage.labyrinthImages.Remove(toxicSlime);
-                            labyrinthImage.labyrinthImages.Add(new Image2D(SpriteType.GEM, ImageType.GEM, toxicSlime.X, toxicSlime.Y));
+                            commandInvoker.executeCommand(new ToxicSlimeDeadCommand(labyrinthImage, player, toxicSlime));
                         }
                     }
                 }

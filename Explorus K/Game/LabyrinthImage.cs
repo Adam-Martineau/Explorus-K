@@ -284,7 +284,7 @@ namespace Explorus_K.Game
                 }
             }
 
-            foreach(Player player in playerList)
+            foreach(Player player in new List<Player>(playerList))
             {
                 labyrinthImages.Add(player.refreshPlayer());
             }
