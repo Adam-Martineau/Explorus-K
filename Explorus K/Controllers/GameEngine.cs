@@ -47,7 +47,7 @@ namespace Explorus_K.Controllers
 			bindings = initiate_bindings();
             gameState = GameState.RESUME;
 			show_fps = true;
-            playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
+            playerMovement = new PlayerMovement(gameView.getSlimusObject());
             actionManager = new ActionManager(this, playerMovement);
 
 			audio = new AudioThread(audioBabillard);
@@ -213,7 +213,7 @@ namespace Explorus_K.Controllers
 				remainingLifes = Constant.SLIMUS_LIVES;
 			}
             gameView.Restart(this, gameLevel);
-            playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
+            playerMovement = new PlayerMovement(gameView.getSlimusObject());
             actionManager = new ActionManager(this, playerMovement);
             physicsThread.Abort();
             physics = new PhysicsThread(gameView.labyrinthImage, audioBabillard);

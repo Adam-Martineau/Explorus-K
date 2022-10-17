@@ -16,14 +16,16 @@ namespace Explorus_K.Game
     internal class PlayerMovement
     {
         private Iterator iterator;
-        private Random r = new Random();
+        private Player slimus;
+        private Random rand = new Random();
 
         private const int playerStepSize = 2;
         private const int bubbleStepSize = 4;
 
-        public PlayerMovement(Iterator iterator)
+        public PlayerMovement(Player slimus)
         {
-            this.iterator = iterator;
+            this.slimus = slimus;
+            iterator = slimus.getIterator();
         }
 
         public bool canPlayerMove(MovementDirection movementDirection, Point position, SpriteType sprite)
@@ -140,7 +142,7 @@ namespace Explorus_K.Game
         private void setToxicSlimeMovementDirection(Player player)
         {
 
-            int randomInt = r.Next(0, 4);
+            int randomInt = rand.Next(0, 4);
 
             MovementDirection movementDirection;
 
@@ -177,6 +179,73 @@ namespace Explorus_K.Game
                 default:
                     break;
             }
+        }
+
+        private void movementFollowSlimus(Player player)
+        {
+
+        }
+
+        private void movementEmbushSlimus(Player player)
+        {
+
+        }
+
+        private void movementRandom(Player player)
+        {
+
+        }
+
+        private bool canPlayerSeeSlimus(Player player)
+        {
+            if (player.getPosX() != slimus.getPosX() || player.getPosY() != slimus.getPosY())
+            {
+                return false;
+            }
+            else if (player.getPosX() == slimus.getPosX())
+            {
+                if (isThereSomethingInBetweenVertically(new Point(player.getPosX(), player.getPosY()), new Point(slimus.getPosX(), slimus.getPosY())))
+                    return false;
+                else 
+                    return true;
+            }
+            else if (player.getPosY() == slimus.getPosY())
+            {
+                if (isThereSomethingInBetweenHorizontally(new Point(player.getPosX(), player.getPosY()), new Point(slimus.getPosX(), slimus.getPosY())))
+                    return false;
+                else
+                    return true;
+            }
+            
+            return false;
+        }
+
+        private bool isThereSomethingInBetweenHorizontally(Point pos1, Point pos2)
+        {
+            int start = pos1.X > pos2.X ? pos2.X : pos1.X;
+            int stop = pos1.X > pos2.X ? pos1.X : pos2.X;
+
+            for (int i = start; i < stop; i++)
+            {
+                if ((string) slimus.getIterator().getMapEntryAt(i, pos1.Y) != ".")
+                    return true; 
+            }
+
+            return false;
+        }
+
+        private bool isThereSomethingInBetweenVertically(Point pos1, Point pos2)
+        {
+            int start = pos1.Y > pos2.Y ? pos2.Y : pos1.Y;
+            int stop = pos1.Y > pos2.Y ? pos1.Y : pos2.Y;
+
+            for (int i = start; i < stop; i++)
+            {
+                if ((string) slimus.getIterator().getMapEntryAt(i, pos1.X) != ".")
+                    return true;
+            }
+
+            return false;
         }
 
         private void movePlayerIterator(Player player, MovementDirection movementDirection)
