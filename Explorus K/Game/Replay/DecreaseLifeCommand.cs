@@ -11,7 +11,6 @@ namespace Explorus_K.Game.Replay
     {
         Player player;
         long timestamp;
-        HealthBar healthBar;
 
         public DecreaseLifeCommand(Player player)
         {

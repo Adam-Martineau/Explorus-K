@@ -206,6 +206,7 @@ namespace Explorus_K.Controllers
 					{
                         gameState = GameState.MENU;
 						replayInitiated = false;
+						restart();
 					}
 
                     Thread.Sleep(1);
