@@ -136,7 +136,7 @@ namespace Explorus_K.Game
                 }
 
                 player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.BIG)));
-                movePlayerIterator(player, movementDirection);
+                player.getIterator().Move(movementDirection);
                 player.setMovementDirection(MovementDirection.none);               
             }
         }

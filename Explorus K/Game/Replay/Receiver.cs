@@ -36,7 +36,7 @@ namespace Explorus_K.Game.Replay
             }
             else
             {
-                player.setLife(player.getLifes() + 1);
+                player.setLives(player.getLifes() + 1);
             }
         }
 

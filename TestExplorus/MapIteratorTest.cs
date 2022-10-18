@@ -24,7 +24,7 @@ namespace TestExplorus
             Point expectedPosition = new Point(0,1);
             String expectedStringFromGet = emptySpace;
 
-            iterator.MoveLeft();
+            iterator.Move(Explorus_K.Game.MovementDirection.left);
 
             Assert.AreEqual(expectedPosition, iterator.Current());
         }
@@ -36,7 +36,7 @@ namespace TestExplorus
             Point expectedPosition = iterator.Current();
             String expectedStringFromGet = outOfBound;
 
-            iterator.MoveRight();
+            iterator.Move(Explorus_K.Game.MovementDirection.right); ;
 
             Assert.AreEqual(expectedPosition, iterator.Current());
         }
@@ -48,7 +48,7 @@ namespace TestExplorus
             Point expectedPosition = iterator.Current();
             String expectedStringFromGet = outOfBound;
 
-            iterator.MoveDown();
+            iterator.Move(Explorus_K.Game.MovementDirection.down);
 
             Assert.AreEqual(expectedPosition, iterator.Current());
         }
@@ -60,7 +60,7 @@ namespace TestExplorus
             Point expectedPosition = new Point(1, 0);
             String expectedStringFromGet = emptySpace;
 
-            iterator.MoveUp();
+            iterator.Move(Explorus_K.Game.MovementDirection.up);
 
             Assert.AreEqual(expectedPosition, iterator.Current());
         }

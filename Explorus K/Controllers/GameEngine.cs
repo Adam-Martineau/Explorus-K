@@ -55,7 +55,6 @@ namespace Explorus_K.Controllers
 		{
             commandInvoker = new Invoker();
             audioBabillard = new AudioBabillard();
-            bubbleManager = new BubbleManager();
             gameState = GameState.MENU;
 			difficulty = new GameDifficulty();
             audioBabillard = new AudioBabillard();

@@ -14,8 +14,8 @@ namespace TestExplorus
 
         private int initialLiveCount = 6;
 
-        private Iterator slimusIterator = new LabyrinthImage(new Labyrinth(), new BubbleManager()).Labyrinth.Map.CreateIterator(slimusName);
-        private Iterator toxicSlimeIterator = new LabyrinthImage(new Labyrinth(), new BubbleManager()).Labyrinth.Map.CreateIterator(toxicSlimeName);
+        private Iterator slimusIterator = new LabyrinthImage(new Labyrinth(), new BubbleManager(0), new GameDifficulty()).Labyrinth.Map.CreateIterator(slimusName);
+        private Iterator toxicSlimeIterator = new LabyrinthImage(new Labyrinth(), new BubbleManager(0), new GameDifficulty()).Labyrinth.Map.CreateIterator(toxicSlimeName);
 
 
 
