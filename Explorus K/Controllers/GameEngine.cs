@@ -29,6 +29,11 @@ namespace Explorus_K.Controllers
 		PhysicsThread physics;
         private int gameLevel = 1;
 		private bool show_fps;
+		private int musicVolume;
+        private int soundVolume;
+		private bool muteMusic;
+        private bool muteSound;
+		private GameDifficulty difficulty;
 		private bool undoDone = false;
 
         public static object gameStatelock = new object();
@@ -40,18 +45,31 @@ namespace Explorus_K.Controllers
         Invoker commandInvoker;
 
         public GameState State { get => gameState; set => gameState = value; }
+        public int MusicVolume { get => musicVolume; set => musicVolume = value; }
+        public int SoundVolume { get => soundVolume; set => soundVolume = value; }
+        public bool MuteMusic { get => muteMusic; set => muteMusic = value; }
+        public bool MuteSound { get => muteSound; set => muteSound = value; }
+        public GameDifficulty GameDifficulty { get => difficulty; set => difficulty = value; }
 
         public GameEngine()
 		{
             commandInvoker = new Invoker();
             audioBabillard = new AudioBabillard();
             bubbleManager = new BubbleManager();
+            gameState = GameState.MENU;
+			difficulty = new GameDifficulty();
+            audioBabillard = new AudioBabillard();
+            bubbleManager = new BubbleManager(difficulty.getBubbleTimer());
             labyrinth = new Labyrinth();
             //The game engine get passed from contructor to constructor until it reach GameForm.cs
             gameView = new GameView(this, gameLevel);
 			bindings = initiate_bindings();
-            gameState = GameState.RESUME;
+            
 			show_fps = true;
+			musicVolume = Constant.MUSIC_VOLUME;
+			soundVolume = Constant.SOUND_VOLUME;
+			muteMusic = false;
+            muteSound = false;
             playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
             actionManager = new ActionManager(this, playerMovement);
 
@@ -65,8 +83,6 @@ namespace Explorus_K.Controllers
             physics = new PhysicsThread(this.gameView.labyrinthImage, audioBabillard, commandInvoker);
             physicsThread = new Thread(new ThreadStart(physics.startThread));
 			physicsThread.Start();
-
-			
 
             gameView.Show();
         }
@@ -83,16 +99,18 @@ namespace Explorus_K.Controllers
             bindings.Add(new Binding(Keys.Escape, Actions.exit));
             bindings.Add(new Binding(Keys.Space, Actions.shoot));
             bindings.Add(new Binding(Keys.F, Actions.show_fps));
+			bindings.Add(new Binding(Keys.Enter, Actions.select_menu));
+            bindings.Add(new Binding(Keys.M, Actions.mute));
             return bindings;
 		}
 
 		private void GameLoop()
 		{
-			gameView.InitializeHeaderBar(new HealthBarCreator(), Constant.SLIMUS_LIVES, Constant.SLIMUS_LIVES);
-			gameView.InitializeHeaderBar(new BubbleBarCreator(), Constant.INITIAL_BUBBLE_COUNT, Constant.INITIAL_BUBBLE_COUNT);
-			gameView.InitializeHeaderBar(new GemBarCreator(), Constant.INITIAL_GEM_COUNT, 0);
+            gameView.InitializeHeaderBar(new HealthBarCreator(), difficulty.getSlimusLives(), difficulty.getSlimusLives());
+            gameView.InitializeHeaderBar(new BubbleBarCreator(), Constant.INITIAL_BUBBLE_COUNT, Constant.INITIAL_BUBBLE_COUNT);
+            gameView.InitializeHeaderBar(new GemBarCreator(), Constant.INITIAL_GEM_COUNT, 0);
 
-			double previous_time = getCurrentTime();
+            double previous_time = getCurrentTime();
 			double lag = 0.0;
 
             bool replayInitiated = false;
@@ -102,7 +120,14 @@ namespace Explorus_K.Controllers
             while (true)
 			{
 				//Actions state machine
-				actionManager.systemActionsManagement();
+				if (State == GameState.MENU || State == GameState.PAUSE)
+				{
+                    actionManager.systemMenuManagement(gameView);
+                }
+				else
+				{
+                    actionManager.systemActionsManagement();
+                }
 
 				double current_time = getCurrentTime();
 				double elapsed_time = current_time - previous_time;
@@ -244,7 +269,15 @@ namespace Explorus_K.Controllers
 			{
 				if(binding.Key == e.KeyCode)
 				{
-					actionManager.actionHandler(binding.Action, gameView.getSlimusObject().getIterator());
+					if (State == GameState.MENU || State == GameState.PAUSE)
+					{
+                        actionManager.menuHandler(binding.Action);
+                    }
+					else
+					{
+                        actionManager.actionHandler(binding.Action, gameView.getSlimusObject().getIterator());
+                    }
+					
 				}
 			}
 		}
@@ -265,7 +298,7 @@ namespace Explorus_K.Controllers
 			return this.bubbleManager;
 		}
 
-		public void pause()
+        public void pause()
 		{
 			gameState = GameState.PAUSE;
             gameView.Pause();
@@ -292,26 +325,87 @@ namespace Explorus_K.Controllers
             show_fps = !show_fps;
         }
 
-		public void setMusicVolume(int volume)
+		public void downMusicVolume()
 		{
-            audioBabillard.AddMessage(AudioName.SET_MUSIC, volume);
+			if (musicVolume > 0 && !muteMusic)
+			{
+				musicVolume -= 1;
+				audioBabillard.AddMessage(AudioName.SET_MUSIC, musicVolume);
+			}
         }
 
-        public void setSoundVolume(int volume)
+        public void upMusicVolume()
         {
-            audioBabillard.AddMessage(AudioName.SET_SOUND, volume);
+			if (musicVolume < 100 && !muteMusic)
+			{
+                musicVolume += 1;
+                audioBabillard.AddMessage(AudioName.SET_MUSIC, musicVolume);
+            }
+        }
+
+        public void muteMusicVolume()
+        {
+			if (!muteMusic)
+			{
+                audioBabillard.AddMessage(AudioName.SET_MUSIC, 0);
+				muteMusic = true;	
+            }
+			else
+			{
+                audioBabillard.AddMessage(AudioName.SET_MUSIC, musicVolume);
+                muteMusic = false;
+            }
+        }
+
+        public void downSoundVolume()
+        {
+			if (soundVolume > 0 && !muteSound)
+			{
+                soundVolume -= 1;
+                audioBabillard.AddMessage(AudioName.SET_SOUND, soundVolume);
+            }
+        }
+
+        public void upSoundVolume()
+        {
+			if (soundVolume < 100 && !muteSound)
+			{
+				soundVolume += 1;
+				audioBabillard.AddMessage(AudioName.SET_SOUND, soundVolume);
+			}
+        }
+
+        public void muteSoundVolume()
+        {
+			if (!muteSound)
+			{
+                audioBabillard.AddMessage(AudioName.SET_SOUND, 0);
+                muteSound = true;
+            }
+			else
+			{
+                audioBabillard.AddMessage(AudioName.SET_SOUND, soundVolume);
+                muteSound = false;
+            }
+        }
+
+		public void changeDifficulty()
+		{
+            difficulty.changeDifficulty();
+			playerMovement.setPlayerSpeed(difficulty.getPlayerSpeed());
         }
 
         public void restart()
 		{
             gameLevel += 1;
-            bubbleManager = new BubbleManager();
+            bubbleManager = new BubbleManager(difficulty.getBubbleTimer());
             labyrinth = new Labyrinth();
             int remainingLifes = gameView.getLabyrinthImage().HealthBar.getCurrent();
             if (gameState == GameState.STOP)
 			{
 				gameLevel = 1;
-				remainingLifes = Constant.SLIMUS_LIVES;
+				remainingLifes = difficulty.getSlimusLives();
+				gameState = GameState.MENU;
 			}
             gameView.Restart(this, gameLevel);
             playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
@@ -321,11 +415,19 @@ namespace Explorus_K.Controllers
             physics = new PhysicsThread(gameView.labyrinthImage, audioBabillard, commandInvoker);
             physicsThread = new Thread(new ThreadStart(physics.startThread));
             physicsThread.Start();
-            gameView.InitializeHeaderBar(new HealthBarCreator(), Constant.SLIMUS_LIVES, remainingLifes);
+            gameView.InitializeHeaderBar(new HealthBarCreator(), difficulty.getSlimusLives(), remainingLifes);
             gameView.InitializeHeaderBar(new BubbleBarCreator(), Constant.INITIAL_BUBBLE_COUNT, Constant.INITIAL_BUBBLE_COUNT);
             gameView.InitializeHeaderBar(new GemBarCreator(), Constant.INITIAL_GEM_COUNT, 0);
-			audio.restartMusic();
-            resume();
+            audio.restartMusic();
+
+			if (gameState == GameState.RESTART)
+			{
+                resume();
+            }
+			else
+			{
+                gameView.Pause();
+            }
         }
     }
 }

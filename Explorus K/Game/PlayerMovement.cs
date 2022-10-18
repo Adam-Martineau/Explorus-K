@@ -19,7 +19,7 @@ namespace Explorus_K.Game
         private Iterator iterator;
         private Random r = new Random();
 
-        private const int playerStepSize = 2;
+        private int playerStepSize = 2;
         private const int bubbleStepSize = 4;
 
         public PlayerMovement(Iterator iterator)
@@ -103,23 +103,23 @@ namespace Explorus_K.Game
                     movePlayer(player, movementDirection, stepSize);
                     count += stepSize;
 
-                    if (count < 8)
-                        player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.BIG)));
-                    else if (count > 8 && count < 16)
-                        player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.MEDIUM)));
-                    else if (count > 16 && count < 32)
-                        player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.SMALL)));
-                    else if (count > 32 && count < 40)
-                        player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.MEDIUM)));
-                    else if (count > 40)
-                        player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.BIG)));
-                }
-                else
-                {
-                    movePlayerIterator(player, movementDirection);
-                    player.setMovementDirection(MovementDirection.none);
-                    count = 0;
-                }
+                if (count < 8)
+                    player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.BIG)));
+                else if (count > 8 && count < 16)
+                    player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.MEDIUM)));
+                else if (count > 16 && count < 32)
+                    player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.SMALL)));
+                else if (count > 32 && count < 40)
+                    player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.MEDIUM)));
+                else if (count > 40)
+                    player.setImageType(player.getAnimationDictValue(movementDirection, ((int)AnimationEnum.BIG)));
+            }
+            else
+            {
+                player.getIterator().Move(movementDirection);
+                player.setMovementDirection(MovementDirection.none);
+                count = 0;
+            }
 
                 player.setAnimationCount(count);
             }
@@ -193,27 +193,6 @@ namespace Explorus_K.Game
                     {
                         //commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
                     }
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private void movePlayerIterator(Player player, MovementDirection movementDirection)
-        {
-            switch (movementDirection)
-            {
-                case MovementDirection.down:
-                    player.getIterator().MoveDown();
-                    break;
-                case MovementDirection.up:
-                    player.getIterator().MoveUp();
-                    break;
-                case MovementDirection.left:
-                    player.getIterator().MoveLeft();
-                    break;
-                case MovementDirection.right:
-                    player.getIterator().MoveRight();
                     break;
                 default:
                     break;
@@ -340,6 +319,11 @@ namespace Explorus_K.Game
 
                 bubble.setAnimationCount(count);
             }
+        }
+
+        public void setPlayerSpeed(int step)
+        {
+            playerStepSize = step;
         }
     }
 }

@@ -26,6 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,6 +36,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
@@ -79,11 +81,14 @@
     <Compile Include="Game\Audio\IListener.cs" />
     <Compile Include="Game\BubbleManager.cs" />
     <Compile Include="Game\Constant.cs" />
+    <Compile Include="Game\Difficulty.cs" />
     <Compile Include="Game\GameState.cs" />
     <Compile Include="Game\KeyState.cs" />
     <Compile Include="Game\Labyrinth.cs" />
     <Compile Include="Game\LabyrinthImage.cs" />
     <Compile Include="Game\CollisionStrategy.cs" />
+    <Compile Include="Game\MenuCursor.cs" />
+    <Compile Include="Game\MenuOption.cs" />
     <Compile Include="Game\MovementDirection.cs" />
     <Compile Include="Game\Replay\BubbleCommand.cs" />
     <Compile Include="Game\Replay\DecreaseHealthBar.cs" />
@@ -94,6 +99,7 @@
     <Compile Include="Game\Replay\Receiver.cs" />
     <Compile Include="Game\Replay\PlayerMovementCommand.cs" />
     <Compile Include="Game\Replay\ToxicSlimeDeadCommand.cs" />
+    <Compile Include="Models\Movement.cs" />
     <Compile Include="Threads\AudioThread.cs" />
     <Compile Include="Threads\PhysicsThread.cs" />
     <Compile Include="Game\PlayerMovement.cs" />
@@ -125,6 +131,8 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="MapIteratorDiagram.cd" />
+    <None Include="PlayerDiagram.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -140,6 +148,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Botsmatic3d-Exl8.ttf" />
+    <None Include="Resources\BotsmaticDemo-MXOr.ttf" />
+    <None Include="Resources\MinecraftTen-VGORe.ttf" />
     <None Include="Resources\TilesSheet.png" />
   </ItemGroup>
   <ItemGroup>
@@ -205,7 +216,93 @@
   <ItemGroup>
     <None Include="Resources\SET_SOUND.wav" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\Title.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\title-explorus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Title.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\startgame-bleu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\startgame-noir.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\resume-noir.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\audio-bleu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\audio-noir.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\difficulty-bleu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\difficulty-noir.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\exitgame-bleu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\exitgame-noir.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\resume-bleu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Title-Bleu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cursor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\return-noir.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sound-volume-bleu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sound-volume-noir.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\music-volume-bleu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\music-volume-noir.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\return-bleu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\impossible-bleu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\impossible-noir.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\normal-bleu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\normal-noir.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\expert-bleu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\expert-noir.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\easy-noir.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\easy-bleu.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

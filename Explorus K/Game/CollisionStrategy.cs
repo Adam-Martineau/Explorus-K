@@ -51,7 +51,7 @@ namespace Explorus_K.Models
                 if (labyrinthImage.GemBar.getCurrent() == labyrinthImage.GemBar.getLength())
                 {
                     labyrinthImage.KeyState.RequestChangingState();
-                    Point pos = labyrinthImage.getSlimus().getIterator().findPosition("p");
+                    Point pos = labyrinthImage.getSlimus().getIterator().getPosition("p");
                     labyrinthImage.getSlimus().getIterator().replaceAt("l", pos.X, pos.Y);
                 }
                 labyrinthImage.removeImageAt(imageIndex);
@@ -70,7 +70,7 @@ namespace Explorus_K.Models
             {
                 if (labyrinthImage.KeyState.CurrentState() == "WithKeyState")
                 {
-                    Point pos = labyrinthImage.getSlimus().getIterator().findPosition("l");
+                    Point pos = labyrinthImage.getSlimus().getIterator().getPosition("l");
                     labyrinthImage.getSlimus().getIterator().replaceAt(".", pos.X, pos.Y);
                     labyrinthImage.removeImageAt(imageIndex);
                     audio.AddMessage(AudioName.OPEN_DOOR);

@@ -9,48 +9,74 @@ using System.Windows.Forms.Automation;
 
 namespace Explorus_K
 {
-    public interface Player
+    public abstract class Player : Movement
     {
-        ImageType getImageType();
+        protected ImageType imageType;
+        protected int lifeCount;
+        protected string labyrinthName;
+        protected Iterator iterator;
+        protected Guid id = Guid.NewGuid();
+        protected Dictionary<MovementDirection, List<ImageType>> animationDict;
 
-        int getPosX();
+        public Player(int posX, int posY, ImageType imageType, int life, Iterator iterator) : base(posX, posY)
+        {
+            this.imageType = imageType;
+            this.lifeCount = life;
+            this.iterator = iterator;
+            movementDirection = MovementDirection.none;
+        }
 
-        int getPosY();
+        public ImageType getImageType()
+        {
+            return imageType;
+        }
 
-        int getLifes();
+        public int getLifes()
+        {
+            return lifeCount;
+        }
 
-        int decreaseLife();
+        public int decreaseLife()
+        {
+            return lifeCount--;
+        }
 
-        void setLife(int life);
+        public void setLives(int lives)
+        {
+            this.lifeCount = lives;
+        }
 
-        Guid GetGuid();
+        public Guid GetGuid()
+        {
+            return this.id;
+        }
 
-        MovementDirection getMovementDirection();
+        public void setImageType(ImageType imageType)
+        {
+            this.imageType = imageType;
+        }
 
-        void setMovementDirection(MovementDirection direction);
+        public void setLabyrinthName(string name)
+        {
+            labyrinthName = name;
+        }
 
-        void setImageType(ImageType imageType);
+        public string getLabyrinthName()
+        {
+            return labyrinthName;
+        }
 
-        void moveDown(int stepSize);
+        public Iterator getIterator()
+        {
+            return iterator;
+        }
 
-        void moveUp(int stepSize);
+        public ImageType getAnimationDictValue(MovementDirection key, int value)
+        {
+            return animationDict[key][value];
+        }
 
-        void moveLeft(int stepSize);
-
-        void moveRight(int stepSize);
-
-        Image2D refreshPlayer();
-
-        ImageType getAnimationDictValue(MovementDirection key, int value);
-
-        int getAnimationCount();
-
-        void setAnimationCount(int count);
-
-        void setLabyrinthName(string name);
-
-        string getLabyrinthName();
-
-        Iterator getIterator();
+        public abstract Image2D refreshPlayer();
+        protected abstract void fillAnimationDict();
     }
 }

@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Explorus_K.Models.Bubble">
+    <Position X="17.25" Y="5.25" Width="6.75" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAARAAABEACAAAAgAAAJAAAAAiA=</HashCode>
+      <FileName>Models\Bubble.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Explorus_K.Models.Movement">
+    <Position X="13" Y="0.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAJAigAAAAAAAAAAAAgAAAAAAAAAABgyEACAAA=</HashCode>
+      <FileName>Models\Movement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Explorus_K.Models.Slimus">
+    <Position X="6" Y="11" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAREAAQAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Slimus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Explorus_K.Models.ToxicSlime">
+    <Position X="11.5" Y="11" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ToxicSlime.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Explorus_K.Player">
+    <Position X="8.75" Y="5.25" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>EAAIEAAAAAAgABAQAAAAAIAAAQCEAAgEACQAAgIAAiA=</HashCode>
+      <FileName>Models\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
