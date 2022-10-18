@@ -204,7 +204,7 @@ namespace Explorus_K.Controllers
 
                     if (commands.Count == 0)
 					{
-                        gameState = GameState.RESTART;
+                        gameState = GameState.MENU;
 						replayInitiated = false;
 					}
 
