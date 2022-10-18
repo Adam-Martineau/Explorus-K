@@ -46,7 +46,9 @@ namespace Explorus_K.Views
 		private int menuHeight = 250;
 
         private static Timer resumeTimer;
+        private static Timer replayTimer;
         private int countdown = 3;
+        private int replayCountdown = 5;
         private List<MenuOption> menuOptions;
         private int cursorIndex;
 
@@ -84,6 +86,9 @@ namespace Explorus_K.Views
             resumeTimer = new Timer(1000);
             resumeTimer.Elapsed += OnTimedEventResume;
 
+            replayTimer = new Timer(1000);
+            replayTimer.Elapsed += OnTimedEventReplay;
+
             gameForm.UpdateLevel("Level " + level.ToString(), Color.Red);
 
             renderWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
@@ -109,6 +114,7 @@ namespace Explorus_K.Views
             this.gameEngine = gameEngine;
             labyrinthImage = new LabyrinthImage(gameEngine.GetLabyrinth(), gameEngine.getBubbleManager(), gameEngine.GameDifficulty);
             resize();
+            replayCountdown = 5;
         }
 
         public void Close()
@@ -283,6 +289,20 @@ namespace Explorus_K.Views
             {
                 showText(g, "YOU WIN");
             }
+            else if (gameEngine.State == GameState.REPLAY)
+            {
+                StringFormat titleFormat = new StringFormat();
+                titleFormat.Alignment = StringAlignment.Center;
+                titleFormat.LineAlignment = StringAlignment.Center;
+                Brush brush = new SolidBrush(Color.FromArgb(255, 0, 0, 0));
+
+                Point p = labyrinthImage.getLabyrinthPosition();
+                int rectangleWidth = (Constant.LARGE_SPRITE_DIMENSION * 6) - 20;
+                int rectangleHeight = Constant.LARGE_SPRITE_DIMENSION - 20;
+                Rectangle replay = new Rectangle(p.X + ((Constant.LARGE_SPRITE_DIMENSION * 6) / 2)-(rectangleWidth / 2), (p.Y + (Constant.LARGE_SPRITE_DIMENSION) / 2) - (rectangleHeight / 2), rectangleWidth, rectangleHeight);
+                g.FillRectangle(brush, Rectangle.Round(replay));
+                g.DrawString("REPLAY - " + replayCountdown.ToString() + " SECONDS", new Font("Arial", 15, FontStyle.Bold), Brushes.White, replay, titleFormat);
+            }
 
             gameForm.UpdateStatus(gameForm, gameEngine.State.ToString(), Color.Red);
         }
@@ -350,6 +370,13 @@ namespace Explorus_K.Views
             resumeTimer.Stop();
         }
 
+        public void Replay()
+        {
+            labyrinthImage.slimus.setInvincible(false);
+            replayCountdown = 5;
+            replayTimer.Start();
+        }
+
         private void OnTimedEventResume(Object source, ElapsedEventArgs e)
         {
             countdown -= 1;
@@ -360,7 +387,16 @@ namespace Explorus_K.Views
             }
         }
 
-		public LabyrinthImage getLabyrinthImage()
+        private void OnTimedEventReplay(Object source, ElapsedEventArgs e)
+        {
+            replayCountdown -= 1;
+            if (replayCountdown == 0)
+            {
+                replayTimer.Stop();
+            }
+        }
+
+        public LabyrinthImage getLabyrinthImage()
 		{
 			return labyrinthImage;
 		}

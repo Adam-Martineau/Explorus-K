@@ -161,12 +161,15 @@ namespace Explorus_K.Threads
 				else
 					collidingSprite = sprite_A;
 
-				// executing the collision is there's someting to do
-				if (collidingSprite.getId() != SpriteType.TOXIC_SLIME)
-					executeCollision(collidingSprite);
-
+                // executing the collision is there's someting to do
+                if (collidingSprite.getId() != SpriteType.TOXIC_SLIME)
+				{
+                    executeCollision(collidingSprite);
+                }
 				else if (!labyrinthImage.slimus.getInvincible())
-					executeToxicSlimeCollision(collidingSprite);
+				{
+                    executeToxicSlimeCollision(collidingSprite);
+                }
 			}
 		}
 
@@ -182,7 +185,7 @@ namespace Explorus_K.Threads
 
 		private void executeToxicSlimeCollision(Image2D toxicSlime)
 		{
-			labyrinthImage.startInvincibilityTimer();
+            labyrinthImage.startInvincibilityTimer();
 
             gameState = toxicSlime.collisionStrategy.executeStrategy(
 					labyrinthImage,

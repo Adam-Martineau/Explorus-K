@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Timers;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Explorus_K.Game
 {
@@ -207,7 +208,7 @@ namespace Explorus_K.Game
         public void stopInvincibilityTimer()
         {
             invincibilityTimer.Stop();
-            slimus.setInvincible(false);
+            //slimus.setInvincible(false);
         }
 
         private void OnTimedEventBubble(Object source, ElapsedEventArgs e)
@@ -230,6 +231,11 @@ namespace Explorus_K.Game
                                ((gameForm.Size.Height - (int)headerHeight) / 2) - ((int)labyrinthHeight / 2) + 5);
 
             headerOffset = (gameForm.Size.Width / 12);
+        }
+
+        public Point getLabyrinthPosition()
+        {
+            return labyrinthPosition;
         }
 
         public List<Player> getPlayerList()

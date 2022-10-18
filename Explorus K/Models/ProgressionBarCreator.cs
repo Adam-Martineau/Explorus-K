@@ -88,7 +88,6 @@ namespace Explorus_K.Models
             {
                 healthBar[current].setType(ImageType.EMPTY_BAR);
                 current--;
-                //gemBar[current].setType(ImageType.GEM_BAR_HALF);
             }
         }
         public void Increase()
@@ -97,7 +96,6 @@ namespace Explorus_K.Models
             {
                 current++;
                 healthBar[current].setType(ImageType.HEALTH_BAR_FULL);
-                //gemBar[current].setType(ImageType.GEM_BAR_HALF);
             }
         }
 

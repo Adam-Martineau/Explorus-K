@@ -19,12 +19,14 @@ namespace Explorus_K.Game
         private Iterator iterator;
         private Random r = new Random();
 
-        private int playerStepSize = 2;
-        private const int bubbleStepSize = 4;
+        private int playerStepSize;
+        private int bubbleStepSize;
 
-        public PlayerMovement(Iterator iterator)
+        public PlayerMovement(Iterator iterator, GameDifficulty difficulty)
         {
             this.iterator = iterator;
+            playerStepSize = difficulty.getPlayerSpeed();
+            bubbleStepSize = 4;
         }
 
         public bool canPlayerMove(MovementDirection movementDirection, Point position, SpriteType sprite)

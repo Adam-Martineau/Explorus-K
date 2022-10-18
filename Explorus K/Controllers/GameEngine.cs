@@ -67,7 +67,7 @@ namespace Explorus_K.Controllers
 			soundVolume = Constant.SOUND_VOLUME;
 			muteMusic = false;
             muteSound = false;
-            playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
+            playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator(), difficulty);
             actionManager = new ActionManager(this, playerMovement);
 
 			audio = new AudioThread(audioBabillard);
@@ -246,6 +246,8 @@ namespace Explorus_K.Controllers
                     physicsThread.Start();
 
                     Thread.Sleep(50);
+
+                    gameView.Replay();
                 }
 				else
 				{
@@ -407,7 +409,7 @@ namespace Explorus_K.Controllers
 				gameState = GameState.MENU;
 			}
             gameView.Restart(this, gameLevel);
-            playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator());
+            playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator(), difficulty);
             actionManager = new ActionManager(this, playerMovement);
             physicsThread.Abort();
             commandInvoker = new Invoker();
