@@ -170,28 +170,40 @@ namespace Explorus_K.Game
                     movementDirection = MovementDirection.up;
                     if (canPlayerMove(movementDirection, player.getIterator().Current(),SpriteType.TOXIC_SLIME))
                     {
-                        //commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                        if (commandInvoker != null)
+                        {
+                            //commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                        }
                     }
                     break;
                 case 1:
                     movementDirection = MovementDirection.down;
                     if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
                     {
-                        //commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                        if (commandInvoker != null)
+                        {
+                            //commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                        }
                     }
                     break;
                 case 2:
                     movementDirection = MovementDirection.left;
                     if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
                     {
-                        //commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                        if (commandInvoker != null)
+                        {
+                            //commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                        }
                     }
                     break;
                 case 3:
                     movementDirection = MovementDirection.right;
                     if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
                     {
-                        //commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                        if (commandInvoker != null)
+                        {
+                            //commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                        }
                     }
                     break;
                 default:

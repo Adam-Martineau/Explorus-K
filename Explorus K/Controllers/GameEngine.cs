@@ -24,7 +24,6 @@ namespace Explorus_K.Controllers
 		PlayerMovement playerMovement;
 		BubbleManager bubbleManager;
 		private GameState gameState;
-		Thread thread;
 		AudioBabillard audioBabillard;
 		PhysicsThread physics;
         private int gameLevel = 1;
@@ -41,7 +40,6 @@ namespace Explorus_K.Controllers
 		AudioThread audio;
 		Thread audioThread;
         Thread mainThread;
-		Thread renderThread;
         Invoker commandInvoker;
 
         public GameState State { get => gameState; set => gameState = value; }
@@ -74,14 +72,15 @@ namespace Explorus_K.Controllers
 
 			audio = new AudioThread(audioBabillard);
             audioThread = new Thread(new ThreadStart(audio.Run));
-			audioThread.Start();
-            
+			
 			mainThread = new Thread(new ThreadStart(GameLoop));
-			mainThread.Start();
 			
             physics = new PhysicsThread(this.gameView.labyrinthImage, audioBabillard, commandInvoker);
             physicsThread = new Thread(new ThreadStart(physics.startThread));
+			
 			physicsThread.Start();
+            audioThread.Start();
+            mainThread.Start();
 
             gameView.Show();
         }
@@ -184,7 +183,7 @@ namespace Explorus_K.Controllers
 						}
 					}
 
-                    playerMovement.moveAndAnimatePlayers(gameView.getLabyrinthImage().getPlayerList(), new Invoker(), gameState);
+                    playerMovement.moveAndAnimatePlayers(gameView.getLabyrinthImage().getPlayerList(), null, gameState);
                     playerMovement.moveAndAnimateBubbles(bubbleManager, audioBabillard);
 
                     if (lag >= MS_PER_FRAME)
@@ -227,7 +226,7 @@ namespace Explorus_K.Controllers
                         for (int i = 0; i < commandInvoker.getCommands().Count; i++)
                         {
                             commandInvoker.getCommands()[commandInvoker.getCommands().Count - i - 1].unexecute();
-                            playerMovement.moveAndAnimatePlayers(gameView.getLabyrinthImage().getPlayerList(), commandInvoker, gameState);
+                            playerMovement.moveAndAnimatePlayers(gameView.getLabyrinthImage().getPlayerList(), null, gameState);
                         }
 
                         gameState = GameState.REPLAY;
@@ -241,7 +240,7 @@ namespace Explorus_K.Controllers
 
                     Thread.Sleep(50);
 
-                    physics = new PhysicsThread(gameView.labyrinthImage, audioBabillard, new Invoker());
+                    physics = new PhysicsThread(gameView.labyrinthImage, audioBabillard, null);
                     physicsThread = new Thread(new ThreadStart(physics.startThread));
                     physicsThread.Start();
 

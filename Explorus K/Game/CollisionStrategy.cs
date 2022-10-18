@@ -47,7 +47,10 @@ namespace Explorus_K.Models
         {
             if(type == SpriteType.SLIMUS)
             {
-                commandInvoker.executeCommand(new GemCollectingCommand(labyrinthImage.GemBar));
+                if (commandInvoker != null)
+                {
+                    commandInvoker.executeCommand(new GemCollectingCommand(labyrinthImage.GemBar));
+                }
                 if (labyrinthImage.GemBar.getCurrent() == labyrinthImage.GemBar.getLength())
                 {
                     labyrinthImage.KeyState.RequestChangingState();
@@ -103,8 +106,11 @@ namespace Explorus_K.Models
         {
             if (type == SpriteType.SLIMUS)
             {
-                commandInvoker.executeCommand(new DecreaseLifeCommand(labyrinthImage.getSlimus()));
-                commandInvoker.executeCommand(new DecreaseHealthBar(labyrinthImage.HealthBar));
+                if (commandInvoker != null)
+                {
+                    commandInvoker.executeCommand(new DecreaseLifeCommand(labyrinthImage.getSlimus()));
+                    commandInvoker.executeCommand(new DecreaseHealthBar(labyrinthImage.HealthBar));
+                }
                 
                 if(labyrinthImage.HealthBar.getCurrent() == 0)
                 {
@@ -127,11 +133,17 @@ namespace Explorus_K.Models
                 {
                     if (player.GetGuid() == toxicSlime.id)
                     {
-                        commandInvoker.executeCommand(new DecreaseLifeCommand(player));
+                        if (commandInvoker != null)
+                        {
+                            commandInvoker.executeCommand(new DecreaseLifeCommand(player));
+                        }
                         audio.AddMessage(AudioName.GETTING_HIT);
                         if (player.getLifes() < 1)
                         {
-                            commandInvoker.executeCommand(new ToxicSlimeDeadCommand(labyrinthImage, player, toxicSlime));
+                            if (commandInvoker != null)
+                            {
+                                commandInvoker.executeCommand(new ToxicSlimeDeadCommand(labyrinthImage, player, toxicSlime));
+                            }
                         }
                     }
                 }
