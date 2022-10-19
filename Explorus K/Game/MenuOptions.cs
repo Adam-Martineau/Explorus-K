@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Explorus_K.Game
 {
-    internal class MenuOptions
+    public class MenuOptions
     {
         private List<(MenuCursor, Bitmap[])> menuOptions;
         private int current;

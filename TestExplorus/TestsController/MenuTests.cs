@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,33 +16,49 @@ namespace TestExplorus.TestsController
     [TestClass]
     public class MenuTests
     {
-        private List<MenuOption> menuOptions;
+        private GameEngine oController;
+        private Thread oGameLoopThread;
 
         [TestInitialize]
-        public void initializeMenu()
+        public void MenuTestInit()
         {
-            menuOptions = new List<MenuOption>();
-            
-            menuOptions.Add(new MenuOption(MenuCursor.START_GAME, new Bitmap[] { Resources.startgame_noir, Resources.startgame_bleu }));
-            menuOptions.Add(new MenuOption(MenuCursor.AUDIO, new Bitmap[] { Resources.audio_noir, Resources.audio_bleu }));
-            menuOptions.Add(new MenuOption(MenuCursor.DIFFICULTY, new Bitmap[] { Resources.difficulty_noir, Resources.difficulty_bleu }));
-            menuOptions.Add(new MenuOption(MenuCursor.EXIT_GAME, new Bitmap[] { Resources.exitgame_noir, Resources.exitgame_bleu }));
-            //menuOptions.Add(new MenuOption(MenuCursor.RESUME, new Bitmap[] { Resources.resume_noir, Resources.resume_bleu }));            
+            oController = new GameEngine();
+            Assert.IsNotNull(oController);
+            oController.IsWindowLess = true;
+
+            oGameLoopThread = new Thread(oController.GameLoop);
+            oGameLoopThread.Start();
+
+            Assert.IsTrue(oGameLoopThread.IsAlive);
         }
 
         [TestMethod]
         public void startGameTest()
         {
-            Binding binding = new Binding(Keys.A, Actions.none);
+            MenuOptions menuOptions = oController.gameView.getMenuOptions();
+            Assert.AreEqual(menuOptions.getCurrentIndex(), 0);
+            oController.gameView.selectMenu();
+            Assert.AreEqual(oController.State, GameState.RESUME);
 
-            Assert.AreEqual(binding.Action, Actions.none);
-            Assert.AreEqual(binding.Key, Keys.A);
+            Thread.Sleep(4000);
 
-            binding.Action = Actions.pause;
-            binding.Key = Keys.B;
+            Assert.AreEqual(oController.State, GameState.PLAY);
+        }
 
-            Assert.AreEqual(binding.Action, Actions.pause);
-            Assert.AreEqual(binding.Key, Keys.B);
+        [TestMethod]
+        public void stopGameTest()
+        {
+            MenuOptions menuOptions = oController.gameView.getMenuOptions();
+            Assert.AreEqual(menuOptions.getCurrentIndex(), 0);
+            oController.gameView.cursorDown();
+            Assert.AreEqual(menuOptions.getCurrentIndex(), 1);
+            oController.gameView.cursorDown();
+            Assert.AreEqual(menuOptions.getCurrentIndex(), 2);
+            oController.gameView.cursorDown();
+            Assert.AreEqual(menuOptions.getCurrentIndex(), 3);
+            Assert.AreEqual(menuOptions.getCurrentType(), MenuCursor.EXIT_GAME);
+            oController.gameView.selectMenu();
+            Assert.AreEqual(oController.State, GameState.STOP);
         }
     }
 }

@@ -42,6 +42,7 @@ namespace Explorus_K.Controllers
         Thread mainThread;
         Invoker commandInvoker;
 
+        public bool IsWindowLess { get; set; } = false;
         public GameState State { get => gameState; set => gameState = value; }
         public int MusicVolume { get => musicVolume; set => musicVolume = value; }
         public int SoundVolume { get => soundVolume; set => soundVolume = value; }
@@ -51,6 +52,7 @@ namespace Explorus_K.Controllers
 
         public GameEngine()
 		{
+
             commandInvoker = new Invoker();
             audioBabillard = new AudioBabillard();
             gameState = GameState.MENU;
@@ -80,9 +82,6 @@ namespace Explorus_K.Controllers
 			
 			physicsThread.Start();
             audioThread.Start();
-            mainThread.Start();
-
-            gameView.Show();
         }
 
 		private List<Binding> initiate_bindings()
@@ -102,7 +101,7 @@ namespace Explorus_K.Controllers
             return bindings;
 		}
 
-		private void GameLoop()
+		public void GameLoop()
 		{
             gameView.InitializeHeaderBar(new HealthBarCreator(), difficulty.getSlimusLives(), difficulty.getSlimusLives());
             gameView.InitializeHeaderBar(new BubbleBarCreator(), Constant.INITIAL_BUBBLE_COUNT, Constant.INITIAL_BUBBLE_COUNT);
@@ -114,7 +113,7 @@ namespace Explorus_K.Controllers
             bool replayInitiated = false;
             long firstListTimestamp = 0;
 
-            while (true)
+            while (IsRunning)
 			{
 				//Actions state machine
 				if (State == GameState.MENU || State == GameState.PAUSE)
@@ -253,8 +252,22 @@ namespace Explorus_K.Controllers
 			}
 		}
 
-		//Receving the event from a keypress and checking if we have a action bind to that key
-		internal void KeyEventHandler(KeyEventArgs e)
+        public bool IsRunning
+        {
+			get { return IsWindowLess || mainThread.IsAlive; }
+        }
+
+        public void StartGame()
+        {
+            if (!IsRunning && !IsWindowLess)
+            {
+                mainThread.Start();
+                gameView.Show();
+            }
+        }
+
+        //Receving the event from a keypress and checking if we have a action bind to that key
+        internal void KeyEventHandler(KeyEventArgs e)
 		{
 			foreach(Binding binding in bindings)
 			{

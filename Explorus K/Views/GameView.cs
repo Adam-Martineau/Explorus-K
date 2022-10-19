@@ -51,9 +51,9 @@ namespace Explorus_K.Views
         private int replayCountdown = 5;
         private MenuOptions menuOptions;
 
-        public LabyrinthImage labyrinthImage;		
+        public LabyrinthImage labyrinthImage;
 
-		public GameView(GameEngine gameEngine, int level)
+        public GameView(GameEngine gameEngine, int level)
 		{
 			this.gameEngine = gameEngine;
 			gameForm = new GameForm(this);
@@ -407,6 +407,7 @@ namespace Explorus_K.Views
                     gameEngine.resume();
                     break;
                 case MenuCursor.EXIT_GAME:
+                    gameEngine.stop();
                     Application.Exit();
                     break;
                 case MenuCursor.AUDIO:
@@ -427,6 +428,11 @@ namespace Explorus_K.Views
                 default:
                     break;
             }
+        }
+
+        public MenuOptions getMenuOptions()
+        {
+            return menuOptions;
         }
 
         public void cursorUp()
