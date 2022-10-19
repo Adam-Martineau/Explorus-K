@@ -40,9 +40,9 @@ namespace TestExplorus
             audioThread = new Thread(audioThreadStart);
 
             labyrinth = new Labyrinth();
-            bubbleManager = new BubbleManager();
-            labyrinthImage = new LabyrinthImage(labyrinth, bubbleManager);
-            physicsThreadRef = new PhysicsThread(labyrinthImage, audioBabillard);
+            bubbleManager = new BubbleManager(0);
+            labyrinthImage = new LabyrinthImage(labyrinth, bubbleManager, new GameDifficulty());
+            physicsThreadRef = new PhysicsThread(labyrinthImage, audioBabillard, new Explorus_K.Game.Replay.Invoker());
             physicsThread = new Thread(new ThreadStart(physicsThreadRef.startThread));
 
             render = new RenderThread();

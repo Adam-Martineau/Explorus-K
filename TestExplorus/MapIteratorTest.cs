@@ -24,13 +24,9 @@ namespace TestExplorus
             Point expectedPosition = new Point(0,1);
             String expectedStringFromGet = emptySpace;
 
-            bool result = iterator.isAbleToMoveLeft();
-            String resultFromGet = (String)iterator.GetLeft();
-            iterator.MoveLeft();
+            iterator.Move(Explorus_K.Game.MovementDirection.left);
 
-            Assert.IsTrue(result);
             Assert.AreEqual(expectedPosition, iterator.Current());
-            Assert.AreEqual(expectedStringFromGet, resultFromGet);
         }
 
         [TestMethod]
@@ -40,13 +36,9 @@ namespace TestExplorus
             Point expectedPosition = iterator.Current();
             String expectedStringFromGet = outOfBound;
 
-            bool result = iterator.isAbleToMoveRight();
-            String resultFromGet = (String)iterator.GetRight();
-            iterator.MoveRight();
+            iterator.Move(Explorus_K.Game.MovementDirection.right); ;
 
-            Assert.IsFalse(result);
             Assert.AreEqual(expectedPosition, iterator.Current());
-            Assert.AreEqual(expectedStringFromGet, resultFromGet);
         }
 
         [TestMethod]
@@ -56,13 +48,9 @@ namespace TestExplorus
             Point expectedPosition = iterator.Current();
             String expectedStringFromGet = outOfBound;
 
-            bool result = iterator.isAbleToMoveDown();
-            String resultFromGet = (String)iterator.GetDown();
-            iterator.MoveDown();
+            iterator.Move(Explorus_K.Game.MovementDirection.down);
 
-            Assert.IsFalse(result);
             Assert.AreEqual(expectedPosition, iterator.Current());
-            Assert.AreEqual(expectedStringFromGet, resultFromGet);
         }
 
         [TestMethod]
@@ -72,13 +60,9 @@ namespace TestExplorus
             Point expectedPosition = new Point(1, 0);
             String expectedStringFromGet = emptySpace;
 
-            bool result = iterator.isAbleToMoveUp();
-            String resultFromGet = (String)iterator.GetUp();
-            iterator.MoveUp();
+            iterator.Move(Explorus_K.Game.MovementDirection.up);
 
-            Assert.IsTrue(result);
             Assert.AreEqual(expectedPosition, iterator.Current());
-            Assert.AreEqual(expectedStringFromGet, resultFromGet);
         }
 
 

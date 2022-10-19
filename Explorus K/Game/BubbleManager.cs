@@ -10,10 +10,12 @@ namespace Explorus_K.Game
     public class BubbleManager
     {
         private List<Bubble> bubbles;
+        private int timer;
 
-        public BubbleManager()
+        public BubbleManager(int timer)
         {
             bubbles = new List<Bubble>();
+            this.timer = timer;
         }
 
         public void addBubble(Bubble bubble)
@@ -29,6 +31,11 @@ namespace Explorus_K.Game
         public List<Bubble> getBubbleList()
         {
             return bubbles;
+        }
+
+        public int getBubbleTimer()
+        {
+            return timer;
         }
     }
 }

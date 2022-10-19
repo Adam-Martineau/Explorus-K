@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Explorus_K.Models.Iterator">
+    <Position X="4.75" Y="0.5" Width="3.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAIAQAAIAAAAAAAACAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Models\MapIterator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Explorus_K.Models.IteratorAggregate">
+    <Position X="1" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\MapIterator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Explorus_K.Models.MapIterator">
+    <Position X="4.25" Y="3.25" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAQAAIAAAEAAAACAAAAAAAAAAAAEAAAAgAAAAAA=</HashCode>
+      <FileName>Models\MapIterator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Explorus_K.Models.MapCollection">
+    <Position X="0.75" Y="2.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAEACAAAAAAAAAAAAAAAAAAAADAAAAAA=</HashCode>
+      <FileName>Models\MapIterator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

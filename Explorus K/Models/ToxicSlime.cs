@@ -6,124 +6,17 @@ namespace Explorus_K.Models
 {
     internal class ToxicSlime : Player
     {
-        private int posX;
-        private int posY;
-        private ImageType imageType;
-        private int lifeCount;
-        private MovementDirection movementDirection;
-        private Dictionary<MovementDirection, List<ImageType>> animationDict;
-        private int animationCount = 0;
-        private string labyrinthName;
-        private Iterator iterator;
-        private Guid id = Guid.NewGuid();
-
-        public ToxicSlime(int posX, int posY, ImageType imageType, int life, Iterator iterator)
+        public ToxicSlime(int posX, int posY, ImageType imageType, int life, Iterator iterator) : base(posX, posY, imageType, life, iterator)
         {
-            this.posX = posX;
-            this.posY = posY;
-            this.imageType = imageType;
-            this.lifeCount = life;
-            movementDirection = MovementDirection.none;
             fillAnimationDict();
-            this.iterator = iterator;
         }
 
-        public ImageType getImageType()
-        {
-            return imageType;
-        }
-
-        public int getPosX()
-        {
-            return posX;
-        }
-
-        public int getPosY()
-        {
-            return posY;
-        }
-
-        public int getLifes()
-        {
-            return lifeCount;
-        }
-
-        public int decreaseLife()
-        {
-            return lifeCount--;
-        }
-
-        public void setImageType(ImageType imageType)
-        {
-            this.imageType = imageType;
-        }
-
-        public MovementDirection getMovementDirection()
-        {
-            return movementDirection;
-        }
-
-        public void setMovementDirection(MovementDirection direction)
-        {
-            this.movementDirection = direction;
-        }
-
-        public void moveDown(int stepSize)
-        {
-            posY += stepSize;
-        }
-
-        public void moveUp(int stepSize)
-        {
-            posY -= stepSize;
-        }
-
-        public void moveLeft(int stepSize)
-        {
-            posX -= stepSize;
-        }
-
-        public void moveRight(int stepSize)
-        {
-            posX += stepSize;
-        }
-
-        public Image2D refreshPlayer()
+        public override Image2D refreshPlayer()
         {
             return new Image2D(SpriteType.TOXIC_SLIME, imageType, posX, posY, id);
-        }
+        }        
 
-        public ImageType getAnimationDictValue(MovementDirection key, int value)
-        {
-            return animationDict[key][value];
-        }
-
-        public int getAnimationCount()
-        {
-            return animationCount;
-        }
-
-        public void setAnimationCount(int count)
-        {
-            animationCount = count;
-        }
-
-        public void setLabyrinthName(string name)
-        {
-            labyrinthName = name;
-        }
-
-        public string getLabyrinthName()
-        {
-            return labyrinthName;
-        }
-
-        public Iterator getIterator()
-        {
-            return iterator;
-        }
-
-        private void fillAnimationDict()
+        protected override void fillAnimationDict()
         {
             animationDict = new Dictionary<MovementDirection, List<ImageType>>();
 
@@ -153,11 +46,6 @@ namespace Explorus_K.Models
                         break;
                 }
             }
-        }
-
-        public Guid GetGuid()
-        {
-            return this.id;
         }
     }
 }

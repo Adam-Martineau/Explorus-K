@@ -1,9 +1,11 @@
-﻿using Explorus_K.Models;
+﻿using Explorus_K.Controllers;
+using Explorus_K.Models;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Timers;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Explorus_K.Game
 {
@@ -44,18 +46,15 @@ namespace Explorus_K.Game
         internal GemBar GemBar { get => gemBar; set => gemBar = value; }
         internal Labyrinth Labyrinth { get => labyrinth; set => labyrinth = value; }
 
-        public LabyrinthImage(Labyrinth labyrinth, BubbleManager bubbleManager)
+        public LabyrinthImage(Labyrinth labyrinth, BubbleManager bubbleManager, GameDifficulty diff)
         {
             labyrinthPosition = new Point();
             labyrinthImages = new List<Image2D>();
             collisionStrategy = new CollisionContext();
             keyState = new Context(new NoKeyState());
-            healthBar = new HealthBar();
-            bubbleBar = new BubbleBar();
-            gemBar = new GemBar();
             this.labyrinth = labyrinth;
             headerHeight = screenHeight * headerRatio;
-            fillLabyrinthImages();
+            fillLabyrinthImages(diff);
             labyrinthHeight = 48 * labyrinth.Map.getLengthY();
             labyrinthWidth = 48 * labyrinth.Map.getLengthX();
 
@@ -63,12 +62,35 @@ namespace Explorus_K.Game
             invincibilityTimer.Elapsed += OnTimedEventInvincible;
             numberOfTrigger = 0;
 
-            bubbleTimer = new Timer(500);
+            bubbleTimer = new Timer(bubbleManager.getBubbleTimer());
             bubbleTimer.Elapsed += OnTimedEventBubble;
             bubbleTimer.AutoReset = true;
             bubbleTimer.Enabled = true;
 
             this.bubbleManager = bubbleManager;
+        }
+
+        public void setBubbleTimerInterval(int timer)
+        {
+            bubbleTimer.Interval = timer;
+        }
+
+        public void setSlimusLives(int lives)
+        {
+            slimus.setLives(lives);
+            IBar bar = new HealthBarCreator().InitializeBar(lives, lives);
+            healthBar = (HealthBar)bar;
+        }
+
+        public void setToxicLives(int lives)
+        {
+            foreach (Player p in playerList)
+            {
+                if (p.getLabyrinthName() != "s")
+                {
+                    p.setLives(lives);
+                }
+            }
         }
 
         public void removeImageAt(int index)
@@ -186,7 +208,7 @@ namespace Explorus_K.Game
         public void stopInvincibilityTimer()
         {
             invincibilityTimer.Stop();
-            slimus.setInvincible(false);
+            //slimus.setInvincible(false);
         }
 
         private void OnTimedEventBubble(Object source, ElapsedEventArgs e)
@@ -211,12 +233,17 @@ namespace Explorus_K.Game
             headerOffset = (gameForm.Size.Width / 12);
         }
 
+        public Point getLabyrinthPosition()
+        {
+            return labyrinthPosition;
+        }
+
         public List<Player> getPlayerList()
         {
             return playerList;
         }    
 
-        private void fillLabyrinthImages()
+        private void fillLabyrinthImages(GameDifficulty diff)
         {
             for (int i = 0; i < labyrinth.Map.getLengthX(); i++)
             {
@@ -232,7 +259,7 @@ namespace Explorus_K.Game
                     }
                     else if (labyrinth.getMapEntryAt(i, j) == "s")
                     {
-                        slimus = new Slimus(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.SLIMUS_DOWN_ANIMATION_1, Constant.SLIMUS_LIVES, Labyrinth.Map.CreateIterator("s"));
+                        slimus = new Slimus(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.SLIMUS_DOWN_ANIMATION_1, diff.getSlimusLives(), Labyrinth.Map.CreateIterator("s"));
                         labyrinthImages.Add(new Image2D(SpriteType.SLIMUS, slimus.getImageType(), slimus.getPosX(), slimus.getPosY()));
                         playerList.Add(slimus);
                     }
@@ -243,7 +270,7 @@ namespace Explorus_K.Game
                     else if (labyrinth.getMapEntryAt(i, j) != ".")
                     {
                         string tempLabyrinthName = "t" + labyrintNameCount.ToString();
-                        ToxicSlime tempToxicSlime = new ToxicSlime(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, Constant.TOXIC_SLIME_LIVES, Labyrinth.Map.CreateIterator(tempLabyrinthName));
+                        ToxicSlime tempToxicSlime = new ToxicSlime(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, diff.getToxicLives(), Labyrinth.Map.CreateIterator(tempLabyrinthName));
                         tempToxicSlime.setLabyrinthName(tempLabyrinthName);
                         labyrintNameCount++;
                         playerList.Add(tempToxicSlime);
@@ -284,7 +311,7 @@ namespace Explorus_K.Game
                 }
             }
 
-            foreach(Player player in playerList)
+            foreach(Player player in new List<Player>(playerList))
             {
                 labyrinthImages.Add(player.refreshPlayer());
             }

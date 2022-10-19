@@ -88,16 +88,14 @@ namespace Explorus_K.Models
             {
                 healthBar[current].setType(ImageType.EMPTY_BAR);
                 current--;
-                //gemBar[current].setType(ImageType.GEM_BAR_HALF);
             }
         }
         public void Increase()
         {
             if (current <= length)
             {
-                healthBar[current].setType(ImageType.HEALTH_BAR_FULL);
                 current++;
-                //gemBar[current].setType(ImageType.GEM_BAR_HALF);
+                healthBar[current].setType(ImageType.HEALTH_BAR_FULL);
             }
         }
 

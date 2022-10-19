@@ -1,10 +1,12 @@
 ﻿using Explorus_K.Game;
 using Explorus_K.Game.Audio;
+using Explorus_K.Game.Replay;
 using Explorus_K.Models;
 using Explorus_K.Threads;
 using Explorus_K.Views;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
@@ -22,46 +24,64 @@ namespace Explorus_K.Controllers
 		PlayerMovement playerMovement;
 		BubbleManager bubbleManager;
 		private GameState gameState;
-		Thread thread;
 		AudioBabillard audioBabillard;
 		PhysicsThread physics;
         private int gameLevel = 1;
 		private bool show_fps;
+		private int musicVolume;
+        private int soundVolume;
+		private bool muteMusic;
+        private bool muteSound;
+		private GameDifficulty difficulty;
+		private double elapsedTimeCombined = 0;
 
         public static object gameStatelock = new object();
         Thread physicsThread;
 		AudioThread audio;
 		Thread audioThread;
         Thread mainThread;
-		Thread renderThread;
+        Invoker commandInvoker;
 
+        public bool IsWindowLess { get; set; } = false;
         public GameState State { get => gameState; set => gameState = value; }
+        public int MusicVolume { get => musicVolume; set => musicVolume = value; }
+        public int SoundVolume { get => soundVolume; set => soundVolume = value; }
+        public bool MuteMusic { get => muteMusic; set => muteMusic = value; }
+        public bool MuteSound { get => muteSound; set => muteSound = value; }
+        public GameDifficulty GameDifficulty { get => difficulty; set => difficulty = value; }
 
         public GameEngine()
 		{
-			audioBabillard = new AudioBabillard();
-            bubbleManager = new BubbleManager();
+
+            commandInvoker = new Invoker();
+            audioBabillard = new AudioBabillard();
+            gameState = GameState.MENU;
+			difficulty = new GameDifficulty();
+            audioBabillard = new AudioBabillard();
+            bubbleManager = new BubbleManager(difficulty.getBubbleTimer());
             labyrinth = new Labyrinth();
             //The game engine get passed from contructor to constructor until it reach GameForm.cs
             gameView = new GameView(this, gameLevel);
 			bindings = initiate_bindings();
-            gameState = GameState.RESUME;
+            
 			show_fps = true;
-            playerMovement = new PlayerMovement(gameView.getSlimusObject());
+			musicVolume = Constant.MUSIC_VOLUME;
+			soundVolume = Constant.SOUND_VOLUME;
+			muteMusic = false;
+            muteSound = false;
+            playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator(), difficulty);
             actionManager = new ActionManager(this, playerMovement);
 
 			audio = new AudioThread(audioBabillard);
             audioThread = new Thread(new ThreadStart(audio.Run));
-			audioThread.Start();
-            
-			mainThread = new Thread(new ThreadStart(GameLoop));
-			mainThread.Start();
 			
-            physics = new PhysicsThread(this.gameView.labyrinthImage, audioBabillard);
+			mainThread = new Thread(new ThreadStart(GameLoop));
+			
+            physics = new PhysicsThread(this.gameView.labyrinthImage, audioBabillard, commandInvoker);
             physicsThread = new Thread(new ThreadStart(physics.startThread));
+			
 			physicsThread.Start();
-
-			gameView.Show();
+            audioThread.Start();
         }
 
 		private List<Binding> initiate_bindings()
@@ -76,22 +96,34 @@ namespace Explorus_K.Controllers
             bindings.Add(new Binding(Keys.Escape, Actions.exit));
             bindings.Add(new Binding(Keys.Space, Actions.shoot));
             bindings.Add(new Binding(Keys.F, Actions.show_fps));
+			bindings.Add(new Binding(Keys.Enter, Actions.select_menu));
+            bindings.Add(new Binding(Keys.M, Actions.mute));
             return bindings;
 		}
 
-		private void GameLoop()
+		public void GameLoop()
 		{
-			gameView.InitializeHeaderBar(new HealthBarCreator(), Constant.SLIMUS_LIVES, Constant.SLIMUS_LIVES);
-			gameView.InitializeHeaderBar(new BubbleBarCreator(), Constant.INITIAL_BUBBLE_COUNT, Constant.INITIAL_BUBBLE_COUNT);
-			gameView.InitializeHeaderBar(new GemBarCreator(), Constant.INITIAL_GEM_COUNT, 0);
+            gameView.InitializeHeaderBar(new HealthBarCreator(), difficulty.getSlimusLives(), difficulty.getSlimusLives());
+            gameView.InitializeHeaderBar(new BubbleBarCreator(), Constant.INITIAL_BUBBLE_COUNT, Constant.INITIAL_BUBBLE_COUNT);
+            gameView.InitializeHeaderBar(new GemBarCreator(), Constant.INITIAL_GEM_COUNT, 0);
 
-			double previous_time = getCurrentTime();
+            double previous_time = getCurrentTime();
 			double lag = 0.0;
 
-            while (true)
+            bool replayInitiated = false;
+            long firstListTimestamp = 0;
+
+            while (IsRunning)
 			{
 				//Actions state machine
-				actionManager.systemActionsManagement();
+				if (State == GameState.MENU || State == GameState.PAUSE)
+				{
+                    actionManager.systemMenuManagement(gameView);
+                }
+				else
+				{
+                    actionManager.systemActionsManagement();
+                }
 
 				double current_time = getCurrentTime();
 				double elapsed_time = current_time - previous_time;
@@ -100,8 +132,8 @@ namespace Explorus_K.Controllers
 
 				if (gameState == GameState.PLAY)
 				{
-					actionManager.characterActionsManagement(gameView, bubbleManager, audioBabillard);
-					playerMovement.moveAndAnimatePlayer(gameView.getLabyrinthImage().getPlayerList());
+					actionManager.characterActionsManagement(gameView, bubbleManager, audioBabillard, commandInvoker);
+					playerMovement.moveAndAnimatePlayers(gameView.getLabyrinthImage().getPlayerList(), commandInvoker, gameState);
 					playerMovement.moveAndAnimateBubbles(bubbleManager, audioBabillard);
 
 					if (lag >= MS_PER_FRAME)
@@ -122,6 +154,90 @@ namespace Explorus_K.Controllers
 
 					Thread.Sleep(1);
 				}
+				else if(gameState == GameState.REPLAY)
+				{
+					List<ICommand> commands = commandInvoker.getCommands();
+
+					elapsedTimeCombined +=  13;
+
+					if(!replayInitiated)
+					{
+                        firstListTimestamp = commands[0].getCommandTimestamp();
+						replayInitiated = true;
+                    }
+
+                    foreach (ICommand command in new List<ICommand>(commands))
+					{
+						long millisecondsBeetwenComand = command.getCommandTimestamp() - firstListTimestamp;
+
+						if(millisecondsBeetwenComand > elapsedTimeCombined)
+						{
+							break;
+						}
+						else
+						{
+							command.execute();
+							commands.Remove(command);
+						}
+					}
+
+                    playerMovement.moveAndAnimatePlayers(gameView.getLabyrinthImage().getPlayerList(), null, gameState);
+                    playerMovement.moveAndAnimateBubbles(bubbleManager, audioBabillard);
+
+                    if (lag >= MS_PER_FRAME)
+                    {
+
+                        float fps = 1000f / (float)lag;
+
+                        while (lag >= MS_PER_FRAME)
+                        {
+                            gameView.Update(show_fps, fps);
+                            lag -= MS_PER_FRAME;
+                        }
+
+                        gameView.Render();
+                        physics.Notify();
+                        //gameState = physics.getGameState();
+                    }
+
+                    if (commands.Count == 0)
+					{
+                        gameState = GameState.STOP;
+						replayInitiated = false;
+						restart();
+					}
+
+                    Thread.Sleep(1);
+
+                }
+				else if(gameState == GameState.UNDO)
+				{
+                    physicsThread.Abort();
+
+					foreach(Player player in gameView.getLabyrinthImage().getPlayerList())
+					{
+						player.setMovementDirection(MovementDirection.none);
+					}
+
+                    for (int i = 0; i < commandInvoker.getCommands().Count; i++)
+                    {
+                        commandInvoker.getCommands()[commandInvoker.getCommands().Count - i - 1].unexecute();
+                        playerMovement.moveAndAnimatePlayers(gameView.getLabyrinthImage().getPlayerList(), null, gameState);
+                    }
+
+                    gameState = GameState.REPLAY;
+                    gameView.Render();
+
+                    Thread.Sleep(50);
+
+                    physics = new PhysicsThread(gameView.labyrinthImage, audioBabillard, null);
+                    physicsThread = new Thread(new ThreadStart(physics.startThread));
+                    physicsThread.Start();
+
+                    Thread.Sleep(50);
+
+                    gameView.Replay();
+                }
 				else
 				{
 					gameView.Render();
@@ -136,14 +252,36 @@ namespace Explorus_K.Controllers
 			}
 		}
 
-		//Receving the event from a keypress and checking if we have a action bind to that key
-		internal void KeyEventHandler(KeyEventArgs e)
+        public bool IsRunning
+        {
+			get { return IsWindowLess || mainThread.IsAlive; }
+        }
+
+        public void StartGame()
+        {
+            if (!IsRunning && !IsWindowLess)
+            {
+                mainThread.Start();
+                gameView.Show();
+            }
+        }
+
+        //Receving the event from a keypress and checking if we have a action bind to that key
+        internal void KeyEventHandler(KeyEventArgs e)
 		{
 			foreach(Binding binding in bindings)
 			{
 				if(binding.Key == e.KeyCode)
 				{
-					actionManager.actionHandler(binding.Action, gameView.getSlimusObject().getIterator());
+					if (State == GameState.MENU || State == GameState.PAUSE)
+					{
+                        actionManager.menuHandler(binding.Action);
+                    }
+					else
+					{
+                        actionManager.actionHandler(binding.Action, gameView.getSlimusObject().getIterator());
+                    }
+					
 				}
 			}
 		}
@@ -164,7 +302,7 @@ namespace Explorus_K.Controllers
 			return this.bubbleManager;
 		}
 
-		public void pause()
+        public void pause()
 		{
 			gameState = GameState.PAUSE;
             gameView.Pause();
@@ -191,39 +329,110 @@ namespace Explorus_K.Controllers
             show_fps = !show_fps;
         }
 
-		public void setMusicVolume(int volume)
+		public void downMusicVolume()
 		{
-            audioBabillard.AddMessage(AudioName.SET_MUSIC, volume);
+			if (musicVolume > 0 && !muteMusic)
+			{
+				musicVolume -= 1;
+				audioBabillard.AddMessage(AudioName.SET_MUSIC, musicVolume);
+			}
         }
 
-        public void setSoundVolume(int volume)
+        public void upMusicVolume()
         {
-            audioBabillard.AddMessage(AudioName.SET_SOUND, volume);
+			if (musicVolume < 100 && !muteMusic)
+			{
+                musicVolume += 1;
+                audioBabillard.AddMessage(AudioName.SET_MUSIC, musicVolume);
+            }
+        }
+
+        public void muteMusicVolume()
+        {
+			if (!muteMusic)
+			{
+                audioBabillard.AddMessage(AudioName.SET_MUSIC, 0);
+				muteMusic = true;	
+            }
+			else
+			{
+                audioBabillard.AddMessage(AudioName.SET_MUSIC, musicVolume);
+                muteMusic = false;
+            }
+        }
+
+        public void downSoundVolume()
+        {
+			if (soundVolume > 0 && !muteSound)
+			{
+                soundVolume -= 1;
+                audioBabillard.AddMessage(AudioName.SET_SOUND, soundVolume);
+            }
+        }
+
+        public void upSoundVolume()
+        {
+			if (soundVolume < 100 && !muteSound)
+			{
+				soundVolume += 1;
+				audioBabillard.AddMessage(AudioName.SET_SOUND, soundVolume);
+			}
+        }
+
+        public void muteSoundVolume()
+        {
+			if (!muteSound)
+			{
+                audioBabillard.AddMessage(AudioName.SET_SOUND, 0);
+                muteSound = true;
+            }
+			else
+			{
+                audioBabillard.AddMessage(AudioName.SET_SOUND, soundVolume);
+                muteSound = false;
+            }
+        }
+
+		public void changeDifficulty()
+		{
+            difficulty.changeDifficulty();
+			playerMovement.setPlayerSpeed(difficulty.getPlayerSpeed());
         }
 
         public void restart()
 		{
             gameLevel += 1;
-            bubbleManager = new BubbleManager();
+            bubbleManager = new BubbleManager(difficulty.getBubbleTimer());
             labyrinth = new Labyrinth();
             int remainingLifes = gameView.getLabyrinthImage().HealthBar.getCurrent();
             if (gameState == GameState.STOP)
 			{
 				gameLevel = 1;
-				remainingLifes = Constant.SLIMUS_LIVES;
+				remainingLifes = difficulty.getSlimusLives();
+				gameState = GameState.MENU;
 			}
             gameView.Restart(this, gameLevel);
-            playerMovement = new PlayerMovement(gameView.getSlimusObject());
+            playerMovement = new PlayerMovement(gameView.getSlimusObject().getIterator(), difficulty);
             actionManager = new ActionManager(this, playerMovement);
             physicsThread.Abort();
-            physics = new PhysicsThread(gameView.labyrinthImage, audioBabillard);
+            commandInvoker = new Invoker();
+            physics = new PhysicsThread(gameView.labyrinthImage, audioBabillard, commandInvoker);
             physicsThread = new Thread(new ThreadStart(physics.startThread));
             physicsThread.Start();
-            gameView.InitializeHeaderBar(new HealthBarCreator(), Constant.SLIMUS_LIVES, remainingLifes);
+            gameView.InitializeHeaderBar(new HealthBarCreator(), difficulty.getSlimusLives(), remainingLifes);
             gameView.InitializeHeaderBar(new BubbleBarCreator(), Constant.INITIAL_BUBBLE_COUNT, Constant.INITIAL_BUBBLE_COUNT);
             gameView.InitializeHeaderBar(new GemBarCreator(), Constant.INITIAL_GEM_COUNT, 0);
-			audio.restartMusic();
-            resume();
+            audio.restartMusic();
+			elapsedTimeCombined = 0;
+
+			if (gameState == GameState.RESTART)
+			{
+                resume();
+            }
+			else
+			{
+                gameView.Pause();
+            }
         }
     }
 }

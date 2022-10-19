@@ -4,35 +4,18 @@ using System.Drawing;
 
 namespace Explorus_K.Models
 {
-    public class Bubble
+    public class Bubble : Movement
     {
-        private int posX;
-        private int posY;
         private ImageType imageType;
         private bool popped = false;
-        private MovementDirection movementDirection;
         private Point iteratorPos;
-        private int animationCount = 0;
         public Guid id { get; } = Guid.NewGuid();
 
-
-        public Bubble(int posX, int posY, ImageType imageType, MovementDirection movementDirection, Point iteratorPos)
+        public Bubble(int posX, int posY, ImageType imageType, MovementDirection movementDirection, Point iteratorPos) : base(posX, posY)
         {
-            this.posX = posX;
-            this.posY = posY;
             this.imageType = imageType;
             this.movementDirection = movementDirection;
             this.iteratorPos = iteratorPos;
-        }
-
-        public int getPosX()
-        { 
-            return posX; 
-        }
-
-        public int getPosY()
-        {
-            return posY;
         }
 
         public ImageType getImageType()
@@ -57,34 +40,9 @@ namespace Explorus_K.Models
             imageType = ImageType.BUBBLE_EXPLODED;
         }
 
-        public void moveDown(int stepSize)
-        {
-            posY += stepSize;
-        }
-
-        public void moveUp(int stepSize)
-        {
-            posY -= stepSize;
-        }
-
-        public void moveLeft(int stepSize)
-        {
-            posX -= stepSize;
-        }
-
-        public void moveRight(int stepSize)
-        {
-            posX += stepSize;
-        }
-
         public Image2D refreshBubble()
         {
             return new Image2D(SpriteType.BUBBLE, imageType, posX, posY, id);
-        }
-
-        public MovementDirection getMovementDirection()
-        {
-            return movementDirection;
         }
 
         public Point getIteratorPosition()
@@ -95,16 +53,6 @@ namespace Explorus_K.Models
         public void setIteratorPosition(Point iteratorPos)
         {
             this.iteratorPos = iteratorPos;
-        }
-
-        public int getAnimationCount()
-        {
-            return animationCount;
-        }
-
-        public void setAnimationCount(int animationCount)
-        {
-            this.animationCount = animationCount;
         }
     }
 }

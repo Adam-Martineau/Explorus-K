@@ -1,6 +1,7 @@
 ﻿using Explorus_K.Controllers;
 using Explorus_K.Game;
 using Explorus_K.Game.Audio;
+using Explorus_K.Game.Replay;
 using Explorus_K.Models;
 using Microsoft.VisualBasic.Devices;
 using System;
@@ -43,12 +44,14 @@ namespace Explorus_K.Threads
         private LabyrinthImage labyrinthImage;
         private GameState gameState;
         private bool running_;
+		private Invoker commmandInvoker;
 
-        public PhysicsThread(LabyrinthImage labyrinthImage, AudioBabillard audioBabillard)
+        public PhysicsThread(LabyrinthImage labyrinthImage, AudioBabillard audioBabillard, Invoker commandInvoker)
 		{
 			this.labyrinthImage = labyrinthImage;
 			this.audioBabillard = audioBabillard;
 			this.gameState = GameState.PLAY;
+			this.commmandInvoker = commandInvoker;
         }
 
 		public void startThread()
@@ -66,9 +69,13 @@ namespace Explorus_K.Threads
 						if (sprite != null)
 						{
 							if (sprite.getId() == SpriteType.SLIMUS || sprite.getId() == SpriteType.BUBBLE)
+							{
 								searchForCollisionWithSprite(sprite);
+							}
+								
 						}
                     }
+
                 }
 			}
 		}
@@ -154,12 +161,15 @@ namespace Explorus_K.Threads
 				else
 					collidingSprite = sprite_A;
 
-				// executing the collision is there's someting to do
-				if (collidingSprite.getId() != SpriteType.TOXIC_SLIME)
-					executeCollision(collidingSprite);
-
+                // executing the collision is there's someting to do
+                if (collidingSprite.getId() != SpriteType.TOXIC_SLIME)
+				{
+                    executeCollision(collidingSprite);
+                }
 				else if (!labyrinthImage.slimus.getInvincible())
-					executeToxicSlimeCollision(collidingSprite);
+				{
+                    executeToxicSlimeCollision(collidingSprite);
+                }
 			}
 		}
 
@@ -169,18 +179,20 @@ namespace Explorus_K.Threads
 				labyrinthImage,
 				labyrinthImage.labyrinthImages.IndexOf(collidingSprite),
 				SpriteType.SLIMUS,
-				audioBabillard);
+				audioBabillard, 
+				commmandInvoker);
         }
 
 		private void executeToxicSlimeCollision(Image2D toxicSlime)
 		{
-			labyrinthImage.startInvincibilityTimer();
+            labyrinthImage.startInvincibilityTimer();
 
             gameState = toxicSlime.collisionStrategy.executeStrategy(
 					labyrinthImage,
 					labyrinthImage.labyrinthImages.IndexOf(toxicSlime),
 					SpriteType.SLIMUS,
-					audioBabillard);
+					audioBabillard,
+					commmandInvoker);
 		}
 
 		private void executeToxicSlimeCollisionWithBubble(Image2D toxicSlime, Image2D bubbleImage)
@@ -194,7 +206,8 @@ namespace Explorus_K.Threads
 						labyrinthImage,
 						labyrinthImage.labyrinthImages.IndexOf(toxicSlime),
 						SpriteType.BUBBLE,
-						audioBabillard);
+						audioBabillard,
+						commmandInvoker);
                 }
 			}
 		}
