@@ -68,7 +68,7 @@
     <Compile Include="ActionManagerTest.cs" />
     <Compile Include="AudioBabillardTest.cs" />
     <Compile Include="BindingTest.cs" />
-    <Compile Include="CollisionStrategyTests.cs" />
+    <Compile Include="TestsController\CollisionStrategyTests.cs" />
     <Compile Include="IBarFactoryTests.cs" />
     <Compile Include="IBarTests.cs" />
     <Compile Include="Image2DTest.cs" />
