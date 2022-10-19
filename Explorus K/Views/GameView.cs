@@ -49,8 +49,7 @@ namespace Explorus_K.Views
         private static Timer replayTimer;
         private int countdown = 3;
         private int replayCountdown = 5;
-        private List<MenuOption> menuOptions;
-        private int cursorIndex;
+        private MenuOptions menuOptions;
 
         public LabyrinthImage labyrinthImage;		
 
@@ -78,7 +77,6 @@ namespace Explorus_K.Views
             gameHeader.Visible = false;
             gameLabyrinth.Visible = false;
 
-            cursorIndex = 0;
             SetMainMenu();
 
             labyrinthImage = new LabyrinthImage(gameEngine.GetLabyrinth(), gameEngine.getBubbleManager(), gameEngine.GameDifficulty);
@@ -149,30 +147,30 @@ namespace Explorus_K.Views
 
         private void SetMainMenu()
         {
-            menuOptions = new List<MenuOption>();
+            menuOptions = new MenuOptions();
             if (gameEngine.State == GameState.MENU)
             {
-                menuOptions.Add(new MenuOption(MenuCursor.START_GAME, new Bitmap[] { Resources.startgame_noir, Resources.startgame_bleu }));
+                menuOptions.addOption(MenuCursor.START_GAME, new Bitmap[] { Resources.startgame_noir, Resources.startgame_bleu });
             }
             else
             {
-                menuOptions.Add(new MenuOption(MenuCursor.RESUME, new Bitmap[] { Resources.resume_noir, Resources.resume_bleu }));
+                menuOptions.addOption(MenuCursor.RESUME, new Bitmap[] { Resources.resume_noir, Resources.resume_bleu });
             }
             
-            menuOptions.Add(new MenuOption(MenuCursor.AUDIO, new Bitmap[] { Resources.audio_noir, Resources.audio_bleu }));
+            menuOptions.addOption(MenuCursor.AUDIO, new Bitmap[] { Resources.audio_noir, Resources.audio_bleu });
             if (gameEngine.State == GameState.MENU)
             {
-                menuOptions.Add(new MenuOption(MenuCursor.DIFFICULTY, new Bitmap[] { Resources.difficulty_noir, Resources.difficulty_bleu }));
+                menuOptions.addOption(MenuCursor.DIFFICULTY, new Bitmap[] { Resources.difficulty_noir, Resources.difficulty_bleu });
             }
-            menuOptions.Add(new MenuOption(MenuCursor.EXIT_GAME, new Bitmap[] { Resources.exitgame_noir, Resources.exitgame_bleu }));
+            menuOptions.addOption(MenuCursor.EXIT_GAME, new Bitmap[] { Resources.exitgame_noir, Resources.exitgame_bleu });
         }
 
         private void SetAudioMenu()
         {
-            menuOptions = new List<MenuOption>();
-            menuOptions.Add(new MenuOption(MenuCursor.MUSIC_VOLUME, new Bitmap[] { Resources.music_volume_noir, Resources.music_volume_bleu }));
-            menuOptions.Add(new MenuOption(MenuCursor.SOUND_VOLUME, new Bitmap[] { Resources.sound_volume_noir, Resources.sound_volume_bleu }));
-            menuOptions.Add(new MenuOption(MenuCursor.RETURN, new Bitmap[] { Resources.return_noir, Resources.return_bleu }));
+            menuOptions = new MenuOptions();
+            menuOptions.addOption(MenuCursor.MUSIC_VOLUME, new Bitmap[] { Resources.music_volume_noir, Resources.music_volume_bleu });
+            menuOptions.addOption(MenuCursor.SOUND_VOLUME, new Bitmap[] { Resources.sound_volume_noir, Resources.sound_volume_bleu });
+            menuOptions.addOption(MenuCursor.RETURN, new Bitmap[] { Resources.return_noir, Resources.return_bleu });
         }
 
         private void showText(Graphics g, string text)
@@ -198,38 +196,38 @@ namespace Explorus_K.Views
 
             g.DrawImage(Resources.Title_Bleu, (screenWidth / 2) - (Properties.Resources.Title.Width / 2), (screenHeight / 6) - (Properties.Resources.Title.Height / 2));
 
-            for (int i = 0; i < menuOptions.Count; i++)
+            for (int i = 0; i < menuOptions.getLength(); i++)
             {
-                if (cursorIndex == i)
+                if (menuOptions.getCurrentIndex() == i)
                 {
-                    if (menuOptions[i].Type == MenuCursor.DIFFICULTY)
+                    if (menuOptions.getCurrentType() == MenuCursor.DIFFICULTY)
                     {
                         g.DrawImage(Resources.cursor, (screenWidth / 2) - (widthText + 150), ((screenHeight / 6) * (i + 2)) - (cursorDim / 2), cursorDim, cursorDim);
-                        g.DrawImage(menuOptions[i].Image[1], (screenWidth / 2) - (widthText + 25), ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
+                        g.DrawImage(menuOptions.getCurrentBitmap()[1], (screenWidth / 2) - (widthText + 25), ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
                         g.DrawString(": ", new Font(pfc.Families[0], 40, FontStyle.Regular), Brushes.White, (screenWidth / 2)-10, ((screenHeight / 6) * (i + 2)) - 40);
                         g.DrawImage(gameEngine.GameDifficulty.getSelectedBitmap(), (screenWidth / 2) + 50, ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
                     }
                     else
                     {
                         g.DrawImage(Resources.cursor, (screenWidth / 2) - widthText, ((screenHeight / 6) * (i + 2)) - (cursorDim / 2), cursorDim, cursorDim);
-                        g.DrawImage(menuOptions[i].Image[1], (screenWidth / 2) - (widthText / 2), ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
+                        g.DrawImage(menuOptions.getCurrentBitmap()[1], (screenWidth / 2) - (widthText / 2), ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
                     }
                 }
                 else
                 {
-                    if (menuOptions[i].Type == MenuCursor.DIFFICULTY)
+                    if (menuOptions.getCurrentType() == MenuCursor.DIFFICULTY)
                     {
-                        g.DrawImage(menuOptions[i].Image[0], (screenWidth / 2) - (widthText + 25), ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
+                        g.DrawImage(menuOptions.getCurrentBitmap()[0], (screenWidth / 2) - (widthText + 25), ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
                         g.DrawString(": ", new Font(pfc.Families[0], 40, FontStyle.Regular), Brushes.White, (screenWidth / 2) - 10, ((screenHeight / 6) * (i + 2)) - 40);
                         g.DrawImage(gameEngine.GameDifficulty.getBitmap(), (screenWidth / 2) + 50, ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
                     }
                     else
                     {
-                        g.DrawImage(menuOptions[i].Image[0], (screenWidth / 2) - (widthText / 2), ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
+                        g.DrawImage(menuOptions.getCurrentBitmap()[0], (screenWidth / 2) - (widthText / 2), ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
                     }
                 }
 
-                if (menuOptions[i].Type == MenuCursor.MUSIC_VOLUME)
+                if (menuOptions.getCurrentType() == MenuCursor.MUSIC_VOLUME)
                 {
                     g.DrawString(": ", new Font(pfc.Families[0], 40, FontStyle.Regular), Brushes.White, (screenWidth / 2) + (widthText / 2), ((screenHeight / 6) * (i + 2)) - 40);
                     if (gameEngine.MuteMusic)
@@ -243,7 +241,7 @@ namespace Explorus_K.Views
                     
                 }
 
-                if (menuOptions[i].Type == MenuCursor.SOUND_VOLUME)
+                if (menuOptions.getCurrentType() == MenuCursor.SOUND_VOLUME)
                 {
                     g.DrawString(": ", new Font(pfc.Families[0], 40, FontStyle.Regular), Brushes.White, (screenWidth / 2) + (widthText / 2), ((screenHeight / 6) * (i + 2)) - 40);
                     if (gameEngine.MuteSound)
@@ -401,25 +399,9 @@ namespace Explorus_K.Views
 			return labyrinthImage;
 		}
 
-        public void cursorUp()
-        {
-            if (cursorIndex > 0)
-            {
-                cursorIndex -= 1;
-            }
-        }
-
-        public void cursorDown()
-        {
-            if (cursorIndex < menuOptions.Count - 1)
-            {
-                cursorIndex += 1;
-            }
-        }
-
         public void selectMenu()
         {
-            switch (menuOptions[cursorIndex].Type)
+            switch (menuOptions.getCurrentType())
             {
                 case MenuCursor.START_GAME:
                     gameEngine.resume();
@@ -429,7 +411,6 @@ namespace Explorus_K.Views
                     break;
                 case MenuCursor.AUDIO:
                     SetAudioMenu();
-                    cursorIndex = 0;
                     break;
                 case MenuCursor.RESUME:
                     gameEngine.resume();
@@ -442,7 +423,6 @@ namespace Explorus_K.Views
                     break;
                 case MenuCursor.RETURN:
                     SetMainMenu();
-                    cursorIndex = 0;
                     break;
                 default:
                     break;
@@ -451,7 +431,7 @@ namespace Explorus_K.Views
 
         public void volumeDown()
         {
-            switch (menuOptions[cursorIndex].Type)
+            switch (menuOptions.getCurrentType())
             {
                 case MenuCursor.MUSIC_VOLUME:
                     gameEngine.downMusicVolume();
@@ -466,7 +446,7 @@ namespace Explorus_K.Views
 
         public void volumeUp()
         {
-            switch (menuOptions[cursorIndex].Type)
+            switch (menuOptions.getCurrentType())
             {
                 case MenuCursor.MUSIC_VOLUME:
                     gameEngine.upMusicVolume();
@@ -481,7 +461,7 @@ namespace Explorus_K.Views
 
         public void mutevolume()
         {
-            switch (menuOptions[cursorIndex].Type)
+            switch (menuOptions.getCurrentType())
             {
                 case MenuCursor.MUSIC_VOLUME:
                     gameEngine.muteMusicVolume();
@@ -496,13 +476,13 @@ namespace Explorus_K.Views
 
         private void AddFontFromMemory()
         {
-            byte[] fontdata = Properties.Resources.numberFontMenu;
+            byte[] fontdata = Resources.numberFontMenu;
 
             unsafe
             {
                 fixed (byte* pFontData = fontdata)
                 {
-                    pfc.AddMemoryFont((System.IntPtr)pFontData, fontdata.Length);
+                    pfc.AddMemoryFont((IntPtr)pFontData, fontdata.Length);
                 }
             }
         }
