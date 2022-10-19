@@ -33,7 +33,7 @@ namespace Explorus_K.Controllers
 		private bool muteMusic;
         private bool muteSound;
 		private GameDifficulty difficulty;
-		private bool undoDone = false;
+		private double elapsedTimeCombined = 0;
 
         public static object gameStatelock = new object();
         Thread physicsThread;
@@ -112,7 +112,6 @@ namespace Explorus_K.Controllers
 			double lag = 0.0;
 
             bool replayInitiated = false;
-			double elapsedTimeCombined = 0;
             long firstListTimestamp = 0;
 
             while (true)
@@ -204,7 +203,7 @@ namespace Explorus_K.Controllers
 
                     if (commands.Count == 0)
 					{
-                        gameState = GameState.MENU;
+                        gameState = GameState.STOP;
 						replayInitiated = false;
 						restart();
 					}
@@ -215,29 +214,20 @@ namespace Explorus_K.Controllers
 				else if(gameState == GameState.UNDO)
 				{
                     physicsThread.Abort();
-                    
 
-                    if (!undoDone)
+					foreach(Player player in gameView.getLabyrinthImage().getPlayerList())
 					{
-						foreach(Player player in gameView.getLabyrinthImage().getPlayerList())
-						{
-							player.setMovementDirection(MovementDirection.none);
-						}
-
-                        for (int i = 0; i < commandInvoker.getCommands().Count; i++)
-                        {
-                            commandInvoker.getCommands()[commandInvoker.getCommands().Count - i - 1].unexecute();
-                            playerMovement.moveAndAnimatePlayers(gameView.getLabyrinthImage().getPlayerList(), null, gameState);
-                        }
-
-                        gameState = GameState.REPLAY;
-						undoDone = true;
-                        gameView.Render();
-                    }
-					else
-					{
-						gameState = GameState.REPLAY;
+						player.setMovementDirection(MovementDirection.none);
 					}
+
+                    for (int i = 0; i < commandInvoker.getCommands().Count; i++)
+                    {
+                        commandInvoker.getCommands()[commandInvoker.getCommands().Count - i - 1].unexecute();
+                        playerMovement.moveAndAnimatePlayers(gameView.getLabyrinthImage().getPlayerList(), null, gameState);
+                    }
+
+                    gameState = GameState.REPLAY;
+                    gameView.Render();
 
                     Thread.Sleep(50);
 
@@ -420,6 +410,7 @@ namespace Explorus_K.Controllers
             gameView.InitializeHeaderBar(new BubbleBarCreator(), Constant.INITIAL_BUBBLE_COUNT, Constant.INITIAL_BUBBLE_COUNT);
             gameView.InitializeHeaderBar(new GemBarCreator(), Constant.INITIAL_GEM_COUNT, 0);
             audio.restartMusic();
+			elapsedTimeCombined = 0;
 
 			if (gameState == GameState.RESTART)
 			{

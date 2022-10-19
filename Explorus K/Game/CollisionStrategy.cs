@@ -49,7 +49,7 @@ namespace Explorus_K.Models
             {
                 if (commandInvoker != null)
                 {
-                    commandInvoker.executeCommand(new GemCollectingCommand(labyrinthImage.GemBar));
+                    commandInvoker.executeCommand(new GemCollectingCommand(labyrinthImage.GemBar, labyrinthImage, labyrinthImage.labyrinthImages[imageIndex]));
                 }
                 if (labyrinthImage.GemBar.getCurrent() == labyrinthImage.GemBar.getLength())
                 {
