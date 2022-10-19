@@ -174,7 +174,7 @@ namespace Explorus_K.Game
                     {
                         if (commandInvoker != null)
                         {
-                            //commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                            commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
                         }
                     }
                     break;
@@ -184,7 +184,7 @@ namespace Explorus_K.Game
                     {
                         if (commandInvoker != null)
                         {
-                            //commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                            commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
                         }
                     }
                     break;
@@ -194,7 +194,7 @@ namespace Explorus_K.Game
                     {
                         if (commandInvoker != null)
                         {
-                            //commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                            commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
                         }
                     }
                     break;
@@ -204,7 +204,7 @@ namespace Explorus_K.Game
                     {
                         if (commandInvoker != null)
                         {
-                            //commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                            commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
                         }
                     }
                     break;
