@@ -200,34 +200,34 @@ namespace Explorus_K.Views
             {
                 if (menuOptions.getCurrentIndex() == i)
                 {
-                    if (menuOptions.getCurrentType() == MenuCursor.DIFFICULTY)
+                    if (menuOptions.getType(i) == MenuCursor.DIFFICULTY)
                     {
                         g.DrawImage(Resources.cursor, (screenWidth / 2) - (widthText + 150), ((screenHeight / 6) * (i + 2)) - (cursorDim / 2), cursorDim, cursorDim);
-                        g.DrawImage(menuOptions.getCurrentBitmap()[1], (screenWidth / 2) - (widthText + 25), ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
+                        g.DrawImage(menuOptions.getBitmap(i)[1], (screenWidth / 2) - (widthText + 25), ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
                         g.DrawString(": ", new Font(pfc.Families[0], 40, FontStyle.Regular), Brushes.White, (screenWidth / 2)-10, ((screenHeight / 6) * (i + 2)) - 40);
                         g.DrawImage(gameEngine.GameDifficulty.getSelectedBitmap(), (screenWidth / 2) + 50, ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
                     }
                     else
                     {
                         g.DrawImage(Resources.cursor, (screenWidth / 2) - widthText, ((screenHeight / 6) * (i + 2)) - (cursorDim / 2), cursorDim, cursorDim);
-                        g.DrawImage(menuOptions.getCurrentBitmap()[1], (screenWidth / 2) - (widthText / 2), ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
+                        g.DrawImage(menuOptions.getBitmap(i)[1], (screenWidth / 2) - (widthText / 2), ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
                     }
                 }
                 else
                 {
-                    if (menuOptions.getCurrentType() == MenuCursor.DIFFICULTY)
+                    if (menuOptions.getType(i) == MenuCursor.DIFFICULTY)
                     {
-                        g.DrawImage(menuOptions.getCurrentBitmap()[0], (screenWidth / 2) - (widthText + 25), ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
+                        g.DrawImage(menuOptions.getBitmap(i)[0], (screenWidth / 2) - (widthText + 25), ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
                         g.DrawString(": ", new Font(pfc.Families[0], 40, FontStyle.Regular), Brushes.White, (screenWidth / 2) - 10, ((screenHeight / 6) * (i + 2)) - 40);
                         g.DrawImage(gameEngine.GameDifficulty.getBitmap(), (screenWidth / 2) + 50, ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
                     }
                     else
                     {
-                        g.DrawImage(menuOptions.getCurrentBitmap()[0], (screenWidth / 2) - (widthText / 2), ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
+                        g.DrawImage(menuOptions.getBitmap(i)[0], (screenWidth / 2) - (widthText / 2), ((screenHeight / 6) * (i + 2)) - (heightText / 2), widthText, heightText);
                     }
                 }
 
-                if (menuOptions.getCurrentType() == MenuCursor.MUSIC_VOLUME)
+                if (menuOptions.getType(i) == MenuCursor.MUSIC_VOLUME)
                 {
                     g.DrawString(": ", new Font(pfc.Families[0], 40, FontStyle.Regular), Brushes.White, (screenWidth / 2) + (widthText / 2), ((screenHeight / 6) * (i + 2)) - 40);
                     if (gameEngine.MuteMusic)
@@ -241,7 +241,7 @@ namespace Explorus_K.Views
                     
                 }
 
-                if (menuOptions.getCurrentType() == MenuCursor.SOUND_VOLUME)
+                if (menuOptions.getType(i) == MenuCursor.SOUND_VOLUME)
                 {
                     g.DrawString(": ", new Font(pfc.Families[0], 40, FontStyle.Regular), Brushes.White, (screenWidth / 2) + (widthText / 2), ((screenHeight / 6) * (i + 2)) - 40);
                     if (gameEngine.MuteSound)
@@ -427,6 +427,16 @@ namespace Explorus_K.Views
                 default:
                     break;
             }
+        }
+
+        public void cursorUp()
+        {
+            menuOptions.cursorUp();
+        }
+
+        public void cursorDown()
+        {
+            menuOptions.cursorDown();
         }
 
         public void volumeDown()

@@ -50,14 +50,19 @@ namespace Explorus_K.Game
             return current;
         }
 
+        public MenuCursor getType(int index)
+        {
+            return menuOptions[index].Item1;
+        }
+
         public MenuCursor getCurrentType()
         {
             return menuOptions[current].Item1;
         }
 
-        public Bitmap[] getCurrentBitmap()
+        public Bitmap[] getBitmap(int index)
         {
-            return menuOptions[current].Item2;
+            return menuOptions[index].Item2;
         }
     }
 }
