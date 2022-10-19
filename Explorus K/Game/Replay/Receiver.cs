@@ -6,6 +6,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Explorus_K.Game.Replay
@@ -40,7 +41,7 @@ namespace Explorus_K.Game.Replay
             }
         }
 
-        public void computeGemCollectingCommand(GemBar gemBar, bool isIncreasing)
+        public void computeGemCollectingCommand(GemBar gemBar, LabyrinthImage labyrinthImage, Image2D image2D, bool isIncreasing)
         {
             if(isIncreasing)
             {
@@ -49,6 +50,7 @@ namespace Explorus_K.Game.Replay
             else
             {
                 gemBar.Decrease();
+                labyrinthImage.labyrinthImages.Add(new Image2D(SpriteType.GEM, ImageType.GEM, image2D.X, image2D.Y));
             }
         }
 
