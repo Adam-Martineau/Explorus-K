@@ -163,7 +163,42 @@ namespace Explorus_K.Game
 
         private void setToxicSlimeMovementDirection(Player player, Invoker commandInvoker)
         {
+            ToxicSlime toxicSlime = (ToxicSlime) player;
+            switch (toxicSlime.movementType)
+        }
 
+        private void movementFollowSlimus(Player player, Invoker commandInvoker)
+        {
+            if (canPlayerSeeSlimus(player))
+            {
+                goToSlimus(player, commandInvoker);
+            }
+            else 
+                movementRandom(player, commandInvoker);
+        }
+
+        private void movementEmbushSlimus(Player player, Invoker commandInvoker)
+        {
+            if (isPlayerAlignedWithSlimus(player))
+            {
+
+            }
+            else
+                movementRandom(player, commandInvoker);
+        }
+
+        private void movementConfuse(Player player, Invoker commandInvoker)
+        {
+            if (canPlayerSeeSlimus(player))
+            {
+                
+            }
+            else
+                movementRandom(player, commandInvoker);
+        }
+
+        private void movementRandom(Player player, Invoker commandInvoker)
+        {
             int randomInt = rand.Next(0, 4);
 
             MovementDirection movementDirection;
@@ -172,7 +207,7 @@ namespace Explorus_K.Game
             {
                 case 0:
                     movementDirection = MovementDirection.up;
-                    if (canPlayerMove(movementDirection, player.getIterator().Current(),SpriteType.TOXIC_SLIME))
+                    if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
                     {
                         if (commandInvoker != null)
                         {
@@ -215,24 +250,14 @@ namespace Explorus_K.Game
             }
         }
 
-        private void movementFollowSlimus(Player player)
+        private void goToSlimus(Player player, Invoker commandInvoker)
         {
-
-        }
-
-        private void movementEmbushSlimus(Player player)
-        {
-
-        }
-
-        private void movementRandom(Player player)
-        {
-
+            
         }
 
         private bool canPlayerSeeSlimus(Player player)
         {
-            if (player.getPosX() != slimus.getPosX() || player.getPosY() != slimus.getPosY())
+            if (isPlayerAlignedWithSlimus(player))
             {
                 return false;
             }
@@ -252,6 +277,16 @@ namespace Explorus_K.Game
             }
             
             return false;
+        }
+
+        private bool isPlayerAlignedWithSlimus(Player player)
+        {
+            if (player.getPosX() != slimus.getPosX() || player.getPosY() != slimus.getPosY())
+            {
+                return false;
+            }
+            else
+                return true;
         }
 
         private bool isThereSomethingInBetweenHorizontally(Point pos1, Point pos2)
@@ -287,16 +322,16 @@ namespace Explorus_K.Game
             switch (movementDirection)
             {
                 case MovementDirection.down:
-                    player.getIterator().MoveDown();
+                    player.getIterator().Move(MovementDirection.down);
                     break;
                 case MovementDirection.up:
-                    player.getIterator().MoveUp();
+                    player.getIterator().Move(MovementDirection.up);
                     break;
                 case MovementDirection.left:
-                    player.getIterator().MoveLeft();
+                    player.getIterator().Move(MovementDirection.left);
                     break;
                 case MovementDirection.right:
-                    player.getIterator().MoveRight();
+                    player.getIterator().Move(MovementDirection.right);
                     break;
                 default:
                     break;

@@ -96,6 +96,7 @@
     <Compile Include="Game\MenuCursor.cs" />
     <Compile Include="Game\MenuOptions.cs" />
     <Compile Include="Game\MovementDirection.cs" />
+    <Compile Include="Game\MovementTypeEnum.cs" />
     <Compile Include="Game\Replay\BubbleCommand.cs" />
     <Compile Include="Game\Replay\DecreaseHealthBar.cs" />
     <Compile Include="Game\Replay\DecreaseLifeCommand.cs" />
