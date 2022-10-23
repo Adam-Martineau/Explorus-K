@@ -1,13 +1,17 @@
 ﻿using Explorus_K.Game;
 using System;
 using System.Collections.Generic;
+using static Explorus_K.Game.MovementTypeEnum;
 
 namespace Explorus_K.Models
 {
     internal class ToxicSlime : Player
     {
-        public ToxicSlime(int posX, int posY, ImageType imageType, int life, Iterator iterator) : base(posX, posY, imageType, life, iterator)
+        internal MovementType movementType { get; }
+
+        public ToxicSlime(int posX, int posY, ImageType imageType, MovementType movementType, int life, Iterator iterator) : base(posX, posY, imageType, life, iterator)
         {
+            this.movementType = movementType;
             fillAnimationDict();
         }
 

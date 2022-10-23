@@ -11,20 +11,23 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static Explorus_K.Game.MovementTypeEnum;
 
 namespace Explorus_K.Game
 {
     internal class PlayerMovement
     {
         private Iterator iterator;
-        private Random r = new Random();
+        private Player slimus;
+        private Random rand = new Random();
 
         private int playerStepSize;
         private int bubbleStepSize;
 
-        public PlayerMovement(Iterator iterator, GameDifficulty difficulty)
+        public PlayerMovement(Player slimus, GameDifficulty difficulty)
         {
-            this.iterator = iterator;
+            this.slimus = slimus;
+            iterator = slimus.getIterator();
             playerStepSize = difficulty.getPlayerSpeed();
             bubbleStepSize = 4;
         }
@@ -161,8 +164,65 @@ namespace Explorus_K.Game
 
         private void setToxicSlimeMovementDirection(Player player, Invoker commandInvoker)
         {
+            ToxicSlime toxicSlime = (ToxicSlime) player;
 
-            int randomInt = r.Next(0, 4);
+            switch (toxicSlime.movementType)
+            {
+                case MovementType.movementFollowSlimus:
+                    movementFollowSlimus(toxicSlime, commandInvoker);
+                    break;
+
+                case MovementType.movementEmbushSlimus:
+                    movementEmbushSlimus(toxicSlime, commandInvoker);
+                    break;
+
+                case MovementType.movementConfuse:
+                    movementConfuse(toxicSlime, commandInvoker);
+                    break;
+            }
+        }
+
+        private void movementFollowSlimus(ToxicSlime player, Invoker commandInvoker)
+        {
+            if (canPlayerSeeSlimus(player))
+            {
+                goToSlimus(player, commandInvoker);
+            }
+            else 
+                movementRandom(player, commandInvoker);
+        }
+
+        private void movementEmbushSlimus(ToxicSlime player, Invoker commandInvoker)
+        {
+            if (isPlayerAlignedWithSlimus(player))
+            {
+                moveInTheSameDirectionAsSlimus(player, commandInvoker);
+            }
+            else
+                movementRandom(player, commandInvoker);
+        }
+
+        private void movementConfuse(ToxicSlime player, Invoker commandInvoker)
+        {
+            if (canPlayerSeeSlimus(player))
+            {
+                switch(rand.Next(0, 1))
+                {
+                    case 0:
+                        goToSlimus(player, commandInvoker);
+                        break;
+                    case 1:
+                        runFromSlimus(player, commandInvoker);
+                        break;
+                }
+            }
+            else
+                movementRandom(player, commandInvoker);
+        }
+
+        private void movementRandom(ToxicSlime player, Invoker commandInvoker)
+        {
+            int randomInt = rand.Next(0, 4);
 
             MovementDirection movementDirection;
 
@@ -170,7 +230,7 @@ namespace Explorus_K.Game
             {
                 case 0:
                     movementDirection = MovementDirection.up;
-                    if (canPlayerMove(movementDirection, player.getIterator().Current(),SpriteType.TOXIC_SLIME))
+                    if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
                     {
                         if (commandInvoker != null)
                         {
@@ -207,6 +267,218 @@ namespace Explorus_K.Game
                             commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
                         }
                     }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void goToSlimus(ToxicSlime player, Invoker commandInvoker)
+        {
+            int directionX = slimus.getIterator().Current().X - player.getIterator().Current().X;
+            int directionY = slimus.getIterator().Current().Y - player.getIterator().Current().Y;
+
+            MovementDirection movementDirection;
+
+            if (directionX < 0)
+            {
+                movementDirection = MovementDirection.left;
+                if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
+                {
+                    if (commandInvoker != null)
+                    {
+                        commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                    }
+                }
+            }
+            else if (directionX > 0)
+            {
+                movementDirection = MovementDirection.right;
+                if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
+                {
+                    if (commandInvoker != null)
+                    {
+                        commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                    }
+                }
+            }
+            else if (directionY < 0)
+            {
+                movementDirection = MovementDirection.up;
+                if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
+                {
+                    if (commandInvoker != null)
+                    {
+                        commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                    }
+                }
+            }
+            else if (directionY < 0)
+            {
+                movementDirection = MovementDirection.down;
+                if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
+                {
+                    if (commandInvoker != null)
+                    {
+                        commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                    }
+                }
+            }
+        }
+
+        private void runFromSlimus(ToxicSlime player, Invoker commandInvoker)
+        {
+            int directionX = slimus.getIterator().Current().X - player.getIterator().Current().X;
+            int directionY = slimus.getIterator().Current().Y - player.getIterator().Current().Y;
+
+            MovementDirection movementDirection;
+
+            if (directionX < 0)
+            {
+                movementDirection = MovementDirection.right;
+                if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
+                {
+                    if (commandInvoker != null)
+                    {
+                        commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                    }
+                }
+            }
+            else if (directionX > 0)
+            {
+                movementDirection = MovementDirection.left;
+                if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
+                {
+                    if (commandInvoker != null)
+                    {
+                        commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                    }
+                }
+            }
+            else if (directionY < 0)
+            {
+                movementDirection = MovementDirection.down;
+                if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
+                {
+                    if (commandInvoker != null)
+                    {
+                        commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                    }
+                }
+            }
+            else if (directionY < 0)
+            {
+                movementDirection = MovementDirection.up;
+                if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
+                {
+                    if (commandInvoker != null)
+                    {
+                        commandInvoker.executeCommand(new PlayerMovementCommand(player, movementDirection));
+                    }
+                }
+            }
+        }
+
+        private void moveInTheSameDirectionAsSlimus(ToxicSlime player, Invoker commandInvoker)
+        {
+            MovementDirection movementDirection = slimus.getMovementDirection();
+
+            if (canPlayerMove(movementDirection, player.getIterator().Current(), SpriteType.TOXIC_SLIME))
+                player.setMovementDirection(movementDirection);
+            else
+                movementRandom(player, commandInvoker);
+
+        }
+
+        private bool canPlayerSeeSlimus(ToxicSlime player)
+        {
+            if (!isPlayerAlignedWithSlimus(player))
+            {
+                return false;
+            }
+            else if ((player.getIterator().Current().X == slimus.getIterator().Current().X))
+            {
+                if (isThereSomethingInBetweenVertically(player.getIterator().Current(), slimus.getIterator().Current()))
+                    return false;
+                else 
+                    return true;
+            }
+            else if (player.getIterator().Current().Y == slimus.getIterator().Current().Y)
+            {
+                if (isThereSomethingInBetweenHorizontally(player.getIterator().Current(), slimus.getIterator().Current()))
+                    return false;
+                else
+                    return true;
+            }
+            
+            return false;
+        }
+
+        private bool isPlayerAlignedWithSlimus(ToxicSlime player)
+        {
+            if (player.getIterator().Current().Y == slimus.getIterator().Current().Y || player.getIterator().Current().X == slimus.getIterator().Current().X)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private bool isThereSomethingInBetweenHorizontally(Point pos1, Point pos2)
+        {
+            int start = pos1.X > pos2.X ? pos2.X : pos1.X;
+            int stop = pos1.X > pos2.X ? pos1.X : pos2.X;
+
+            if (Math.Abs(start - stop) <= 1)
+                return false;
+
+            start++;
+
+            for (int i = start; i < stop; i++)
+            {
+                string obj = (string)slimus.getIterator().getMapEntryAt(i, pos1.X);
+                if (obj != ".")
+                    return true; 
+            }
+
+            return false;
+        }
+
+        private bool isThereSomethingInBetweenVertically(Point pos1, Point pos2)
+        {
+            int start = pos1.Y > pos2.Y ? pos2.Y : pos1.Y;
+            int stop = pos1.Y > pos2.Y ? pos1.Y : pos2.Y;
+
+            if (Math.Abs(start - stop) <= 1)
+                return false;
+
+            start++;
+
+            for (int i = start; i < stop; i++)
+            {
+                string obj = (string)slimus.getIterator().getMapEntryAt(i, pos1.X);
+                if (obj != ".")
+                    return true;
+            }
+
+            return false;
+        }
+
+        private void movePlayerIterator(Player player, MovementDirection movementDirection)
+        {
+            switch (movementDirection)
+            {
+                case MovementDirection.down:
+                    player.getIterator().Move(MovementDirection.down);
+                    break;
+                case MovementDirection.up:
+                    player.getIterator().Move(MovementDirection.up);
+                    break;
+                case MovementDirection.left:
+                    player.getIterator().Move(MovementDirection.left);
+                    break;
+                case MovementDirection.right:
+                    player.getIterator().Move(MovementDirection.right);
                     break;
                 default:
                     break;

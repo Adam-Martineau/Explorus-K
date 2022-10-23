@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Timers;
+using static Explorus_K.Game.MovementTypeEnum;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Explorus_K.Game
@@ -267,14 +268,59 @@ namespace Explorus_K.Game
                     {
                         labyrinthImages.Add(new Image2D(SpriteType.DOOR, ImageType.WALL, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION));
                     }
-                    else if (labyrinth.getMapEntryAt(i, j) != ".")
+                    else if (labyrinth.getMapEntryAt(i, j) == "t0")
                     {
                         string tempLabyrinthName = "t" + labyrintNameCount.ToString();
-                        ToxicSlime tempToxicSlime = new ToxicSlime(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, diff.getToxicLives(), Labyrinth.Map.CreateIterator(tempLabyrinthName));
+                        ToxicSlime tempToxicSlime = new ToxicSlime(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, MovementType.movementFollowSlimus, diff.getToxicLives(), Labyrinth.Map.CreateIterator(tempLabyrinthName));
                         tempToxicSlime.setLabyrinthName(tempLabyrinthName);
                         labyrintNameCount++;
                         playerList.Add(tempToxicSlime);
                         labyrinthImages.Add(new Image2D(SpriteType.TOXIC_SLIME, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION,tempToxicSlime.GetGuid()));
+                    }
+                    else if (labyrinth.getMapEntryAt(i, j) == "t1")
+                    {
+                        string tempLabyrinthName = "t" + labyrintNameCount.ToString();
+                        ToxicSlime tempToxicSlime = new ToxicSlime(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, MovementType.movementFollowSlimus, diff.getToxicLives(), Labyrinth.Map.CreateIterator(tempLabyrinthName));
+                        tempToxicSlime.setLabyrinthName(tempLabyrinthName);
+                        labyrintNameCount++;
+                        playerList.Add(tempToxicSlime);
+                        labyrinthImages.Add(new Image2D(SpriteType.TOXIC_SLIME, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, tempToxicSlime.GetGuid()));
+                    }
+                    else if (labyrinth.getMapEntryAt(i, j) == "t2")
+                    {
+                        string tempLabyrinthName = "t" + labyrintNameCount.ToString();
+                        ToxicSlime tempToxicSlime = new ToxicSlime(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, MovementType.movementConfuse, diff.getToxicLives(), Labyrinth.Map.CreateIterator(tempLabyrinthName));
+                        tempToxicSlime.setLabyrinthName(tempLabyrinthName);
+                        labyrintNameCount++;
+                        playerList.Add(tempToxicSlime);
+                        labyrinthImages.Add(new Image2D(SpriteType.TOXIC_SLIME, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, tempToxicSlime.GetGuid()));
+                    }
+                    else if (labyrinth.getMapEntryAt(i, j) == "t3")
+                    {
+                        string tempLabyrinthName = "t" + labyrintNameCount.ToString();
+                        ToxicSlime tempToxicSlime = new ToxicSlime(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, MovementType.movementConfuse, diff.getToxicLives(), Labyrinth.Map.CreateIterator(tempLabyrinthName));
+                        tempToxicSlime.setLabyrinthName(tempLabyrinthName);
+                        labyrintNameCount++;
+                        playerList.Add(tempToxicSlime);
+                        labyrinthImages.Add(new Image2D(SpriteType.TOXIC_SLIME, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, tempToxicSlime.GetGuid()));
+                    }
+                    else if (labyrinth.getMapEntryAt(i, j) == "t4")
+                    {
+                        string tempLabyrinthName = "t" + labyrintNameCount.ToString();
+                        ToxicSlime tempToxicSlime = new ToxicSlime(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, MovementType.movementEmbushSlimus, diff.getToxicLives(), Labyrinth.Map.CreateIterator(tempLabyrinthName));
+                        tempToxicSlime.setLabyrinthName(tempLabyrinthName);
+                        labyrintNameCount++;
+                        playerList.Add(tempToxicSlime);
+                        labyrinthImages.Add(new Image2D(SpriteType.TOXIC_SLIME, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, tempToxicSlime.GetGuid()));
+                    }
+                    else if (labyrinth.getMapEntryAt(i, j) == "t5")
+                    {
+                        string tempLabyrinthName = "t" + labyrintNameCount.ToString();
+                        ToxicSlime tempToxicSlime = new ToxicSlime(i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, MovementType.movementEmbushSlimus, diff.getToxicLives(), Labyrinth.Map.CreateIterator(tempLabyrinthName));
+                        tempToxicSlime.setLabyrinthName(tempLabyrinthName);
+                        labyrintNameCount++;
+                        playerList.Add(tempToxicSlime);
+                        labyrinthImages.Add(new Image2D(SpriteType.TOXIC_SLIME, ImageType.TOXIC_SLIME_DOWN_ANIMATION_1, i * Constant.LARGE_SPRITE_DIMENSION, j * Constant.LARGE_SPRITE_DIMENSION, tempToxicSlime.GetGuid()));
                     }
                 }
             }
