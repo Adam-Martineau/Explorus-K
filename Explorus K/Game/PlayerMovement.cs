@@ -165,8 +165,7 @@ namespace Explorus_K.Game
         private void setToxicSlimeMovementDirection(Player player, Invoker commandInvoker)
         {
             ToxicSlime toxicSlime = (ToxicSlime) player;
-            movementEmbushSlimus(toxicSlime, commandInvoker);
-            /*
+
             switch (toxicSlime.movementType)
             {
                 case MovementType.movementFollowSlimus:
@@ -181,7 +180,6 @@ namespace Explorus_K.Game
                     movementConfuse(toxicSlime, commandInvoker);
                     break;
             }
-            */
         }
 
         private void movementFollowSlimus(ToxicSlime player, Invoker commandInvoker)
