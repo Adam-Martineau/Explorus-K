@@ -436,7 +436,7 @@ namespace Explorus_K.Game
 
             for (int i = start; i < stop; i++)
             {
-                string obj = (string)slimus.getIterator().getMapEntryAt(i, pos1.X);
+                string obj = (string)slimus.getIterator().getMapEntryAt(i, pos1.Y);
                 if (obj != ".")
                     return true; 
             }
@@ -456,7 +456,7 @@ namespace Explorus_K.Game
 
             for (int i = start; i < stop; i++)
             {
-                string obj = (string)slimus.getIterator().getMapEntryAt(i, pos1.X);
+                string obj = (string)slimus.getIterator().getMapEntryAt(pos1.X, i);
                 if (obj != ".")
                     return true;
             }
