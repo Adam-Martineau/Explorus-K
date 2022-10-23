@@ -50,7 +50,7 @@ namespace Explorus_K.Controllers
         public bool MuteSound { get => muteSound; set => muteSound = value; }
         public GameDifficulty GameDifficulty { get => difficulty; set => difficulty = value; }
 
-        public GameEngine()
+        public GameEngine(object[,] gameMap)
 		{
 
             commandInvoker = new Invoker();
@@ -59,7 +59,7 @@ namespace Explorus_K.Controllers
 			difficulty = new GameDifficulty();
             audioBabillard = new AudioBabillard();
             bubbleManager = new BubbleManager(difficulty.getBubbleTimer());
-            labyrinth = new Labyrinth();
+            labyrinth = new Labyrinth(gameMap);
             //The game engine get passed from contructor to constructor until it reach GameForm.cs
             gameView = new GameView(this, gameLevel);
 			bindings = initiate_bindings();
@@ -213,6 +213,11 @@ namespace Explorus_K.Controllers
 				else if(gameState == GameState.UNDO)
 				{
                     physicsThread.Abort();
+                    
+                    foreach(Bubble bubble in bubbleManager.getBubbleList())
+                    {
+                        bubble.popBubble();
+                    }
 
 					foreach(Player player in gameView.getLabyrinthImage().getPlayerList())
 					{
@@ -403,7 +408,7 @@ namespace Explorus_K.Controllers
 		{
             gameLevel += 1;
             bubbleManager = new BubbleManager(difficulty.getBubbleTimer());
-            labyrinth = new Labyrinth();
+            labyrinth = new Labyrinth(GameMap.get());
             int remainingLifes = gameView.getLabyrinthImage().HealthBar.getCurrent();
             if (gameState == GameState.STOP)
 			{

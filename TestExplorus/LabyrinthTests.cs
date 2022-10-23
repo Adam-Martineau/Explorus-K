@@ -14,7 +14,7 @@ namespace TestExplorus
         [TestMethod]
         public void labyrinthTest()
         {
-            Labyrinth labyrinth = new Labyrinth();
+            Labyrinth labyrinth = new Labyrinth(GameMap.get());
 
             Assert.IsNotNull(labyrinth);
             Assert.IsNotNull(labyrinth.Map);

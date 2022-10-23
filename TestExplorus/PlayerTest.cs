@@ -14,8 +14,8 @@ namespace TestExplorus
 
         private int initialLiveCount = 6;
 
-        private Iterator slimusIterator = new LabyrinthImage(new Labyrinth(), new BubbleManager(100), new GameDifficulty()).Labyrinth.Map.CreateIterator(slimusName);
-        private Iterator toxicSlimeIterator = new LabyrinthImage(new Labyrinth(), new BubbleManager(100), new GameDifficulty()).Labyrinth.Map.CreateIterator(toxicSlimeName);
+        private Iterator slimusIterator = new LabyrinthImage(new Labyrinth(GameMap.get()), new BubbleManager(100), new GameDifficulty()).Labyrinth.Map.CreateIterator(slimusName);
+        private Iterator toxicSlimeIterator = new LabyrinthImage(new Labyrinth(GameMap.get()), new BubbleManager(100), new GameDifficulty()).Labyrinth.Map.CreateIterator(toxicSlimeName);
 
         [TestMethod]
         public void givenNewSlimusObject_whenMovingLeftAndDown_thenShouldChangePlayerPosition()
@@ -27,7 +27,7 @@ namespace TestExplorus
             int expectedPosY = initialPosY + stepSize;
             ImageType imageType = ImageType.SLIMUS_DOWN_ANIMATION_1;
 
-            Player testPlayer = new Slimus(initialPosX, initialPosY, imageType, 6, new Labyrinth().MapIterator);
+            Player testPlayer = new Slimus(initialPosX, initialPosY, imageType, 6, new Labyrinth(GameMap.get()).MapIterator);
             testPlayer.moveLeft(stepSize);
             testPlayer.moveDown(stepSize);
             Image2D playerImage = testPlayer.refreshPlayer();
@@ -50,7 +50,7 @@ namespace TestExplorus
             int expectedPosY = initialPosY - stepSize;
             ImageType imageType = ImageType.SLIMUS_DOWN_ANIMATION_1;
 
-            Player testPlayer = new Slimus(initialPosX, initialPosY, imageType, 6, new Labyrinth().MapIterator);
+            Player testPlayer = new Slimus(initialPosX, initialPosY, imageType, 6, new Labyrinth(GameMap.get()).MapIterator);
             testPlayer.moveRight(stepSize);
             testPlayer.moveUp(stepSize);
             Image2D playerImage = testPlayer.refreshPlayer();
@@ -130,7 +130,7 @@ namespace TestExplorus
             int expectedPosY = initialPosY + stepSize;
             ImageType imageType = ImageType.SLIMUS_DOWN_ANIMATION_1;
 
-            Player testPlayer = new ToxicSlime(initialPosX, initialPosY, imageType, 6, new Labyrinth().MapIterator);
+            Player testPlayer = new ToxicSlime(initialPosX, initialPosY, imageType, 6, new Labyrinth(GameMap.get()).MapIterator);
             testPlayer.moveLeft(stepSize);
             testPlayer.moveDown(stepSize);
             Image2D playerImage = testPlayer.refreshPlayer();
@@ -153,7 +153,7 @@ namespace TestExplorus
             int expectedPosY = initialPosY - stepSize;
             ImageType imageType = ImageType.SLIMUS_DOWN_ANIMATION_1;
 
-            Player testPlayer = new ToxicSlime(initialPosX, initialPosY, imageType, 6, new Labyrinth().MapIterator);
+            Player testPlayer = new ToxicSlime(initialPosX, initialPosY, imageType, 6, new Labyrinth(GameMap.get()).MapIterator);
             testPlayer.moveRight(stepSize);
             testPlayer.moveUp(stepSize);
             Image2D playerImage = testPlayer.refreshPlayer();

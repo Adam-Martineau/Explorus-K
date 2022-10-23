@@ -22,7 +22,7 @@ namespace TestExplorus.TestsController
         [TestInitialize]
         public void MenuTestInit()
         {
-            oController = new GameEngine();
+            oController = new GameEngine(GameMap.get());
             Assert.IsNotNull(oController);
             oController.IsWindowLess = true;
 

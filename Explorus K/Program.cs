@@ -1,4 +1,5 @@
 ﻿using Explorus_K.Controllers;
+using Explorus_K.Game;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace Explorus_K
         [STAThread]
         static void Main()
         {
-            GameEngine ge = new GameEngine();
+            GameEngine ge = new GameEngine(GameMap.get());
             ge.StartGame();
             System.Environment.Exit(0);
         }

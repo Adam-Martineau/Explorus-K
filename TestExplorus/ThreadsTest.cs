@@ -38,7 +38,7 @@ namespace TestExplorus
             audioThreadStart = new ThreadStart(audioThreadRef.Run);
             audioThread = new Thread(audioThreadStart);
 
-            labyrinth = new Labyrinth();
+            labyrinth = new Labyrinth(GameMap.get());
             bubbleManager = new BubbleManager(100);
             labyrinthImage = new LabyrinthImage(labyrinth, bubbleManager, new GameDifficulty());
             labyrinthImage.GemBar = (GemBar)new GemBarCreator().InitializeBar(6, 0);

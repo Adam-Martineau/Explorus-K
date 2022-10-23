@@ -86,6 +86,7 @@
     <Compile Include="Game\BubbleManager.cs" />
     <Compile Include="Game\Constant.cs" />
     <Compile Include="Game\Difficulty.cs" />
+    <Compile Include="Game\GameMap.cs" />
     <Compile Include="Game\GameState.cs" />
     <Compile Include="Game\KeyState.cs" />
     <Compile Include="Game\Labyrinth.cs" />
