@@ -165,6 +165,8 @@ namespace Explorus_K.Game
         private void setToxicSlimeMovementDirection(Player player, Invoker commandInvoker)
         {
             ToxicSlime toxicSlime = (ToxicSlime) player;
+            movementEmbushSlimus(toxicSlime, commandInvoker);
+            /*
             switch (toxicSlime.movementType)
             {
                 case MovementType.movementFollowSlimus:
@@ -179,6 +181,7 @@ namespace Explorus_K.Game
                     movementConfuse(toxicSlime, commandInvoker);
                     break;
             }
+            */
         }
 
         private void movementFollowSlimus(ToxicSlime player, Invoker commandInvoker)
@@ -391,7 +394,7 @@ namespace Explorus_K.Game
 
         private bool canPlayerSeeSlimus(ToxicSlime player)
         {
-            if (player.getIterator().Current().Y != slimus.getIterator().Current().Y && player.getIterator().Current().Y != slimus.getIterator().Current().Y)
+            if (!isPlayerAlignedWithSlimus(player))
             {
                 return false;
             }
@@ -404,7 +407,7 @@ namespace Explorus_K.Game
             }
             else if (player.getIterator().Current().Y == slimus.getIterator().Current().Y)
             {
-                if (isThereSomethingInBetweenHorizontally(new Point(player.getPosX(), player.getPosY()), new Point(slimus.getPosX(), slimus.getPosY())))
+                if (isThereSomethingInBetweenHorizontally(player.getIterator().Current(), slimus.getIterator().Current()))
                     return false;
                 else
                     return true;
@@ -415,7 +418,7 @@ namespace Explorus_K.Game
 
         private bool isPlayerAlignedWithSlimus(ToxicSlime player)
         {
-            if (player.getIterator().Current().Y == slimus.getIterator().Current().Y || player.getIterator().Current().Y == slimus.getIterator().Current().Y)
+            if (player.getIterator().Current().Y == slimus.getIterator().Current().Y || player.getIterator().Current().X == slimus.getIterator().Current().X)
             {
                 return true;
             }
@@ -428,9 +431,15 @@ namespace Explorus_K.Game
             int start = pos1.X > pos2.X ? pos2.X : pos1.X;
             int stop = pos1.X > pos2.X ? pos1.X : pos2.X;
 
+            if (Math.Abs(start - stop) <= 1)
+                return false;
+
+            start++;
+
             for (int i = start; i < stop; i++)
             {
-                if ((string) slimus.getIterator().getMapEntryAt(i, pos1.Y) != ".")
+                string obj = (string)slimus.getIterator().getMapEntryAt(i, pos1.X);
+                if (obj != ".")
                     return true; 
             }
 
@@ -442,9 +451,15 @@ namespace Explorus_K.Game
             int start = pos1.Y > pos2.Y ? pos2.Y : pos1.Y;
             int stop = pos1.Y > pos2.Y ? pos1.Y : pos2.Y;
 
+            if (Math.Abs(start - stop) <= 1)
+                return false;
+
+            start++;
+
             for (int i = start; i < stop; i++)
             {
-                if ((string) slimus.getIterator().getMapEntryAt(i, pos1.X) != ".")
+                string obj = (string)slimus.getIterator().getMapEntryAt(i, pos1.X);
+                if (obj != ".")
                     return true;
             }
 
