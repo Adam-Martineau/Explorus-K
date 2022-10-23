@@ -30,7 +30,6 @@ namespace TestExplorus
         RenderThread render;
         Thread renderThread;
 
-
         [TestInitialize]
         public void initializeThread()
         {
@@ -40,8 +39,10 @@ namespace TestExplorus
             audioThread = new Thread(audioThreadStart);
 
             labyrinth = new Labyrinth();
-            bubbleManager = new BubbleManager(0);
+            bubbleManager = new BubbleManager(100);
             labyrinthImage = new LabyrinthImage(labyrinth, bubbleManager, new GameDifficulty());
+            labyrinthImage.GemBar = (GemBar)new GemBarCreator().InitializeBar(6, 0);
+            labyrinthImage.HealthBar = (HealthBar)new HealthBarCreator().InitializeBar(6, 6);
             physicsThreadRef = new PhysicsThread(labyrinthImage, audioBabillard, new Explorus_K.Game.Replay.Invoker());
             physicsThread = new Thread(new ThreadStart(physicsThreadRef.startThread));
 
